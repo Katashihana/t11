@@ -912,6 +912,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
 𝖨𝖲𝖫𝖠𝖬 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}kisahnabi*
+*き⃟🦈 ${prefix}listdaerah
+*き⃟🦈 ${prefix}randomquran _Text_
+*き⃟🦈 ${prefix}surah <query>
+*き⃟🦈 ${prefix}quotesislam
 
 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}fbdl*
@@ -926,12 +930,28 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}tiktoknowm*
 *き⃟🦈 ${prefix}tiktokaudio*
 *き⃟🦈 ${prefix}mediafire*
-*き⃟🦈 ${prefix}nhentaipdf* _code_
+*き⃟🦈 ${prefix}nhentaipdf* _code_k_
+*き⃟🦈 ${prefix}xvideo _Link_
+*き⃟🦈 ${prefix}xs _Text_
+*き⃟🦈 ${prefix}xs2 _Text_
+*き⃟🦈 ${prefix}xnxx _Link_
+*き⃟🦈 ${prefix}ytmp42 <query>
+*き⃟🦈 ${prefix}tiktok2 <query>
 
-𝖬𝖠𝖪𝖤𝖱 𝖬𝖤𝖭𝖴 
 
-
-Makernya banyak tu kalian masukan aja namanya sendiri
+*RANDOM TEXT*
+*き⃟🦈 ${prefix}randombokep
+*き⃟🦈 ${prefix}style (text)
+*き⃟🦈 ${prefix}pastebin (text)
+*き⃟🦈 ${prefix}nickepep
+*き⃟🦈 ${prefix}fake
+*き⃟🦈 ${prefix}twich
+*き⃟🦈 ${prefix}cersex
+*き⃟🦈 ${prefix}cerpen
+*き⃟🦈 ${prefix}katacinta
+*き⃟🦈 ${prefix}tongue
+*き⃟🦈 ${prefix}renungan
+*き⃟🦈 ${prefix}randomcerpen
 
 𝖲𝖳𝖨𝖪𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}dadu*
@@ -955,14 +975,51 @@ Makernya banyak tu kalian masukan aja namanya sendiri
 *き⃟🦈 ${prefix}xs*
 *き⃟🦈 ${prefix}asupan*
 
+
+
+*INFORMATION MENU*
+*き⃟🦈 ${prefix}cuacabandara
+*き⃟🦈 ${prefix}cuaca1 <_Nama Daerah_>
+*き⃟🦈 ${prefix}cuaca <_Nama Daerah>
+*き⃟🦈 ${prefix}rscovid
+*き⃟🦈 ${prefix}jadwalbola 
+*き⃟🦈 ${prefix}jadwaltvnow 
+*き⃟🦈 ${prefix}trendingtwitter
+*き⃟🦈 ${prefix}mostviewfilm
+*き⃟🦈 ${prefix}infoloker
+*き⃟🦈 ${prefix}datasekolah <query>
+*き⃟🦈 ${prefix}datasekolah2 <query>
+
+*SPAM MENU*
+*き⃟🦈 ${prefix}spamsms <89xnxx>
+*き⃟🦈 ${prefix}spamcall <89xnxx>
+
+*NEWS MENU*
+*き⃟🦈 ${prefix}cnn 
+*き⃟🦈 ${prefix}kompastv
+*き⃟🦈 ${prefix}tribunnews
+*き⃟🦈 ${prefix}liputan
+*き⃟🦈 ${prefix}foxnews
+
 𝖯𝖤𝖭𝖣𝖨𝖣𝖨𝖪𝖠𝖭 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}nulis
+*き⃟🦈 ${prefix}nuliskiri _Text_
+*き⃟🦈 ${prefix}nuliskanan _Text_
+*き⃟🦈 ${prefix}foliokiri _Text_
+*き⃟🦈 ${prefix}foliokanan _Text_
 
 𝖲𝖳𝖠𝖫𝖪𝖨𝖭𝖦 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}igstalk*
 *き⃟🦈 ${prefix}igstalk*
 *き⃟🦈 ${prefix}tiktokstalk*
 *き⃟🦈 ${prefix}githubstalk*
+
+*RANDOM IMAGE*
+*き⃟🦈 ${prefix}naruto
+*き⃟🦈 ${prefix}aesthetic
+*き⃟🦈 ${prefix}bts
+*き⃟🦈 ${prefix}blackpink
+*き⃟🦈 ${prefix}ppcp
 
 𝖠𝖣𝖣 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}addvn*
@@ -1007,6 +1064,22 @@ Makernya banyak tu kalian masukan aja namanya sendiri
 *き⃟🦈 ${prefix}bilamgangka*
 *き⃟🦈 ${prefix}artimimpi*
 *き⃟🦈 ${prefix}resepmasakan*
+*き⃟🦈 ${prefix}urlshort _Link_
+*き⃟🦈 ${prefix}urlshort2 _Text_
+*き⃟🦈 ${prefix}brainly <query>
+*き⃟🦈 ${prefix}image <query>
+*き⃟🦈 ${prefix}anime <random>
+*き⃟🦈 ${prefix}pinterest <query>
+*き⃟🦈 ${prefix}komiku <query>
+*き⃟🦈 ${prefix}lirik <query>
+*き⃟🦈 ${prefix}chara <query>
+*き⃟🦈 ${prefix}playstore <query>
+*き⃟🦈 ${prefix}otaku <query>
+*き⃟🦈 ${prefix}tokohindo
+*き⃟🦈 ${prefix}renungan
+*き⃟🦈 ${prefix}animeindo (text)
+*き⃟🦈 ${prefix}kodepos2 (text) 
+*き⃟🦈 ${prefix}gabut 
 
 
 𝖮𝖶𝖭𝖤𝖱 𝖬𝖤𝖭𝖴 
@@ -1037,6 +1110,32 @@ Makernya banyak tu kalian masukan aja namanya sendiri
 *き⃟🦈 ${prefix}playstore* _query_
 *き⃟🦈 ${prefix}google* _query_
 *き⃟🦈 ${prefix}image* _query_
+*き⃟🦈 ${prefix}ytsearch <query>
+*き⃟🦈 ${prefix}carimasakna _masakanya_
+*き⃟🦈 ${prefix}thelazy _Text_
+*き⃟🦈 ${prefix}palingmurah (text)
+*き⃟🦈 ${prefix}sfilesearch (text)
+*き⃟🦈 ${prefix}ytstalk (channel)
+*き⃟🦈 ${prefix}happymod <text>
+*き⃟🦈 ${prefix}film <text>
+*き⃟🦈 ${prefix}ytplaylist <text>
+*き⃟🦈 ${prefix}ytchannel <text> 
+*き⃟🦈 ${prefix}jav (text)
+*き⃟🦈 ${prefix}phsearch (text)
+*き⃟🦈 ${prefix}chord _Text_
+*き⃟🦈 ${prefix}nekopoirandom
+*き⃟🦈 ${prefix}nekopoisearch
+*き⃟🦈 ${prefix}ytstalk _Text_ 
+*き⃟🦈 ${prefix}jooxsearch <query>
+*き⃟🦈 ${prefix}pesantren <id>
+*き⃟🦈 ${prefix}kabupaten <id>
+*き⃟🦈 ${prefix}provinsi 
+*き⃟🦈 ${prefix}kusonime <query>
+*き⃟🦈 ${prefix}samehadaku <query>
+*き⃟🦈 ${prefix}dafontsearch <query>
+*き⃟🦈 ${prefix}jarak <query>
+*き⃟🦈 ${prefix}nhentaisearch <query>
+*き⃟🦈 ${prefix}komiku <query>
 
 𝖥𝖴𝖭 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}mining*
@@ -1058,6 +1157,9 @@ Makernya banyak tu kalian masukan aja namanya sendiri
 *き⃟🦈 ${prefix}babi*
 *き⃟🦈 ${prefix}cekganteng*
 *き⃟🦈 ${prefix}cekcantik*
+*き⃟🦈 ${prefix}katashi _Text_
+*き⃟🦈 ${prefix}putra _Text_
+*き⃟🦈 ${prefix}simi _Text_
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}command`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}store`,buttonText:{displayText:'SIMPLE BUTTON MENU'},type:1}]
 
@@ -5132,6 +5234,65 @@ case 'hitungmatauang':l
                     ini_txt += `Update Tanggal : ${get_result.updatedAt}`
                     reply(ini_txt)
                     break
+case "fast":
+        if (!isQuotedVideo) return fakegroup("Reply videonya!");
+        fakegroup(mess.wait);
+        encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+          .message.extendedTextMessage.contextInfo;
+        media = await dha.downloadAndSaveMediaMessage(encmedia);
+        ran = getRandom(".mp4");
+        exec(
+          `ffmpeg -i ${media} -filter_complex "[0:v]setpts=0.5*PTS[v];[0:a]atempo=2[a]" -map "[v]" -map "[a]" ${ran}`,
+          (err) => {
+            fs.unlinkSync(media);
+            if (err) return fakegroup(`Err: ${err}`);
+            buffer453 = fs.readFileSync(ran);
+            dha.sendMessage(from, buffer453, video, {
+              mimetype: "video/mp4",
+              quoted: mek,
+            });
+            fs.unlinkSync(ran);
+          }
+        );
+        break;
+      case "slow":
+        if (!isQuotedVideo) return fakegroup("Reply videonya!");
+        fakegroup(mess.wait);
+        encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+          .message.extendedTextMessage.contextInfo;
+        media = await dha.downloadAndSaveMediaMessage(encmedia);
+        ran = getRandom(".mp4");
+        exec(
+          `ffmpeg -i ${media} -filter_complex "[0:v]setpts=2*PTS[v];[0:a]atempo=0.5[a]" -map "[v]" -map "[a]" ${ran}`,
+          (err) => {
+            fs.unlinkSync(media);
+            if (err) return fakegroup(`Err: ${err}`);
+            buffer453 = fs.readFileSync(ran);
+            dha.sendMessage(from, buffer453, video, {
+              mimetype: "video/mp4",
+              quoted: mek,
+            });
+            fs.unlinkSync(ran);
+          }
+        );
+        break;
+      case "reverse":
+        if (!isQuotedVideo) return fakegroup("Reply videonya!");
+        encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+          .message.extendedTextMessage.contextInfo;
+        media = await dha.downloadAndSaveMediaMessage(encmedia);
+        ran = getRandom(".mp4");
+        exec(`ffmpeg -i ${media} -vf reverse -af areverse ${ran}`, (err) => {
+          fs.unlinkSync(media);
+          if (err) return fakegroup(`Err: ${err}`);
+          buffer453 = fs.readFileSync(ran);
+          dha.sendMessage(from, buffer453, video, {
+            mimetype: "video/mp4",
+            quoted: mek,
+          });
+          fs.unlinkSync(ran);
+        });
+        break;
 
 default:
 if (fs.existsSync(`./media/${from}.json`)) {
