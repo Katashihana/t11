@@ -39,7 +39,7 @@ const starts = async (dha = new WAConnection()) => {
 		console.log(color('[ SHERLYNN ]', 'purple'), color('PROSES PENYAMBUNGAN'));
 	})
 const spinner = { 
-  "interval": 120,
+  "interval": 9999,
   "frames": [
     "K",
     "Ku",
