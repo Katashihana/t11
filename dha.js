@@ -2937,7 +2937,7 @@ break
               textImg(`${runtime(process.uptime())}`)
               break
        case 'youtube': 
-              reply(`Jangan Lupa Subscribe YT Owner:\n https://youtu.be/Wgi3uOGlmYs`)
+              reply(`Jangan Lupa Subscribe YT Owner:\n https://youtube.com/channel/UCrEMv0c1cuploq5GruMuwvw`)
               break
        case 'masukandata':
              reply(`*「BOT MELAYANI」*\n\n━━━━━━━━━━━━━━━━━━━━\n\nMASUKKANA DATA BERIKUT\n*•NAMA GAME:*\n*•ID GAME:*\n*•USER NAME:*\n━━━━━━━━━━━━━━━━━━━━\n*NOTE:*\n*1.* _JANGAN LUPA BUKTI TRXNYA_\n*2.* _OTOMATIS PESANAN_\n_LANSUNG DI PROSES_\n*3.* _PESANAN ANDA DI PROSES_\n_OLEH_\n\n   *©Katashi*\n\n_JIKA PESANAN ANDA LOW_\n_PROSES MOHON BERSABAR_\nwa.me/6289626029135`)
@@ -3863,7 +3863,7 @@ case 'caripesan':  //by ANU TEAM
              reply(`PULSA : 089626029135\n\n SAYA CUMAN BISA BILANG TERIMAKASIH ATAS KEMURAHAN HATI TUAN TELAH MEMBERIKAN KAMI BANTUAN.SEMOGA ALLAH MEMBALAS APA YG TUAN BERIKAN KE PADA SAYA`)
              break              
       case 'infoig':
-             reply(`Jangan Lupa Follow Ig Owner Ya : https://www.instagram.com/kurrsadboy`)
+             reply(`Jangan Lupa Follow Ig Owner Ya : https://www.instagram.com/k4t4sh1._`)
              break
       case 'grupbot':
              reply('https://chat.whatsapp.com/EymjfVUattCJSGg58WPvrd')
@@ -3920,32 +3920,6 @@ case 'caripesan':  //by ANU TEAM
       case 'funmenu':
              dha.sendMessage(from, funMenu(prefix), MessageType.text, {quoted: troli})
              break
-        case 'cekwatak':
-       case 'Cekwatak':
-       if (!isGroup) return reply('Khusus Group')
-              var namao = pushname
-              var prfx = await dha.getProfilePicture(sender)
-              const watak = ['top deh pokoknya','penyayang','pemurah','Pemarah','Pemaaf','Penurut','Baik','baperan','Baik-Hati','penyabar','UwU','Suka Membantu']
-              const wtk = watak[Math.floor(Math.random() * (watak.length))]
-              const ratenyaasu = ['100%','95%','90%','85%','80%','75%','70%','65%','60%','55%','50%','45%','40%','35%','30%','25%','20%','15%','10%','5%']
-              const akhlak = ratenyaasu[Math.floor(Math.random() * (ratenyaasu.length))]
-              const sifat = ['Penolong','Suka Membantu','Saling Menolong','Perhatian','Ngak Cuek','Romantis','Dermawan','Cool','Peduli Kepada Sesama','Suka Berkata Kasar']
-              const sft = sifat[Math.floor(Math.random() * (sifat.length))]
-              const hobby = ['Memasak','Membantu Atok','Mabar','Nobar','Coli','Colkyy','Sosmedtan','Membantu Orang lain','Nonton Anime','Nonton Drakor','Naik Motor','Nyanyi','Menari','Bertumbuk','Menggambar','Foto fotoan Ga jelas','Maen Game','Berbicara Sendiri']
-              const hby = hobby[Math.floor(Math.random() * (hobby.length))]
-              const kelebihan = ['Soleh dan Soleha','Pintar','Rajin','Teladan']
-              const klbh = kelebihan[Math.floor(Math.random() * (kelebihan.length))]
-              const tipe = ['cool','idaman','Alami','Keren','Ideal','Dia Bamget','normal','elite','epic','Legend']
-              const typo = tipe[Math.floor(Math.random() * (tipe.length))]
-              await reply(`[ INTROGASI SUKSES ]\n\n[Nama]:${namao}\n\n[Watak]:${wtk}\n\n[Akhlak]:${akhlak}\n\n[Sifat]:${sft}\n\n[Hobby]:${hby}\n\n[Tipe]:${typo}\n\n[Kelebihan]:${klbh}\n\nNote\n\n_ini hanya main main_`)
-              break
-                     case 'cekmati':
-                     case 'Cekmati':
-                     if (!isGroup) return reply(mess.only.group)
-              if (!q) return reply(mess.wrongFormat)
-              predea = await axios.get(`https://api.agify.io/?name=${q}`)
-              reply(`Nama : ${predea.data.name}\n*Mati Pada Umur :* ${predea.data.age} Tahun.\n\n_Cepet Cepet Tobat Bro Soalnya Mati ga ada yang tau_`)
-              break
 case 'nekopoilatest':
                 case 'Nekopoilatest':
                 if (!isPremium) return reply(mess.prem)
