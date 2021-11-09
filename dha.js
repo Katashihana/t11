@@ -275,7 +275,7 @@ module.exports = dha = async (dha, mek) => {
         const textImg = (teks) => {
            return dha.sendMessage(from, teks, text, {quoted: mek, thumbnail: fs.readFileSync('./media/ganteng.jpg')})
         }
-        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/Katashi.jpg')
+        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/ganteng.jpg')
         }}}
        const math = (teks) => {
            return Math.floor(teks)
@@ -313,7 +313,7 @@ module.exports = dha = async (dha, mek) => {
 	       for (let i of members){
 	       ane.push(i.jid)
 }
-	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/Katashi.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
+	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/ganteng.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
 }  
       const sendWebp = async(to, url) => {
            var names = Date.now() / 10000;
@@ -1061,7 +1061,7 @@ Makernya banyak tu kalian masukan aja namanya sendiri
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}command`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}store`,buttonText:{displayText:'SIMPLE BUTTON MENU'},type:1}]
 
-               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/Katashi.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/Katashi.jpg`)})).imageMessage
+               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
 
                buttonsMessage = {
                contentText: `${menu}`,
@@ -2038,7 +2038,7 @@ case 'tiktok':
               if (!q) return reply('Linknya?')
               if (!q.includes('tiktok')) return reply(mess.error.Iv)
               buttons = [{buttonId: `${prefix}tiktoknowm ${q}`,buttonText:{displayText: `🎥 Video`},type:1},{buttonId:`${prefix}ttaudio ${q}`,buttonText:{displayText:'🎵 Mp3'},type:1}]
-              imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/Katashi.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/Katashi.jpg`)})).imageMessage
+              imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/ganteng.jpg`)})).imageMessage
               buttonsMessage = {footerText:'Jangan Lupa Subscribe Yt Katashi-Botz\n Helpme tu 1k subscriber', imageMessage: imageMsg,
               contentText:`Silahkan pilihan media yg mau di download kak:v`,buttons,headerType:4}
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
@@ -3920,6 +3920,1429 @@ case 'caripesan':  //by ANU TEAM
       case 'funmenu':
              dha.sendMessage(from, funMenu(prefix), MessageType.text, {quoted: troli})
              break
+        case 'cekwatak':
+       case 'Cekwatak':
+       if (!isGroup) return reply('Khusus Group')
+              var namao = pushname
+              var prfx = await dha.getProfilePicture(sender)
+              const watak = ['top deh pokoknya','penyayang','pemurah','Pemarah','Pemaaf','Penurut','Baik','baperan','Baik-Hati','penyabar','UwU','Suka Membantu']
+              const wtk = watak[Math.floor(Math.random() * (watak.length))]
+              const ratenyaasu = ['100%','95%','90%','85%','80%','75%','70%','65%','60%','55%','50%','45%','40%','35%','30%','25%','20%','15%','10%','5%']
+              const akhlak = ratenyaasu[Math.floor(Math.random() * (ratenyaasu.length))]
+              const sifat = ['Penolong','Suka Membantu','Saling Menolong','Perhatian','Ngak Cuek','Romantis','Dermawan','Cool','Peduli Kepada Sesama','Suka Berkata Kasar']
+              const sft = sifat[Math.floor(Math.random() * (sifat.length))]
+              const hobby = ['Memasak','Membantu Atok','Mabar','Nobar','Coli','Colkyy','Sosmedtan','Membantu Orang lain','Nonton Anime','Nonton Drakor','Naik Motor','Nyanyi','Menari','Bertumbuk','Menggambar','Foto fotoan Ga jelas','Maen Game','Berbicara Sendiri']
+              const hby = hobby[Math.floor(Math.random() * (hobby.length))]
+              const kelebihan = ['Soleh dan Soleha','Pintar','Rajin','Teladan']
+              const klbh = kelebihan[Math.floor(Math.random() * (kelebihan.length))]
+              const tipe = ['cool','idaman','Alami','Keren','Ideal','Dia Bamget','normal','elite','epic','Legend']
+              const typo = tipe[Math.floor(Math.random() * (tipe.length))]
+              await reply(`[ INTROGASI SUKSES ]\n\n[Nama]:${namao}\n\n[Watak]:${wtk}\n\n[Akhlak]:${akhlak}\n\n[Sifat]:${sft}\n\n[Hobby]:${hby}\n\n[Tipe]:${typo}\n\n[Kelebihan]:${klbh}\n\nNote\n\n_ini hanya main main_`)
+              break
+                     case 'cekmati':
+                     case 'Cekmati':
+                     if (!isGroup) return reply(mess.only.group)
+              if (!q) return reply(mess.wrongFormat)
+              predea = await axios.get(`https://api.agify.io/?name=${q}`)
+              reply(`Nama : ${predea.data.name}\n*Mati Pada Umur :* ${predea.data.age} Tahun.\n\n_Cepet Cepet Tobat Bro Soalnya Mati ga ada yang tau_`)
+              break
+case 'nekopoilatest':
+                case 'Nekopoilatest':
+                if (!isPremium) return reply(mess.prem)
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/nekopoi/latest?apikey=Katashi`)
+                    get_results = get_result.result
+                    ini_txt = ""
+                    for (var x of get_results) {
+                        ini_txt += `Title : ${x.title}\n`
+                        ini_txt += `Link : ${x.link}\n`
+                        ini_txt += `Thumbnail : ${x.img}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+                case 'nekopoisearch':
+                case 'Nekopoisearch':
+                if (!isPremium) return reply(mess.prem)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Isekai Harem`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/nekopoi/search?query=${query}&apikey=Katashi`)
+                    get_results = get_result.result
+                    ini_txt = ""
+                    for (var x of get_results) {
+                        ini_txt += `Title : ${x.title}\n`
+                        ini_txt += `Link : ${x.link}\n`
+                        ini_txt += `Thumbnail : ${x.img}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+case 'nekopoisearch':
+                case 'Nekopoisearch':
+                if (!isPremium) return reply(mess.prem)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Isekai Harem`)
+                    pee = args.join(" ")
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/sauce?url=${pee}&apikey=Katashi`)
+                    get_results = get_result.results
+                    ini_txt = ""
+                    for (var x of get_results) {
+                        ini_txt += `Link : ${x.url}\n`
+                        ini_txt += `Site : ${x.site}\n`
+                        ini_txt += `Index : ${x.index}\n`
+                        ini_txt += `Similarity : ${x.similarity}\n`
+                        ini_txt += `Thumbnail : ${x.thumbnail}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+case 'spotify':
+case 'Spotify':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
+                    url = args[0]
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/spotify?url=${url}&apikey=Katashi`)
+                    get_result = get_result.data
+                    ini_txt = `Title : ${get_result.name}\n`
+                    ini_txt += `Artists : ${get_result.artists}\n`
+                    ini_txt += `Duration : ${get_result.duration}\n`
+                    ini_txt += `Album Name : ${get_result.album_name}\n`
+                    ini_txt += `Release : ${get_result.release_date}\n`
+                    thumbnail = await getBuffer(get_result.cover_url)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    get_audio = await getBuffer(get_result.preview_url)
+                    await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: mek })
+                    break
+case 'ytstalk':
+case 'Ytstalk':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} jean`)
+                    query = args.join(" ")
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://bx-hunter.herokuapp.com/api/ytstalk?text=${query}&apikey=Ikyy69`)
+                    ini_txt = `Name : ${get_result.channel}\n`
+                    ini_txt += `Subscriber : ${get_result.subscriberCount}\n`
+                    ini_txt += `Icon : ${get_result.thumb}\n`
+                    ini_txt += `Verified : ${get_result.isVerified}\n`
+                    ini_txt += `Link : ${get_result.link}\n`
+                    ini_txt += `Description : ${get_result.description}\n`
+                    ini_icon = await getBuffer(get_result.thumb)
+                    await dha.sendMessage(from, ini_icon, image, { quoted: mek, caption: ini_txt })
+                    break
+                    case 'nuliskiri':
+case 'Nuliskiri':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    c = args.join(" ")
+reply(mess.wait)
+kon = await getBuffer(`https://hardianto-chan.herokuapp.com/api/nuliskiri?text=${c}&apikey=hardianto`)
+buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis`},type:1}]
+              imageMsg = (await dha.prepareMessageMedia(kon, "imageMessage", { thumbnail: kon, })).imageMessage
+              buttonsMessage = {footerText:'  Katashi ', imageMessage: imageMsg,
+              contentText:`    @k4t4sh1._ `,buttons,headerType:4}
+              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
+              dha.relayWAMessage(prep)
+      
+break
+case 'nuliskanan':
+case 'Nuliskanan':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    c = args.join(" ")
+reply(mess.wait)
+kon = await getBuffer(`https://hardianto-chan.herokuapp.com/api/nuliskanan?text=${c}&apikey=hardianto`)
+buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis`},type:1}]
+              imageMsg = (await dha.prepareMessageMedia(kon, "imageMessage", { thumbnail: kon, })).imageMessage
+              buttonsMessage = {footerText:'  Katashi ', imageMessage: imageMsg,
+              contentText:`    @k4t4sh1._ `,buttons,headerType:4}
+              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
+              dha.relayWAMessage(prep)
+     
+break
+case 'foliokanan':
+case 'Foliokanan':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    c = args.join(" ")
+reply(mess.wait)
+kon = await getBuffer(`https://hardianto-chan.herokuapp.com/api/foliokanan?text=${c}&apikey=hardianto`)
+buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis`},type:1}]
+              imageMsg = (await dha.prepareMessageMedia(kon, "imageMessage", { thumbnail: kon, })).imageMessage
+              buttonsMessage = {footerText:'  Katashi ', imageMessage: imageMsg,
+              contentText:`    @k4t4sh1._ `,buttons,headerType:4}
+              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
+              dha.relayWAMessage(prep)
+break
+case 'xs':
+case 'Xs':
+if (!isPremium) return reply(mess.prem)
+if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
+                    query = args.join(" ")
+pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideosearch?query=${query}&apikey=Ikyy69`)
+reply(mess.wait)
+pepex = pepex.result
+ini_txt = ""
+for (var x of pepex) {
+ini_txt += `Title : ${x.title}\n`
+ini_txt += `Info : ${x.info}\n`
+ini_txt += `Link : ${x.link}\n\n\n`
+}
+anu = `${ini_txt}\n\n  *DOWNLOAD*
+ ${prefix}xvideo [link xvid] = Video`
+dha.sendMessage(from, anu, text, {quoted: mek})
+break
+case 'xvideo':
+case 'xv':
+case 'Xvideo':
+case 'Xv':
+if (!isPremium) return reply(mess.prem)
+if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
+                    c = args.join(" ")
+x = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideodetail?url=${c}&apikey=Ikyy69`)
+reply(mess.wait)
+vid = await getBuffer(x.result.files.low)
+dha.sendMessage(from, vid, video, {quoted: mek})
+break
+case 'xnxx':
+case 'Xnxx':
+case 'xn':
+case 'Xn':
+if (!isPremium) return reply(mess.prem)
+if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
+                    c = args.join(" ")
+x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/detail?url=${c}`)
+reply(mess.wait)
+vid = await getBuffer(x.result.files.low)
+dha.sendMessage(from, vid, video, {quoted: mek})
+break
+case 'listnulis':
+case 'Listnulis':
+
+  reply(`Example ${prefix}nulis tes
+   ${prefix}nulis putra
+   ${prefix}foliokanan putra
+   ${prefix}foliokiri putra
+   ${prefix}nuliskanan putra
+   ${prefix}nuliskiri putta`)
+  break
+case 'foliokiri':
+case 'Foliokiri':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    c = args.join(" ")
+reply(mess.wait)
+kon = await getBuffer(`https://hardianto-chan.herokuapp.com/api/foliokiri?text=${c}&apikey=hardianto`)
+buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis`},type:1}]
+              imageMsg = (await dha.prepareMessageMedia(kon, "imageMessage", { thumbnail: kon, })).imageMessage
+              buttonsMessage = {footerText:' ?? Katashi ', imageMessage: imageMsg,
+              contentText:`    @k4t4sh1._ `,buttons,headerType:4}
+              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
+              dha.relayWAMessage(prep)
+break
+case 'xnxxsearch':
+case 'xs2':
+ case 'Xnxxsearch':
+case 'Xs2':
+if (args.length == 0) return reply(`Example: ${prefix + command} query`)
+                    c = args[0]
+pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xnxxsearch?query=${c}&apikey=Ikyy69`)
+reply(mess.wait)
+pepex = pepex.result
+ini_txt = ""
+for (var x of pepex) {
+ini_txt += `Title : ${x.title}\n`
+ini_txt += `Info : ${x.info}\n`
+ini_txt += `Link : ${x.link}\n\n\n`
+}
+anu = `${ini_txt}\n\n  *DOWNLOAD*
+ ${prefix}xvideo [link xvid] = Video`
+dha.sendMessage(from, anu, text, {quoted: mek})
+break
+        case 'meadmin':
+        case 'Meadmin':
+if (!isGroup) return reply('Khusus Group')
+if (!isOwner) return
+if (isGroupAdmins) return reply('Lu Dah Admin Om')
+if (!isBotGroupAdmins) return reply(mess.only.Badmin)
+dha.groupMakeAdmin(from, [sender])
+reply('Sukses')
+break
+case 'cuaca':
+case 'Cuaca':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
+                    daerah = args[0]
+                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=vZ7wFVI3`)
+                    ini_txt = `Tempat : ${get_result.Nama}\n`
+                    ini_txt += `Cuaca : ${get_result.Cuaca}\n`
+                    ini_txt += `Angin : ${get_result.Angin}\n`
+                    ini_txt += `Description : ${get_result.Keterangan}\n`
+                    ini_txt += `Kelembapan : ${get_result.Melembapan}\n`
+                    ini_txt += `Suhu : ${get_result.Suhu}\n`
+                    ini_txt += `Udara : ${get_result.Udara}\n`
+                    await dha.sendMessage(from, { degreesLatitude: get_result.latitude, degreesLongitude: get_result.longitude }, location, { quoted: mek })
+                    reply(ini_txt)
+                    break
+case 'nickepep': // Update By KATASHI 
+case 'Nickepep': // Update By katashi 
+					data = await fetchJson(`https://api.zeks.xyz/api/nickepep?apikey=Iyungputra`, {method: 'get'})
+					teks = ' \n'
+					for (let i of data.result) {
+						teks += `*Nick* : ${i}\n\n \n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'urlshort': //By katashi
+case 'url': //By katashi
+case 'Urlshort': //By katashi
+case 'Url': //By katashi
+                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+anu = await fetchJson(`https://api.zeks.xyz/api/urlshort?url=${query}&apikey=Iyungputra`, {method: 'get'})
+teks = `${anu.result}`
+dha.sendMessage(from, teks, text, {quoted: mek})
+break
+case 'ppcp': //By katashi
+case 'Ppcp': //By katashi
+case 'ppcouple': //By katashi
+case 'Ppcouple': //By katashi
+reply(mess.wait)
+anu = await fetchJson(`https://api.dapuhy.ga/api/randomimage/couple?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+image1 = await getBuffer(anu.result.pria)
+image2 = await getBuffer(anu.result.wanita)
+dha.sendMessage(from, image1, image, {quoted: mek })
+dha.sendMessage(from, image2, image, {quoted: mek})
+break
+case 'gfx': //By katashi
+case 'Gfx': //By katashi
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+reply(mess.wait)
+anu = await getBuffer(`https://velgrynd.herokuapp.com/api/gfx?nama=${query}`, {method: 'get'})
+dha.sendMessage(from, anu, image, {quoted: mek })
+break
+case 'gfx2': //By katashi
+case 'Gfx2': //By katashi
+if (args.length < 1) return reply(`*Example :*\n${prefix}${command} +628xxx|yoo`)
+					makell = args.join(" ")
+					c1 = makell.split("|")[0];
+					c2 = makell.split("|")[1];
+reply(mess.wait)
+anu = await getBuffer(`https://velgrynd.herokuapp.com/api/gfx3?text=${c1}&text2=${c2}`, {method: 'get'})
+dha.sendMessage(from, anu, image, {quoted: mek })
+break
+case 'simi':
+case 'Simi':
+case 'bot':
+case 'Bot':
+case 'katashi':
+case 'Katashi':
+case 'Putra':
+case 'Putra':
+if (args.length == 0) return reply(`kamu ganteng`)
+                    c = args.join(" ")
+x = await fetchJson(`https://api.simsimi.net/v2/?text=${c}&lc=id`)
+dha.sendMessage(from, `${x.success}`, text, {quoted: mek})
+break
+case 'urlshort2': //By katashi
+case 'url2': //By katashi
+case 'Urlshort2': //By katashi
+case 'Url2': //By katashi
+if (args.length == 0) return reply(`Link nya?`)
+                    query = args.join(" ")	
+anu = await fetchJson(`https://api.dapuhy.ga/api/others/cuttly?url=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+teks = `${anu.result}`
+dha.sendMessage(from, teks, text, {quoted: mek})
+break
+        case 'del':
+		        case 'd':
+		        case 'delete':             
+case 'Del':
+		        case 'D':
+		        case 'Delete':                
+				dha.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
+				break
+case 'meme':
+case 'Meme':
+reply(mess.wait)
+anu = await fetchJson(`https://api-yuzzu.herokuapp.com/api/darkjokes?apikey=Yuzzu`)
+buff = await getBuffer(anu.result.result)
+gbutsan = [{buttonId:`meme`,buttonText:{displayText:'LANJUT'},type:1}]
+mhan = await dha.prepareMessage(from, buff, image, {thumbnail: buff})
+const buttonMessagessss = {
+imageMessage: mhan.message.imageMessage,
+contentText: `Ngedark Bos`,
+footerText: '*_©Katashi Hana_*',
+buttons: gbutsan,
+headerType: 4
+}
+dha.sendMessage(from, buttonMessagessss, MessageType.buttonsMessage, {
+        thumbnail: fs.readFileSync('./dha.jpg'),
+        caption: 'Tes',
+            quoted: mek})
+case 'listdaerah': //By itsmeval
+case 'Listdaerah':
+anu = await fetchJson(`https://api.zeks.xyz/api/jadwalsholat?apikey=Iyungputra&daerah=malang`, {method: 'get'})
+teks = `${anu.listdaerah}`
+dha.sendMessage(from, teks, text, {quoted: mek})
+break
+case 'randomquran':
+case 'Randomquran':
+            res = await axios.get(`https://api.zeks.me/api/randomquran?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR`)
+            rquran = res.data.result
+            teks = `*Surah* : ${rquran.nama}\n*Arti* : ${rquran.arti}\n*Ayat* : ${rquran.asma}\n*Keterangan* : ${rquran.keterangan}`
+            reply(teks)
+            dha.sendFileFromUrl(from, rquran.audio, 'quran.mp3', ``, message)
+        break
+case 'style':
+case 'Style':
+				  if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+         reply(mess.wait)
+			axios.get(`https://kocakz.herokuapp.com/api/random/text/fancytext?text=${query}`).then((res) => {
+      let hasil = `*Hasil* :\n${res.data.result}`;
+      dha.sendMessage(from, hasil, MessageType.text, { quoted: mek});
+    })
+			break
+case 'pastebin':
+case 'Pastebin':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+anu = await fetchJson(`https://api-anoncybfakeplayer.herokuapp.com/pastebin?text=${query}`, {method: 'get'})
+                   dha.sendMessage(from, `${anu.result}`, text, {quoted: meki})
+                     break
+case 'ytplaylist':
+case 'Ytplaylist':
+if (!isPremium) return reply(mess.prem)
+                        if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await axios.get(`https://api.zeks.me/api/ytplaylist?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR&q=${query}`)
+                        ttt = res.data.result
+                        var teks = `* YOUTUBE PLAYLIST *\n\n*Hasil Pencarian : ${body}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            teks += `*Nama* : ${ttt[i].title}\n*Jumlah video*: ${ttt[i].video_count}\n*Channel*: ${ttt[i].uploader.username}\n*Link*: ${ttt[i].url}\n\n`
+                        }
+                        reply(teks)
+                        case 'katailham':  
+                        case 'Katailham':  
+                     const kta =['Lebih baik mengerti sedikit daripada salah mengerti.',
+'Hampir semua pria memang mampu bertahan menghadapi kesulitan. Namun, jika Anda ingin menguji karakter sejati pria, beri dia kekuasaan.',
+'Bila tekad seseorang kuat dan teguh, Tuhan akan bergabung dalam usahanya.',
+'Penderitaan adalah pelajaran.',
+'Ilmu pengetahuan tanpa agama adalah pincang.',
+'Hidup itu seperti sebuah sepeda, agar tetap seimbang kita harus tetap bergerak.',
+'Perbedaan masa lalu, sekarang, dan masa depan tak lebih dari ilusi yang keras kepala.',
+'Sebuah meja, sebuah kursi, semangkuk buah, dan sebuah biola; apa lagi yang dibutuhkan agar seseorang bisa merasa bahagia?',
+'Belas kasihanlah terhadap sesama, bersikap keraslah terhadap diri sendiri.',
+'Cara paling baik untuk menggerakkan diri Anda ialah memberi tugas kepada diri sendiri.',
+'Kita tidak boleh kehilangan semangat. Semangat adalah stimulan terkuat untuk mencintai, berkreasi dan berkeinginan untuk hidup lebih lama.',
+'Manusia akan bahagia selama ia memilih untuk bahagia.','Saya tidak berharap menjadi segalanya bagi setiap orang. Saya hanya ingin menjadi sesuatu untuk seseorang.',
+'Apabila sempurna akal seseorang, maka sedikit perkataannya.','Bahagialah orang yang dapat menjadi tuan untuk dirinya, menjadi kusir untuk nafsunya dan menjadi kapten untuk bahtera hidupnya.',
+'Sahabat yang jujur lebih besar harganya daripada harta benda yang diwarisi dari nenek moyang.','Yang paling melelahkan dalam hidup adalah menjadi orang yang tidak tulus.',
+'Terbuka untuk Anda, begitulah Tuhan memberi kita jalan untuk berusaha. Jangan pernah berfikir jalan sudah tertutup.',
+'Penundaan adalah kuburan dimana peluang dikuburkan.','Cinta bukan saling menatap mata, namun melihat ke arah yang sama bersama-sama.',
+'Kita adalah apa yang kita kerjakan berulang kali. Dengan demikian, kecemerlangan bukan tindakan, tetapi kebiasaan.',
+'Jangan pernah mencoba menjadikan putra atau putri Anda menjadi seperti Anda. Diri Anda hanya cukup satu saja.',
+'Jika Anda bisa membuat orang lain tertawa, maka Anda akan mendapatkan semua cinta yang Anda inginkan.',
+'Masalah akan datang cepat atau lambat. Jika masalah datang, sambut dengan sebaik mungkin. Semakin ramah Anda menyapanya, semakin cepat ia pergi.',
+'Kita tak bisa melakukan apapun untuk mengubah masa lalu. Tapi apapun yang kita lakukan bisa mengubah masa depan.',
+'Kesabaran adalah teman dari kebijaksanaan.','Orang-orang kreatif termotivasi oleh keinginan untuk maju, bukan oleh keinginan untuk mengalahkan orang lain.',
+'Dimanapun engkau berada selalulah menjadi yang terbaik dan berikan yang terbaik dari yang bisa kita berikan.',
+'Kebencian seperti halnya cinta, berkobar karena hal-hal kecil.',
+'Anda tidak perlu harus berhasil pada kali pertama.',
+'Satu jam yang intensif, jauh lebih baik dan menguntungkan daripada bertahun-tahun bermimpi dan merenung-renung.',
+'Hal terbaik yang bisa Anda lakukan untuk orang lain bukanlah membagikan kekayaan Anda, tetapi membantu dia untuk memiliki kekayaannya sendiri.',
+'Tidak ada jaminan keberhasilan, tetapi tidak berusaha adalah jaminan kegagalan.',
+'Aku tidak tahu kunci sukses itu apa, tapi kunci menuju kegagalan adalah mencoba membuat semua orang senang.']
+					const su = kta[Math.floor(Math.random() * kta.length)]
+					dha.sendMessage(from, ''+su+'\n\n_-Ilham._', text, { quoted: mek })
+					break
+case 'ingfo':  
+case 'Ingfo':  
+				    if (!isGroup) return reply(`GRUP ONLY`)
+					if (!isGroupAdmins) return reply(`LU ADMIN??`)
+					var value = body.slice(7)
+					var group = await dha.groupMetadata(from)
+					var member = group['participants']
+					var mem = []
+					member.map( async adm => {
+					mem.push(adm.id.replace('c.us', 's.whatsapp.net'))
+					})
+					var options = {
+					text: `[ *INGFO TERBARU!!!* ]\nDARI : *${pushname}*\nINGFO : *${value}*`,
+					contextInfo: { mentionedJid: mem },
+					quoted: mek
+					}
+					dha.sendMessage(from, options, text, {quoted: mek})					 
+					break
+                        case 'film':
+                        case 'Film':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Doraemon`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await axios.get(`https://api.zeks.me/api/film?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR&q=${query}`)
+                        ttt = res.data.result
+                        var teks = `* FILM *\n\n*Hasil Pencarian : ${query}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            teks += `*Title* : ${ttt[i].title}\n*Link*: ${ttt[i].url}\n\n`
+                        }
+                        reply(teks)
+                    break
+                case 'happymod':
+                case 'Happymod':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await axios.get(`https://api.zeks.me/api/happymod?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR&q=${query}`)
+                        ttt = res.data.result
+                        var teks = `* HAPPYMOD *\n\n*Hasil Pencarian : ${query}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            teks += `*Title* : ${ttt[i].title}\n*Rate*: ${ttt[i].rating}\n*Link*: ${ttt[i].url}\n\n`
+                        }
+                        reply(teks)
+                    break
+                case 'ytchannel':
+                case 'Ytchannel':
+                        if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await axios.get(`https://api.zeks.me/api/ytchannel?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR&q=${query}`)
+                        ttt = res.data.result
+                        var eks = `* YOUTUBE CHANNEL *\n\n*Hasil Pencarian : ${body}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            eks += `*Nama* : ${ttt[i].title}\n*Deskripsi*: ${ttt[i].description}\n*Verified* : ${ttt[i].verified}\n*Jumlah video*: ${ttt[i].video_count}\n*Subcriber*: ${ttt[i].subscriber_count}\n*Link*: ${ttt[i].url}\n\n`
+                        }
+                        reply(eks)
+                    break
+case 'Googlesearch':
+                case 'googlesearch':
+                case 'ggs':
+                case 'Ggs':
+                        if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await axios.get(`https://velgrynd.herokuapp.com/api/google?query=${query}`)
+                        ttt = res.data.result
+                        var eks = `* GOGGLE SEARCH *\n\n*Hasil Pencarian : ${body}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            eks += `*Nama* : ${ttt[i].title}\n*Link*: ${ttt[i].link}\n*Deskripsi* : ${ttt[i].snippet}\n\n`
+                        }
+                        reply(eks)
+                    break
+case 'carimasakan':
+                case 'Carimasakan':
+                        if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+                        reply(mess.wait)
+                        res = await fetchJson(`https://mnazria.herokuapp.com/api/resep-search?text=${query}`)
+                        ttt = res.results
+                        var tst = `* CARI MASAKAN *\n\n*Hasil Pencarian : ${body}*\n\n`
+                        for(let i = 0; i < ttt.length; i++) {
+                            tst += `*Nama* : ${ttt[i].title}\n*Kesusahan*: ${ttt[i].difficulty}\n*Kunci* : ${ttt[i].key}\n*Waktu*: ${ttt[i].times}\n*Porsi*: ${ttt[i].serving}\n*Image*: ${ttt[i].thumb}\n\n`
+                        }
+                        reply(tst.trim())  
+                    break
+case 'Thelazy':
+case 'thelazy':
+if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
+                    query = args.join(" ")
+					anu = await fetchJson(`https://bx-hunter.herokuapp.com/api/thelazy?text=${query}&apikey=Ikyy69`, {method: 'get'})
+					teks = 'the lazy\n'
+					for (let i of anu.data) {
+						teks += `*Judul:* : ${i.title}\n*Creator* : ${i.creator}\n*Kategori* : ${i.category}\n*Author* : ${i.author}\n*Tanggal Post* : ${i.post_date}\n*Comen* : ${i.comments}\n*Url* : ${i.url}\n*Img* : ${i.img}\n\n*THE LAZY*\n`
+					}
+					reply(teks.trim())  
+					
+					break
+case 'tribunnews': // Update By KATASHI
+case 'Tribunnews': // Update By KATASHI
+					data = await fetchJson(`https://api.zeks.xyz/api/tribunews?apikey=Iyungputra`, {method: 'get'})
+					teks = ' \n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Time* : ${i.time}\n*Url* : ${i.url}\n*Tweet* : ${i.ket}\n\n \n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'liputan': // Update By KATASHI
+case 'Liputan': // Update By KATASHI
+					data = await fetchJson(`https://api.zeks.xyz/api/liputan6?apikey=Iyungputra`, {method: 'get'})
+					teks = '\n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*Keterangan* : ${i.ket}\n*Category* : ${i.category}\n*Time* : ${i.time}\n\n\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'spamcall':
+case 'Spamcall':
+                    if (!isOwner && !mek.key.fromMe) return reply(`LU SIAPA AJG`)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
+                    nomor = args[0]
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
+                    reply("Success")
+                    break        
+case 'palingmurah': // Update By KATASHI
+case 'Palingmurah': // Update By KATASHI
+if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/palingmurah?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'PALING MURAH\n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*Keterangan* : ${i.desc}\n*Price* : ${i.price}\n\nPalingmurah\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'sfilesearch': // Update By KATASHI
+case 'Sfilesarch': // Update By KATASHI
+case 'sfsearch': // Update By KATASHI
+case 'Sfsearch': // Update By KATASHI
+if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/sfile?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'SFILE SEARCH\n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*IMAGE* : ${i.thumb}\n\nSFILE SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'Ph': // Update By KATASHI
+case 'ph': // Update By KATASHI
+case 'phsearch': // Update By KATASHI
+case 'Phsearch': // Update By KATASHI
+if (!isPremium) return reply(mess.prem)
+if (args.length == 0) return reply(`Example: ${prefix + command} milf`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://bx-hunter.herokuapp.com/api/pornhubscraper?query=japan&apikey=Ikyy69`, {method: 'get'})
+					teks = 'PORNHUB SEARCH\n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Url* : ${i.link}\n*Author* : ${i.author}\nHd* : ${i.hd}\n*Premium* : ${x.premium}\n*Views* : ${x.views}\n\nPORNHUB SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'Tokohindo': // Update By KATASHI
+case 'tokohindo': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/others/tokohindo?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'TOKOH INDO\n'
+					for (let x of data.result) {
+						teks += `*Nama:* : ${x.nama}\n*Asal* : ${x.asal}\n*Nama Asli* : ${x.nama2}\n*Asal* : ${x.asal}\n*Lahir* : ${x.lahir}\n*Gugur* : ${x.gugur}\n*Usia* : ${x.usia}\n*Lokasi Makam* : ${x.lokasimakam}\n*History* : ${x.history}\n\nTOKOH INDO\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'kompastv': // Update By KATASHI
+case 'Kompastv': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/berita/kompas?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'KOMPAS TV\n'
+					for (let x of data.result) {
+						teks += `*Title:* : ${x.title}\n*Link* : ${x.url}\n*Jenis* : ${x.jenis}\n*Upload* : ${x.upload}\n\nKOMPAS TV\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'animeindo': // Update By KATASHI
+case 'Animeindo': // Update By KATASHI
+if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://api.dapuhy.ga/api/anime/animeindo?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'ANIMEiNDO\n'
+					for (let x of data.result) {
+						teks += `*Title:* : ${x.title}\n*Url* : ${x.url}\n*Image* : ${x.thumb}\n*Durasi* : ${x.duration}\n*Release* : ${x.release}\n*Description* : ${x.desc}\n\nANIMEINDO\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'Jav': // Update By KATASHI
+case 'jav': // Update By KATASHI
+case 'JAV': // Update By KATASHI
+if (!isPremium) return reply(mess.prem)
+if (args.length == 0) return reply(`Example: ${prefix + command} milf`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/javhdporn?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'JAV PORN\n'
+					for (let x of data.result) {
+						teks += `*Title:* : ${x.title}\n*Url* : ${x.url}\n*Image* : ${x.thumb}\n*Durasi* : ${x.duration}\n*Viewers* : ${x.viewers}\n*Quality* : ${x.quality}\n\nJAV PORN\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'corona': // Update By KATASHI
+case 'Corona': // Update By KATASHI
+					anu = await fetchJson(`https://hardianto-chan.herokuapp.com/api/info/covidindo?apikey=hardianto`)
+					teks = 'CORONA INDO\n'
+					for (let x of anu.result) {
+						teks += `*Fid:* : ${x.attributes.FID}\n*Kode Provinsi* : ${x.attributes.Kode_Provi}\n*Provinsi* : ${x.attributes.Provinsi}\n*Sembuh* : ${x.attributes.Kasus_Semb}\n*Positive* : ${x.attributes.Kasus_Posi}\n*Meninggal* : ${x.attributes.Kasus_Meni}\n\nCORONA INDO\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'genshin':
+case 'Genshin':
+					data = await fetchJson(`https://raw.githubusercontent.com/mamet8/GenshinImpact/main/genshinimpact.json`, {method: 'get'})
+					teks = 'GENSHIN IMPACT\n'
+					for (let x of data.mondstadt) {
+						teks += `*Nama:* : ${x.title}\n*Intro* : ${x.intro}\n*Icon* : ${x.icon}\n*Dubing* : ${x.name}\n*Audio* : ${x.audio}\n\nGENSHIN IMPACT\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'Kodepos': // Update By KATASHI
+case 'kodepos': // Update By KATASHI
+if (args.length == 0) return reply(`Example: ${prefix + command} bekasi`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://hardianto-chan.herokuapp.com/api/info/kodepos?kota=${query}&apikey=hardianto`, {method: 'get'})
+					teks = 'INFO KODE POS\n'
+					for (let x of data.result.data) {
+						teks += `*Province:* : ${x.province}\n*Kecamatan* : ${x.subdistrict}\n*Perkotaan* : ${x.urban}\n*Kode* : ${x.postalcode}\n\nINFO KODE POS\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'cnn': // Update By KATASHI
+case 'Cnn': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/berita/cnn?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'CNN NEWS\n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Link:* ${i.url}*Upload:* ${i.upload}\n\nCNN NEWS\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'wirid': // Update By KATASHI
+case 'Wirid': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/islam/wirid?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'DOA WIRID\n'
+					for (let i of data.result) {
+						teks += `*Id:* : ${i.id}\n*Arab:* ${i.times}*Latin:* ${i.arabic}\n\nDOA WIRID\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'tahlil': // Update By KATASHI
+case 'Tahlil': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/islam/tahlil?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'DOA WIRID\n'
+					for (let i of data.result) {
+						teks += `*Id:* : ${i.id}\n*Title:* ${i.title}*Latin:* ${i.arabic}\n\nTAHLIL\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'tahlil': // Update By KATASHI
+case 'Tahlil': // Update By KATASHI
+					data = await fetchJson(`https://api.dapuhy.ga/api/islam/tahlil?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					teks = 'DOA WIRID\n'
+					for (let i of data.result) {
+						teks += `*Id:* : ${i.id}\n*Title:* ${i.title}*Latin:* ${i.arabic}\n\nTAHLIL\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'foxnews': // Update By KATASHI
+case 'Foxnews': // Update By KATASHI
+					data = await fetchJson(`https://api.zeks.xyz/api/foxnews?apikey=Iyungputra`, {method: 'get'})
+					teks = ' \n'
+					for (let i of data.result) {
+						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*Country* : ${i.country}\n*Time* : ${i.time}\n*Content* : ${i.content}\n\n \n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'alay':
+case 'Alay':
+					if (args.length < 1) return reply('kasih teks lah^_^!!!')
+					data = await fetchJson(`https://api.zeks.xyz/api/alaymaker?kata=${body.slice(6)}&apikey=Iyungputra`)
+					reply(data.result)
+					break
+case 'chord':
+case 'Chord':
+					     if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
+                    query = args.join(" ")			
+					anu = await fetchJson(`https://zenzapi.xyz/api/chordlagu?query=${query}&apikey=Katashi`)
+					reply(anu.result.result)
+					break
+		case 'next':
+		case 'Next':
+                 if (!isRegistered) return reply( ind.noregis())
+				if (isGroup) return  reply( 'Command ini tidak bisa digunakan di dalam grup!')
+				anug = getRegisteredRandomId(_registered).replace('@s.whatsapp.net','')
+				await reply('Find for a partner...')
+				await reply(`wa.me/${anug}`)
+				await reply( `Partner found: \n*${prefix}next* — find a new partner`)
+				break
+case 'soundcloud': //By Putra
+case 'Soundcloud':
+if (args.length == 0) return reply(`Example: ${prefix + command} link nya`)
+                    url = args[0]
+anu = await getBuffer(`https://zenzapi.xyz/api/soundcloud?url=${url}&apikey=Katashi`)
+dha.sendMessage(from, anu, audio, {quoted: mek})
+                break        
+case 'wangy':
+              if (!q) return
+              qq = q.toUpperCase()
+              awikwok = `${qq} ${qq} ${qq}    WANGY WANGY WANGY WANGY HU HA HU HA HU HA, aaaah baunya rambut ${qq} wangyy aku mau nyiumin aroma wangynya ${qq} AAAAAAAAH ~ Rambutnya.... aaah rambutnya juga pengen aku elus-elus ~~ AAAAAH ${qq} keluar pertama kali di anime juga manis    banget AAAAAAAAH ${qq} AAAAA LUCCUUUUUUUUUUUUUUU............ ${qq} AAAAAAAAAAAAAAAAAAAAGH   apa ? ${qq} itu gak nyata ? Cuma HALU katamu ? nggak, ngak ngak ngak ngak NGAAAAAAAAK GUA GAK PERCAYA ITU DIA NYATA NGAAAAAAAAAAAAAAAAAK PEDULI BANGSAAAAAT !! GUA GAK PEDULI SAMA KENYATAAN POKOKNYA GAK PEDULI.    ${qq} gw ... ${qq} di laptop ngeliatin gw, ${qq} .. kamu percaya sama aku ? aaaaaaaaaaah syukur ${q} aku gak mau merelakan ${qq} aaaaaah    YEAAAAAAAAAAAH GUA MASIH PUNYA ${qq} SENDIRI PUN NGGAK SAMA AAAAAAAAAAAAAAH`
+              reply(awikwok)
+              break
+case 'randombokep':
+case 'Randombokep':
+if (!isPremium) return reply(mess.prem)
+              bokep = body.slice(1)
+              const bo =['https://www.mediafire.com/download/8hnhjcf3pseubgy','https://www.mediafire.com/download/cty9phda3d1s62u','https://www.mediafire.com/download/8hnhjcf3pseubgy']
+              const kep = bo[Math.floor(Math.random() * bo.length)]
+              dha.sendMessage(from, '*PERMINTAAN:* '+bokep+'\n*DOSA TANGGUNG PRIBADI*\n*NI BRO FREE BUAT KAMU DOWNLOAD SENDIRI:* '+ kep, text, { quoted: mek, caption: `NI BOKEP SAYA DAPAT DARI *©-* DOSA TANGGUNG SENDIRI`})
+              break
+case 'quotesyt':
+case 'Quotesyt':
+                reply(mess.wait)
+                ok = await getBuffer(`https://api.dapuhy.ga/api/randomimage/quotesyt?apikey=Itsrojako`)
+                dha.sendMessage(from, ok, image, {quoted: mek})
+                break        
+                case 'bts':
+case 'Bts':
+                reply(mess.wait)
+                ya = await getBuffer(`https://api.dapuhy.ga/api/randomimage/batues?apikey=T3SleesqYU6gyfM`)
+                dha.sendMessage(from, ya, image, {quoted: mek})
+                break    
+case 'blackpink':
+case 'Blackpink':
+                reply(mess.wait)
+                yo = await getBuffer(`https://api.dapuhy.ga/api/randomimage/blekpink?apikey=T3SleesqYU6gyfM`)
+                dha.sendMessage(from, yo, image, {quoted: mek})
+                break    
+                case 'groupinfo':
+                case 'Groupinfo':
+        if (!isGroup) return;
+        ppUrl = await dha.getProfilePicture(from); // leave empty to get your own
+        buffergbl = await getBuffer(ppUrl);
+        dha.sendMessage(from, buffergbl, image, {
+          quoted: mek,
+          caption: `\`\`\` Group Info \`\`\`\n*${unique[0]} > Name* : ${groupName}\n*${unique[0]} > Member* : ${groupMembers.length}\n*${unique[0]} > Admin* : ${groupAdmins.length}\n*${unique[0]} > Description* : \n${groupDesc}`,
+        });
+        break;
+        case 'closetime':  
+        case 'Closetime':  
+        if (!isBotGroupAdmins) return reply('Bot not admin');
+        if (!isGroupAdmins && !mek.key.fromMe) return reply('Khusus admin');
+        if (!isGroup) return reply('Khusus di grup');		 
+        reply('AKSES WAKTU DIPROSES')   	
+                dha.updatePresence(from, Presence.composing) 
+                if (args[1]=='detik') {var timer = args[0]+'000'
+				} else if (args[1]=='menit') {var timer = args[0]+'0000'
+				} else if (args[1]=='jam') {var timer = args[0]+'0000'
+				} else {return reply('*pilih:*\ndetik\nmenit\njam\n\n*contoh*\n10 detik')}
+				setTimeout( () => {
+				var nomor = mek.participant
+				let close = {
+				text: `* *     @${nomor.split('@s.whatsapp.net')[0]}\n * *    `,
+				contextInfo: { mentionedJid: [nomor] }
+				}
+				dha.groupSettingChange (from, GroupSettingChange.messageSend, true);
+				reply(close)
+				}, timer)
+				break 
+		     	case 'opentime':  
+		case 'Opentime':  
+		     	if (!isBotGroupAdmins) return reply('Bot not admin');
+        if (!isGroupAdmins && !mek.key.fromMe) return reply('Khusus admin');
+        if (!isGroup) return reply('Khusus di grup');		    
+                reply('AKSES WAKTU DIPROSES')   
+                dha.updatePresence(from, Presence.composing) 
+                if (args[1]=='detik') {var timer = args[0]+'000'
+				} else if (args[1]=='menit') {var timer = args[0]+'00000'
+				} else if (args[1]=='jam') {var timer = args[0]+'00000'
+				} else {return reply('*pilih:*\ndetik\nmenit\njam\n\n*contoh*\n10 detik')}
+				setTimeout( () => {
+				var nomor = mek.participant
+				let open = {
+				text: `* *     @${nomor.split('@s.whatsapp.net')[0]}\n **   `,
+				contextInfo: { mentionedJid: [nomor] }
+				}
+				dha.groupSettingChange (from, GroupSettingChange.messageSend, false);
+				reply(open)
+				}, timer)
+				break  
+				///NEW FITUR BY KATASHI
+case 'gabut':
+case 'Gabut':
+					data = await fetchJson(`https://apikatashi.herokuapp.com/api/gabut?apikey=Alphabot`)
+					reply(data.result.activity)
+					break
+case 'translate':
+case 'Translate':
+if (args.length == 0) return reply(`kasih teks lah^_^!!\nJangan lupa , imi translatenya dari eng ke indo`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://apikatashi.herokuapp.com/api/translate?kata=${query}&apikey=Alphabot`)
+					reply(data.result)
+					break
+case 'tiktok2':
+case 'Tiktok2':
+if (args.length == 0) return reply(`Link nya?`)
+                    query = args.join(" ")	
+x = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/ttdownloader?url=${query}&apikey=T3SleesqYU6gyfM`)
+reply(mess.wait)
+vid = await getBuffer(x.result.nowm)
+au = await getBuffer(x.result.audio)
+dha.sendMessage(from, vid, video, {quoted: mek})
+dha.sendMessage(from, au, audio, {quoted: mek})
+break
+case 'cuacabandara': // Update By KATASHI
+case 'Cuacabandara': // Update By KATASHI
+					data = await fetchJson(`https://apikatashi.herokuapp.com/api/infocuaca/bandara?apikey=Alphabot`, {method: 'get'})
+					teks = 'CUACA BANDARA\n'
+					for (let i of data.result.daftar_bandara) {
+						teks += `*Nama:* : ${i.nama_bandara}\n*Waktu:* ${i.waktu_pengamatan}\n*Arah Angin:* ${i.arah_angin}\n*Kecepatan:* ${i.kecepatan}\n*Jarak Pandang:* ${i.jarak_pandang}\n*Cuaca:* ${i.cuaca}\n*Suhu:* ${i.suhu}\n*Timbun:* ${i.titik_timbun}\n*Udara:* ${i.tekanan_udara}\n\nCUACA BANDARA\n`
+					}
+					reply(teks.trim())
+					
+					break
+case "toimg2":
+      case "Toimg2":
+        if (!isQuotedSticker) return reply("/  !");
+        reply(mess.wait);
+        encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+          .message.extendedTextMessage.contextInfo;
+        media = await dha.downloadAndSaveMediaMessage(encmedia);
+        ran = getRandom(".png");
+        exec(`ffmpeg -i ${media} ${ran}`, (err) => {
+          fs.unlinkSync(media);
+          if (err) return reply("Yah gagal, coba ulangi ^_^");
+          buffer = fs.readFileSync(ran);
+          fakethumb(buffer, `Ni Kak ${pushname}`);
+          fs.unlinkSync(ran);
+        });
+        break;
+        case "tomp42":
+      case "Tomp42":
+        if (
+          ((isMedia && !mek.message.videoMessage) || isQuotedSticker) &&
+          args.length == 0
+        ) {
+          ger = isQuotedSticker
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          owgi = await dha.downloadAndSaveMediaMessage(ger);
+          webp2mp4File(owgi).then((res) => {
+            sendMediaURL(from, res.result, "Done");
+          });
+        } else {
+          reply("reply stiker");
+        }
+        fs.unlinkSync(owgi);
+        break;
+case 'searchsurah': // Update By KATASHI
+case 'surah': // Update By KATASHI
+case 'Surah': // Update By KATASHI
+case 'Searchsurah': // Update By KATASHI
+if (args.length == 0) return reply(`Link nya?`)
+                    query = args.join(" ")	
+                    reply(mess.wait)
+					data = await fetchJson(`https://hardianto-chan.herokuapp.com/api/muslim/surah?query=${query}&apikey=hardianto`, {method: 'get'})
+					teks = 'SEARCH SURAH\n'
+					for (let i of data) {
+						teks += `*Arab:* : ${i.arab}\n*Indonesia:* ${i.indo}\n*Latin:* ${i.latin}\n\nSEARCH SURAH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'storyanime':
+case 'storyanime':	
+x = await getBuffer(`https://api.dapuhy.ga/api/anime/storyanime?apikey=T3SleesqYU6gyfM`)
+reply(mess.wait)
+dha.sendMessage(from, x, video, {quoted: mek})
+break
+case 'rscovid': // Update By KATASHI
+case 'Rscovid': // Update By KATASHI
+case 'Rumahsakit': // Update By KATASHI
+case 'rskopit': // Update By KATASHI
+case 'Rskopit': // Update By KATASHI
+reply(mess.wait)
+					data = await fetchJson(`https://dekontaminasi.com/api/id/covid19/hospitals`, {method: 'get'})
+					teks = 'RS COVID\n'
+					for (let i of data) {
+						teks += `*Nama:* : ${i.name}\n*Lokasi:* ${i.address}\n*Kota:* ${i.region}\n*No Hp:* ${i.phone}\n*Provinsi:* ${i.province}\n\nRS COVID\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'nhentaipdf':
+case 'Nhentaipdf':
+if (args.length == 0) return reply(`Kode?`)
+                    query = args.join(" ")	
+                    reply(mess.wait)
+x = await getBuffer(`https://hadi-api.herokuapp.com/api/nhentai?id=${query}`)
+dha.sendMessage(from, x, document, {quoted: mek, mimetype: Mimetype.pdf, filename: `${query}.pdf` })
+break
+case 'provinci': // Update By KATASHI
+case 'Provinci': // Update By KATASHI
+case 'Provinsi': // Update By KATASHI
+case 'provinsi': // Update By KATASHI
+					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/provinsi.json`, {method: 'get'})
+					teks = 'PROVINSI\n'
+					for (let i of data) {
+						teks += `*Id:* : ${i.id}\n*Nama:* ${i.nama}\n\nPROVINSI\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'kab': // Update By KATASHI
+case 'Kab': // Update By KATASHI
+case 'kabupaten': // Update By KATASHI
+case 'Kabupaten': // Update By KATASHI
+if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .provinsi`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/kabupaten/${query}.json`, {method: 'get'})
+					teks = 'Kabupaten\n'
+					for (let i of data) {
+						teks += `*Id:* : ${i.id}\n*Nama:* ${i.nama}\n\nKABUPATEN\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'pesantren': // Update By KATASHI
+case 'Pesantren': // Update By KATASHI
+if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/pesantren/${query}.json`, {method: 'get'})
+					teks = 'PESANTREN\n'
+					for (let i of data) {
+						teks += `*Id:* : ${i.id}\n*Nama:* ${i.nama}\n*Nspp:* ${i.nspp}\n*Alamat:* ${i.alamat}\n\nPESANTREN\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'spamsms':
+case 'Spamsms':
+                    if (!isPremium) return reply(mess.prem)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
+                    nomor = args[0]
+                    reply(mess.wait)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
+                    reply("Success")
+                    break        
+                    case 'jooxsearch':
+case 'Jooxsearch':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} starboy`)
+                    query = args[0]
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://viko-api.herokuapp.com/api/music/joox?apikey=katashi&query=${query}`)
+                    i = get_result.result
+                    ini_txt = `Lagu : ${i.lagu}\n`
+                    ini_txt += `Album : ${i.album}\n`
+                    ini_txt += `Penyanyi : ${i.panyanyi}\n`
+                    ini_txt += `Tanggal : ${i.publish}\n`
+                    ini_txt += `Lirik : ${i.lirik}\n`
+                    gambar = await getBuffer(i.img)
+                    dha.sendMessage(from, gambar, image, {quoted: mek, caption: ini_txt})
+                    break
+case 'randomcerpen':
+case 'Randomcerpen':	
+					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/random?apikey=katashi`)
+					reply(data.result)
+					break
+case 'ytmp42':
+case 'Ytmp42':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Link nya?`)
+                    query = args.join(" ")	
+                    reply(mess.wait)
+                    i = await fetchJson(`https://viko-api.herokuapp.com/api/yt/playmp4?query=${query}&apikey=katashi`)
+                    ini_txt = `Title : ${i.title}\n`
+                    ini_txt += `Channel : ${i.channel}\n`
+                    ini_txt += `Publis : ${i.published}\n`
+                    ini_txt += `View : ${i.views}\n`
+                    ini_txt += `Link : ${i.url}\n`
+                    gambar = await getBuffer(i.thumb)
+                    vidi = await getBuffer(i.url)
+                    dha.sendMessage(from, gambar, image, {quoted: mek, caption: ini_txt})
+                    dha.sendMessage(from, vidi, video, {quoted: mek})
+                    break
+case 'narutobanner':
+case 'Narutobanner':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Teksnya?`)
+                    query = args.join(" ")	
+                    reply(mess.wait)
+x = await getBuffer(`https://hadi-api.herokuapp.com/api/photoxy/manga-naruto?teks=${query}`)
+dha.sendMessage(from, x, image, {quoted: mek})
+break
+case 'nhentaisearch': // Update By KATASHI
+case 'Nhentaisearch': // Update By KATASHI
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Teksnya?`)
+                    query = args.join(" ")	
+reply(mess.wait)
+					data = await fetchJson(`https://ziy.herokuapp.com/api/nHentaiSearch?query=${query}`, {method: 'get'})
+					teks = 'NHENTAI SEARCH\n'
+					for (let i of data.result) {
+						teks += `*Nama:* : ${i.title}\n*Kode:* ${i.id}\n*Bahasa:* ${i.language}\n*View:* ${i.thumbnail.w}\n*-:* ${i.thumbnail.h}\n\nNHENTAI SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'kisahnabi':
+case 'Kisahnabi':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Muhammad`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://viko-api.herokuapp.com/api/muslim/kisahnabi?nabi=${query}&apikey=katashi`)
+                    get_result = get_result.result
+                    reply(mess.wait)
+                    ini_txt = `Name : ${get_result.name}\n`
+                    ini_txt += `Lahir : ${get_result.kelahiran}\n`
+                    ini_txt += `Wafat : ${get_result.wafat_usia}\n`
+                    ini_txt += `Singgah : ${get_result.singgah}\n`
+                    ini_txt += `Kisah : \n${get_result.kisah}`
+                    reply(ini_txt)
+                    break
+case 'jarak':
+case 'Jarak':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                    if (args.length == 0) return reply(`Example: ${prefix + command} jakarta - yogyakarta`)
+                    pauls = args.join(" ")
+                    teks1 = pauls.split("-")[0].trim()
+                    teks2 = pauls.split("-")[1].trim()
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://ziy.herokuapp.com/api/jarak?asal=${teks1}&tujuan=${teks2}&apikey=xZiyy`)
+                    x = get_result.result
+                    ini_txt = `Informasi Jarak dari ${teks1} ke ${teks2} :\n\n`
+                    ini_txt += `\`\`\`â—ª Asal :\`\`\` ${x.from.name}\n`
+                    ini_txt += `\`\`\`â—ª Garis Lintang :\`\`\` ${x.from.latitude}\n`
+                    ini_txt += `\`\`\`â—ª Garis Bujur :\`\`\` ${x.from.longitude}\n\n`
+                    ini_txt += `\`\`\`â—ª Tujuan :\`\`\` ${x.to.name}\n`
+                    ini_txt += `\`\`\`â—ª Garis Lintang :\`\`\` ${x.to.latitude}\n`
+                    ini_txt += `\`\`\`â—ª Garis Bujur :\`\`\` ${x.to.longitude}\n\n`
+                    ini_txt += `\`\`\`â—ª Jarak Tempuh :\`\`\` ${x.jarak}\n`
+                    ini_txt += `\`\`\`â—ª Waktu Tempuh :\`\`\`\n`
+                    ini_txt += `   â•­â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â\n`
+                    ini_txt += `ââ”¤ Kereta Api : ${x.kereta_api}\n`
+                    ini_txt += `ââ”¤ Pesawat : ${x.pesawat}\n`
+                    ini_txt += `ââ”¤ Mobil : ${x.mobil}\n`
+                    ini_txt += `ââ”¤ Motor : ${x.motor}\n`
+                    ini_txt += `ââ”¤ Jalan Kaki : ${x.jalan_kaki}\n`
+                    ini_txt += `   â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â\n`
+                    reply(ini_txt)
+                    break
+case 'dafontsearch': // Update By KATASHI
+case 'Dafontsearch': // Update By KATASHI
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Teksnya?`)
+                    query = args.join(" ")	
+reply(mess.wait)
+					data = await fetchJson(`https://zenzapi.xyz/api/dafontsearch?query=${query}&apikey=Katashi`, {method: 'get'})
+					teks = 'DAFONT SEARCH\n'
+					for (let i of data.result) {
+						teks += `*Nama:* : ${i.judul}\n*Style:* ${i.style}\n*Totla:* ${i.total}\n*Link:* ${i.link}\n\nDAFONT SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+					case 'stcmeme':
+ if (isBanned)return reply(mess.ban)
+  ct = body.slice(9)
+              top = ct.split('|')[0]
+              bottom = ct.split('|')[1]
+              var imgbb = require('imgbb-uploader')
+              if ((isMedia && !mek.message.videoMessage || isQuotedImage || isQuotedSticker) && args.length > 0) {
+              reply(mess.wait)
+              ger = isQuotedImage || isQuotedSticker ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek 
+              owgi = await dha.downloadAndSaveMediaMessage(ger)
+              anu = await imgbb("520bd6f6209077d1777c2a4f20c509c2", owgi)
+              teks = `${anu.display_url}`
+              ranp = getRandom('.gif')
+              rano = getRandom('.webp')
+              anu1 = `https://api.memegen.link/images/custom/${top}/${bottom}.png?background=${teks}`
+              sendStickerFromUrl(from, `${anu1}`, mess.success)
+              } else {
+              reply('Gunakan foto/stiker!')
+}
+               break
+               case 'datasekolah': // Update By KATASHI
+case 'datasekolah': // Update By KATASHI
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length < 1) return reply(`*Example :*\n${prefix}${command} 1|100`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+reply(mess.wait)
+					data = await fetchJson(`https://api-sekolah-indonesia.herokuapp.com/sekolah?page=${r1}&perPage=${r2}`, {method: 'get'})
+					teks = 'DATA SEKOLAH\n'
+					for (let i of data.dataSekolah) {
+						teks += `*Kode Provinsi:* : ${i.kode_prop}\n*Provinsi:* ${i.propinsi}\n*Kode Kabupaten:* ${i.kode_kab_kota}\n*Kabupaten:* ${i.kabupaten_kota}\n*Kode Kecamatan:* ${i.kode_kec}\n*Kecamatan:* ${i.kecamatan}\n*Id:* ${i.id}\n*Npsn:* ${i.npsn}\n*Sekolah:* ${i.sekolah}\n*Jenjang:* ${i.bentuk}\n*Negri/Swasta:* ${i.status}\n*Alamat:* ${i.alamat_jalan}\n*Lintang:* ${i.lintang}\n*Bujur:* ${i.bujur}\n\nDATA SEKOLAH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'datasekolah2': // Update By KATASHI
+case 'datasekolah2': // Update By KATASHI
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+if (args.length < 1) return reply(`*Example :*\n${prefix}${command} smk-1-5`)
+					makell = args.join(" ")
+					r1 = makell.split("-")[0];
+					r2 = makell.split("-")[1];
+					r3 = makell.split("-")[2];
+reply(mess.wait)
+					data = await fetchJson(`https://api-sekolah-indonesia.herokuapp.com/sekolah/${r1}?page=${r2}&perPage=${r3}`, {method: 'get'})
+					teks = 'DATA SEKOLAH\n'
+					for (let i of data.dataSekolah) {
+						teks += `*Kode Provinsi:* : ${i.kode_prop}\n*Provinsi:* ${i.propinsi}\n*Kode Kabupaten:* ${i.kode_kab_kota}\n*Kabupaten:* ${i.kabupaten_kota}\n*Kode Kecamatan:* ${i.kode_kec}\n*Kecamatan:* ${i.kecamatan}\n*Id:* ${i.id}\n*Npsn:* ${i.npsn}\n*Sekolah:* ${i.sekolah}\n*Jenjang:* ${i.bentuk}\n*Negri/Swasta:* ${i.status}\n*Alamat:* ${i.alamat_jalan}\n*Lintang:* ${i.lintang}\n*Bujur:* ${i.bujur}\n\nDATA SEKOLAH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'quotesislam':
+case 'Quotesislam':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+					data = await fetchJson(`https://viko-api.herokuapp.com/api/random/quotes/muslim?apikey=katashi`)
+					reply(data.result.text_id)
+					break
+case 'apikey':
+case 'apikey':
+if (isBanned) return reply(mess.ban)
+if (!isPremium) return reply(mess.prem)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} apikeynya`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://viko-api.herokuapp.com/api/cekapikey?apikey=${query}`)
+                    reply(mess.wait)
+                    ini_txt = `Status : ${get_result.status}\n`
+                    ini_txt += `Creator : ${get_result.creator}\n`
+                    ini_txt += `Apikey : ${get_result.apikey}\n`
+                    ini_txt += `Result : ${get_result.result}\n`
+                    reply(ini_txt)
+                    break
+case 'infoloker': // Update By KATASHI
+case 'Infoloker': // Update By KATASHI
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/infoloker`, {method: 'get'})
+					teks = 'INFO LOKER\n'
+					for (let x of data.result) {
+						teks += `*Perusahaan:* : ${x.perusahaan}\n*Url* : ${x.link}\n*Profesi* : ${x.profesi}\n*Gaji* : ${x.gaji}\n*Lokasi* : ${x.lokasi}\n*Pengalaman* : ${x.pengalaman}\n*Edukasi* : ${x.edukasi}\n*Description* : ${x.desc}\n*Syarat* : ${x.syarat}\n\nINFO LOKER\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'katacinta':
+case 'Katacinta':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+					gatauda = body.slice(8)
+					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/katacinta`, {method: 'get'})
+					reply(anu.result)
+					break  
+					case 'cerpen':
+                case 'Cerpen':
+                if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                reply(mess.wait)
+                    get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cerpen`)
+                    get_result = get_result.result
+                    ini_txt = `Title : ${get_result.title}\n`
+                    ini_txt += `Creator : ${get_result.pengarang}\n`
+                    ini_txt += `Kategori : ${get_result.kategori}\n`
+                    ini_txt += `Story :\n${get_result.cerpen}`
+                    reply(ini_txt)
+                    break
+case 'cersex':
+                case 'Cersex':
+                if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                reply(mess.wait)
+                    get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cersex`)
+                    get_result = get_result.result
+                    ini_txt = `Title : ${get_result.judul}\n`
+                    ini_txt += `Img : ${get_result.img}\n`
+                    ini_txt += `Story :\n${get_result.cersex}`
+                    gaa = await getBuffer(get_result.img)
+                    dha.sendMessage(from, gaa, image, {quoted: mek, caption: ini_txt})
+                    break
+case 'jadwaltvnow':
+                case 'Jadwaltvnow':
+                if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                reply(mess.wait)
+                    get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/jadwaltvnow`)
+                    get_result = get_result.result
+                    ini_txt = `Jadwal TV Now :\n`
+                    for (var x in get_result) {
+                        ini_txt += `${x.toUpperCase()}${get_result[x]}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+case 'twich':  
+      case 'Twich':  
+      if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+      reply(mess.wait)
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/twichquote`)
+                   anu1 = ` *THWICH* : ${anu.result}`
+                   reply(anu1)
+                   break                 
+      case 'fake':  
+      case 'Fake':  
+      reply(mess.wait)
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/fake_identity`)
+                   anu1 = ` *NAMA* : ${anu.name}\n`
+                   anu1 += ` *GENDER* : ${anu.gender}\n` 
+                   anu1 += ` *AGE* : ${anu.age}\n`
+                   anu1 += ` *BIRTDAY* : ${anu.birtday}\n`
+                   anu1 += ` *BACHELOR* : ${anu.Bachelor}\n`
+                   anu1 += ` *ADDRESA* : ${anu.address}\n`
+                   anu1 += ` *CODE* : ${anu.zip_code}\n`
+                   anu1 += ` *STATE* : ${anu.state}\n`
+                   anu1 += ` *COUNTRY* : ${anu.country}\n`
+                   anu1 += ` *EMAIL* : ${anu.email}\n`
+                   anu1 += ` *PASS* : ${anu.password}\n` 
+                   anu1 += ` *PHONE* : ${anu.phone}\n` 
+                   anu1 += ` *CARD* : ${anu.card}\n`
+                   anu1 += ` *CODE* : ${anu.code}\n`
+                   anu1 += ` *DATE* : ${anu.date}\n`
+                   anu1 += ` *PIN* : ${anu.pin_code}\n`
+                   anu1 += ` *WEIGHT* : ${anu.weight}\n` 
+                   anu1 += ` *HEIGHT* : ${anu.height}\n` 
+                   anu1 += ` *TYPE* : ${anu.blood_type}\n`
+                   anu1 += ` *STATUS* : ${anu.status}\n`
+                   reply(anu1)
+                   break
+case 'kusonime':  
+case 'Kusonime':  
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+                   if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
+                    query = args.join(" ")
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/kuso?q=${query}`)
+                   anu1 = ` *INFO* : ${anu.sinopsis}\n`
+                   reply(anu1)
+                   break
+      case 'renungan':  
+      case 'Renungan':  
+      if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+      reply(mess.wait)
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/renungan`)
+                   anu1 = ` *JUDUL* : ${anu.judul}\n`
+                   anu1 += ` *PESAN* : ${anu.pesan}\n`
+                   anu1 += ` *DESC* : ${anu.Isi}\n`
+                   reply(anu1)
+                   break
+       case 'samehadaku':  
+       case 'Samehadaku':  
+       if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+       reply(mess.wait)
+                   if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
+                    query = args.join(" ")
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/samehadaku?q=${query}`)
+                   anu2 = await getBuffer(anu.thumb)
+                   anu1 = ` *JUDUL* : ${anu.title}\n`
+                   anu1 += ` *LINK* : ${anu.link}\n`
+                   anu1 += ` *DESK* : ${anu.desc}\n`
+                   dha.sendMessage(from, anu2, image, {caption: anu1, quoted: mek })
+                   break
+case 'tongue':  
+case 'Tongue':  
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+                   anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/tongue_twister`)
+                   anu1 = ` *NIHH* : ${anu.result}`
+                   reply(anu1)
+                   break
+                   case 'mostviewfilm':
+case 'Mostviewfilm':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/mostviewfilm`, {method: 'get'})
+					teks = 'MOSTVIEWFILM\n'
+					for (let i of anu.result) {
+						teks += `*Penonton:* : ${i.penonton}\n*Rank* : ${i.rank}\n*Url* : ${i.link}\n\n*MOSTVIEWFILM*\n`
+					}
+					reply(teks.trim())  
+					
+					break
+					case 'trendingtwitter':
+case 'Trendingtwitter':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/trendingtwitter`, {method: 'get'})
+					teks = 'TRENDING TWITER\n'
+					for (let i of anu.result) {
+						teks += `*Hastag:* : ${i.hastag}\n*Rank* : ${i.rank}\n*Url* : ${i.link}\n*Tweet* : ${i.tweet}\n\n*TRANDING TWITTER*\n`
+					}
+					reply(teks.trim())  
+					
+					break
+case 'jadwalbola':
+case 'jadwalbola':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/jadwal-bola`, {method: 'get'})
+					teks = 'JADWAL BOLA\n'
+					for (let i of anu) {
+						teks += `*Tanggal:* : ${i.tanggal}\n*Jam* : ${i.jam}\n*Liga* : ${i.liga}\n*Match* : ${i.match}\n*Tv Channel* : ${i.ch_tv}\n\n*JADWAL BOLA*\n`
+					}
+					reply(teks.trim())  
+					
+					break
+case 'vaksin':
+case 'Vaksin':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+                    get_result = await fetchJson(`https://vaksincovid19-api.vercel.app/api/vaksin`)
+                    reply(mess.wait)
+                    ini_txt = `Total Sasaran : ${get_result.totalsasaran}\n`
+                    ini_txt += `Sasaran Vaksin Sdmkl : ${get_result.sasaranvaksinsdmk}\n`
+                    ini_txt += `Sasaran Vaksin Lansia : ${get_result.sasaranvaksinlansia}\n`
+                    ini_txt += `Sasaran Vaksin Petugas Publik : ${get_result.sasaranvaksinpetugaspublik}\n`
+                    ini_txt += `Vaksin 1 : \n${get_result.vaksinasi1}\n`
+                    ini_txt += `Vaksin 2 : \n${get_result.vaksinasi2}\n`
+                    ini_txt += `Last Update : \n${get_result.lastUpdate}`
+                    reply(ini_txt)
+                    break
+case 'Hitungmatauang':
+case 'hitungmatauang':
+if (isBanned) return reply(mess.ban)
+        if (!isGroup) return reply(mess.only.group);
+        if (args.length < 1) return reply(`*Example :*\n${prefix}${command} usd|id|12`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+					r3 = makell.split("|")[2]
+                    get_result = await fetchJson(`https://api-exchange-rates.herokuapp.com/calculator?from=${r1}&to=${r2}&amount=${r3}`)
+                    get_result = get_result.data
+                    reply(mess.wait)
+                    ini_txt = `Title : ${get_result.title}\n`
+                    ini_txt += `Mata Uang 1 : ${get_result.fromResult}\n`
+                    ini_txt += `Mata Uang 1 : ${get_result.toResult}\n`
+                    ini_txt += `Update Tanggal : ${get_result.updatedAt}`
+                    reply(ini_txt)
+                    break
 
 default:
 if (fs.existsSync(`./media/${from}.json`)) {

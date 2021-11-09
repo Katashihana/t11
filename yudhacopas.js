@@ -25,7 +25,8 @@ const starts = async (dha = new WAConnection()) => {
 	}), 'cyan'))
 	console.log(color('[SOURCE CODE INI DIJAGA DAN DI LINDUNGI OLEH KURRXD\n\n', 'orange'), color('\n======TERIMKASIH BANYAK KEPADA======\n•MHANKBARBAR\n•NINO\n•IKYADS\n•KurrXd\n•DAFFA PATNER SAYA\n•COPAS TEAM\n•PENYEDIA APIKEY\n•SELURUH CREATOR BOT\n•SELURUH SUBSCRIBERKU\n•SELURUH BUYER SCRIP INI', 'yellow'))
 	console.log(color('\n\nJANGAN DI JUAL ULANG BRO😑\nKALAU ADA YG MINTA SURUH CHAT ©Katashi��\nWA YUDHA 6289626029135��', 'pink'))
-	dha.browserDescription = ["KATASHI BOTZ", "Chrome", "3.0.0"];
+	dha.version = [2, 2143, 4];
+	dha.browserDescription = ["Putra Ganteng", "Chrome", "3.0"];
 
 	// Menunggu QR
 	dha.on('qr', () => {
