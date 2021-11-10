@@ -167,7 +167,6 @@ module.exports = dha = async (dha, mek) => {
 		const argz = body.trim().split(/ +/).slice(1)
 		const isCmd = body.startsWith(prefix) 
 		if (isCmd) cmdadd()
-		const totalhit = JSON.parse(fs.readFileSync('./database/totalcmd.json'))[0].totalcmd
         const q = args.join(' ')
 
         const botNumber = dha.user.jid
@@ -664,8 +663,6 @@ case "menu":
 ❏ AKTIF : *${runtime(process.uptime())}*
 ❏ BATERAI : *${baterai}%*
 ❏ PREIFIX : *『${prefix}』*
-❏ Hit Today : ${hit_today.length} Hit
-❏ Total Hit : ${totalhit} Hit
 â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
 `;
         sendButImage(from, menu, "ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2", thumb, [
