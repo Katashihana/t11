@@ -203,8 +203,6 @@ module.exports = dha = async (dha, mek) => {
 	    isPlayer1 = isGroup ? players1.includes(sender) : false
         isPlayer2 = isGroup ? players2.includes(sender) : false
         const isOwner = ownerNumber.includes(senderr)
-        const isPremium = premium.checkPremiumUser(sender, _premium)
-        const isSewa = _sewa.checkSewaGroup(from, sewa)
         const isAfkOn = afk.checkAfkUser(sender, _afk)
         const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
@@ -532,7 +530,6 @@ function banChat() {
              
         // MUTE
              if (isMuted){
-             if (!isGroupAdmins && !isPremium) return
  }
             
               const getWin = (userId) => {
@@ -1226,7 +1223,7 @@ case 'buttongc':
               teksnya = `*「GRUP MENU」*
 *き⃟🦈 ${prefix}groupsetting*
 *き⃟🦈 ${prefix}getbio* _reply_
-*き⃟🦈 ${prefix}afk* _alasan_
+*き⃟?? ${prefix}afk* _alasan_
 *き⃟🦈 ${prefix}kontak* _nomor|nama_
 *き⃟🦈 ${prefix}ceksewa*
 *き⃟🦈 ${prefix}kickall*
