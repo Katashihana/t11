@@ -59,6 +59,7 @@ const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
+const level = require("./lib/level");
 const atm = require("./lib/atm");
 
 var kuis = false
@@ -86,9 +87,13 @@ ban =[]
 let register = JSON.parse(fs.readFileSync('./database/user/register.json'))
 let welkom = JSON.parse(fs.readFileSync('./database/group/welcome.json'))
 let _afk = JSON.parse(fs.readFileSync('./database/user/afk.json'));
+let _leveling = JSON.parse(fs.readFileSync('./database/group/leveling.json'))
+let _level = JSON.parse(fs.readFileSync('./database/user/level.json'))
+let _uang = JSON.parse(fs.readFileSync('./database/user/uang.json'))
 let glimit = JSON.parse(fs.readFileSync('./database/user/glimit.json'));
 let antilink = JSON.parse(fs.readFileSync('./database/group/antilink.json'));
 let mute = JSON.parse(fs.readFileSync('./database/group/mute.json'));
+let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
 
 
@@ -204,6 +209,7 @@ module.exports = dha = async (dha, mek) => {
         isPlayer2 = isGroup ? players2.includes(sender) : false
         const isOwner = ownerNumber.includes(senderr)
         const isAfkOn = afk.checkAfkUser(sender, _afk)
+        const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
         const isAntiLink = isGroup ? antilink.includes(from) : false
         const isWelkom = isGroup ? welkom.includes(from) : false
@@ -247,7 +253,7 @@ module.exports = dha = async (dha, mek) => {
         const textImg = (teks) => {
            return dha.sendMessage(from, teks, text, {quoted: mek, thumbnail: fs.readFileSync('./media/ganteng.jpg')})
         }
-        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/sherlynn.jpg')
+        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/ganteng.jpg')
         }}}
        const math = (teks) => {
            return Math.floor(teks)
@@ -285,7 +291,7 @@ module.exports = dha = async (dha, mek) => {
 	       for (let i of members){
 	       ane.push(i.jid)
 }
-	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/sherlynn.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
+	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/ganteng.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
 }  
       const sendWebp = async(to, url) => {
            var names = Date.now() / 10000;
@@ -431,9 +437,67 @@ module.exports = dha = async (dha, mek) => {
         if(time2 < "05:00:00"){
         var ucapanWaktu = 'Selamat Malam🌃'
 }
-
-    
-
+         const levelRole = level.getLevelingLevel(sender, _level)
+        var role = 'Warrior III'
+        if (levelRole <= 5) {
+            role = 'Warrior II'
+        } else if (levelRole <= 10) {
+            role = 'Warrior I'
+        } else if (levelRole <= 15) {
+            role = 'Elite III'
+        } else if (levelRole <= 20) {
+            role = 'Elite II'
+        } else if (levelRole <= 25) {
+            role = 'Elite I'
+        } else if (levelRole <= 30) {
+            role = 'Master III'
+        } else if (levelRole <= 35) {
+            role = 'Master II'
+        } else if (levelRole <= 40) {
+            role = 'Master I'
+        } else if (levelRole <= 45) {
+            role = 'GrandMaster III'
+        } else if (levelRole <= 50) {
+            role = 'GrandMaster II'
+        } else if (levelRole <= 55) {
+            role = 'GrandMaster I'
+        } else if (levelRole <= 60) {
+            role = 'Epic III'
+        } else if (levelRole <= 65) {
+            role = 'Epic II'
+        } else if (levelRole <= 70) {
+            role = 'Epic I'
+        } else if (levelRole <= 75) {
+            role = 'Legend III'
+        } else if (levelRole <= 80) {
+            role = 'Legend II'
+        } else if (levelRole <= 85) {
+            role = 'Legend I'
+        } else if (levelRole <= 90) {
+            role = 'Mythic'
+        } else if (levelRole <= 95) {
+            role = 'Mythical Glory'
+        } else if (levelRole >= 100) {
+            role = 'Immortal'
+        } 
+       // FUNCTION LEVELING
+       if (isGroup && !mek.key.fromMe && !level.isGained(sender) && isLevelingOn) {
+       try {
+       level.addCooldown(sender)
+       const checkATM = atm.checkATMuser(sender, _uang)
+       if (checkATM === undefined) atm.addATM(sender, _uang)
+       const uangsaku = Math.floor(Math.random() * (15 - 25 + 1) + 20)
+       atm.addKoinUser(sender, uangsaku, _uang)
+       const currentLevel = level.getLevelingLevel(sender, _level)
+       const amountXp = Math.floor(Math.random() * (15 - 25 + 1) + 20)
+       const requiredXp = 10 * Math.pow(currentLevel, 2) + 50 * currentLevel + 100
+       level.addLevelingXp(sender, amountXp, _level)
+       if (requiredXp <= level.getLevelingXp(sender, _level)) {
+       level.addLevelingLevel(sender, 1, _level)
+       const userLevel = level.getLevelingLevel(sender, _level)
+       const fetchXp = 10 * Math.pow(userLevel, 2) + 50 * userLevel + 100
+       reply(`*「 LEVEL UP 」*\n\n➸ *Nama :* ${pushname}\n➸ *Xp :* ${level.getLevelingXp(sender, _level)} / ${fetchXp}\n➸ *Level :* ${currentLevel} -> ${level.getLevelingLevel(sender, _level)} 🆙 \n➸ *Role*: *${role}*\n\nCongrats!! 🎉🎉`)
+} 
        } catch (err) {
        console.error(err)
 }
@@ -446,7 +510,7 @@ module.exports = dha = async (dha, mek) => {
 		const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
         const troli =  {key: { fromMe: false,remoteJid: "status@broadcast", participant: '0@s.whatsapp.net'}, message: {orderMessage: {itemCount: 300, status: 200, thumbnail: fakeimage, surface: 200, message: fake, orderTitle: 'dha', sellerJid: '0@s.whatsapp.net'} } }
         const ftext = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: { "extendedTextMessage": {"text": `*Hai ${pushname}👋*\n  ${moment().utcOffset('+0700').format('HH:mm:ss')} ${moment.tz('Asia/Jakarta').format('DD/MM/YYYY')}`,"title": `Hmm`,'jpegThumbnail': fs.readFileSync('./media/ganteng.jpg')}}}
-        const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Sherlynn-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
+        const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Katashi-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
 
       // Anti link
         if (isGroup && isAntiLink && !isOwner && !isGroupAdmins && isBotGroupAdmins){
@@ -527,7 +591,7 @@ function banChat() {
 
             switch(command){
            
-case 'donasi':
+ case 'donasi':
                txtt =`Hai Kak.....\n*${pushname}*\nMAU DONASI PILIH SALAH SATU`
 
                buttons = [{buttonId: '!dana',buttonText:{displayText: 'DANA'},type:1},{buttonId:'!gopay',buttonText:{displayText:'GOPAY'},type:1},{buttonId:'!pulsa',buttonText:{displayText:'PULSA'},type:1}]
