@@ -167,7 +167,6 @@ module.exports = dha = async (dha, mek) => {
 		const argz = body.trim().split(/ +/).slice(1)
 		const isCmd = body.startsWith(prefix) 
 		if (isCmd) cmdadd()
-        const q = args.join(' ')
 
         const botNumber = dha.user.jid
         const ownerNumber = setting.ownerNumber
@@ -639,7 +638,7 @@ headerType: 4
 }
 dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 }
-break
+
         case 'menu':
         case 'help':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
