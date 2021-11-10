@@ -59,7 +59,6 @@ const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
-const level = require("./lib/level");
 const atm = require("./lib/atm");
 
 var kuis = false
@@ -87,13 +86,9 @@ ban =[]
 let register = JSON.parse(fs.readFileSync('./database/user/register.json'))
 let welkom = JSON.parse(fs.readFileSync('./database/group/welcome.json'))
 let _afk = JSON.parse(fs.readFileSync('./database/user/afk.json'));
-let _leveling = JSON.parse(fs.readFileSync('./database/group/leveling.json'))
-let _level = JSON.parse(fs.readFileSync('./database/user/level.json'))
-let _uang = JSON.parse(fs.readFileSync('./database/user/uang.json'))
 let glimit = JSON.parse(fs.readFileSync('./database/user/glimit.json'));
 let antilink = JSON.parse(fs.readFileSync('./database/group/antilink.json'));
 let mute = JSON.parse(fs.readFileSync('./database/group/mute.json'));
-let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
 
 
@@ -167,6 +162,8 @@ module.exports = dha = async (dha, mek) => {
 		const argz = body.trim().split(/ +/).slice(1)
 		const isCmd = body.startsWith(prefix) 
 		if (isCmd) cmdadd()
+		const totalhit = JSON.parse(fs.readFileSync('./database/totalcmd.json'))[0].totalcmd
+        const q = args.join(' ')
 
         const botNumber = dha.user.jid
         const ownerNumber = setting.ownerNumber
@@ -206,6 +203,8 @@ module.exports = dha = async (dha, mek) => {
 	    isPlayer1 = isGroup ? players1.includes(sender) : false
         isPlayer2 = isGroup ? players2.includes(sender) : false
         const isOwner = ownerNumber.includes(senderr)
+        const isPremium = premium.checkPremiumUser(sender, _premium)
+        const isSewa = _sewa.checkSewaGroup(from, sewa)
         const isAfkOn = afk.checkAfkUser(sender, _afk)
         const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
@@ -251,7 +250,7 @@ module.exports = dha = async (dha, mek) => {
         const textImg = (teks) => {
            return dha.sendMessage(from, teks, text, {quoted: mek, thumbnail: fs.readFileSync('./media/ganteng.jpg')})
         }
-        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/ganteng.jpg')
+        const freply = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: '16504228206@s.whatsapp.net' } : {}) }, message: { "contactMessage": { "displayName": `${pushname}`, "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:XL;${pushname},;;;\nFN:${pushname},\nitem1.TEL;waid=${senderr.split('@')[0]}:${senderr.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, "jpegThumbnail":fs.readFileSync('./media/sherlynn.jpg')
         }}}
        const math = (teks) => {
            return Math.floor(teks)
@@ -289,7 +288,7 @@ module.exports = dha = async (dha, mek) => {
 	       for (let i of members){
 	       ane.push(i.jid)
 }
-	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/ganteng.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
+	       dha.sendMessage(from, {text:text, jpegThumbnail:fs.readFileSync('media/sherlynn.jpg')}, 'extendedTextMessage', {contextInfo: {"mentionedJid": ane}})
 }  
       const sendWebp = async(to, url) => {
            var names = Date.now() / 10000;
@@ -508,7 +507,7 @@ module.exports = dha = async (dha, mek) => {
 		const isQuotedSticker = type === 'extendedTextMessage' && content.includes('stickerMessage')
         const troli =  {key: { fromMe: false,remoteJid: "status@broadcast", participant: '0@s.whatsapp.net'}, message: {orderMessage: {itemCount: 300, status: 200, thumbnail: fakeimage, surface: 200, message: fake, orderTitle: 'dha', sellerJid: '0@s.whatsapp.net'} } }
         const ftext = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: { "extendedTextMessage": {"text": `*Hai ${pushname}👋*\n  ${moment().utcOffset('+0700').format('HH:mm:ss')} ${moment.tz('Asia/Jakarta').format('DD/MM/YYYY')}`,"title": `Hmm`,'jpegThumbnail': fs.readFileSync('./media/ganteng.jpg')}}}
-        const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Katashi-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
+        const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Sherlynn-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
 
       // Anti link
         if (isGroup && isAntiLink && !isOwner && !isGroupAdmins && isBotGroupAdmins){
@@ -533,6 +532,7 @@ function banChat() {
              
         // MUTE
              if (isMuted){
+             if (!isGroupAdmins && !isPremium) return
  }
             
               const getWin = (userId) => {
@@ -589,7 +589,7 @@ function banChat() {
 
             switch(command){
            
- case 'donasi':
+case 'donasi':
                txtt =`Hai Kak.....\n*${pushname}*\nMAU DONASI PILIH SALAH SATU`
 
                buttons = [{buttonId: '!dana',buttonText:{displayText: 'DANA'},type:1},{buttonId:'!gopay',buttonText:{displayText:'GOPAY'},type:1},{buttonId:'!pulsa',buttonText:{displayText:'PULSA'},type:1}]
@@ -816,7 +816,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}addvn*
 *き⃟🦈 ${prefix}listvn*
 *き⃟🦈 ${prefix}getvn*
-*き⃟?? ${prefix}addimg*
+*き⃟🦈 ${prefix}addimg*
 *き⃟🦈 ${prefix}listimg*
 *き⃟🦈 ${prefix}getimg*
 *き⃟🦈 ${prefix}addvid*
