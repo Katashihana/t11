@@ -211,10 +211,6 @@ module.exports = dha = async (dha, mek) => {
         const isMuted = isGroup ? mute.includes(from) : false
         const isAntiLink = isGroup ? antilink.includes(from) : false
         const isWelkom = isGroup ? welkom.includes(from) : false
-
-
-    const totalhit = JSON.parse(fs.readFileSync("./lib/totalcmd.json"))[0]
-      .totalcmd;
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -820,7 +816,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}addvn*
 *き⃟🦈 ${prefix}listvn*
 *き⃟🦈 ${prefix}getvn*
-*き⃟🦈 ${prefix}addimg*
+*き⃟?? ${prefix}addimg*
 *き⃟🦈 ${prefix}listimg*
 *き⃟🦈 ${prefix}getimg*
 *き⃟🦈 ${prefix}addvid*
