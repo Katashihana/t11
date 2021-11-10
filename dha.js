@@ -61,6 +61,7 @@ const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
+const { cmdadd } = require("./lib/totalcmd.js");
 
 var kuis = false
 hit_today = []
@@ -167,6 +168,7 @@ module.exports = dha = async (dha, mek) => {
 		const argz = body.trim().split(/ +/).slice(1)
 		const isCmd = body.startsWith(prefix) 
 		if (isCmd) cmdadd()
+		if (prefix && command) cmdadd();
 		const totalhit = JSON.parse(fs.readFileSync('./database/totalcmd.json'))[0].totalcmd
         const q = args.join(' ')
 
@@ -644,14 +646,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 case "menu":
           case "m":
           case "help":
-            if (isBanned) return reply(mess.ban)
-        var menu = `Halloo ${pushname} Aku ${namabot}
+        var menu = `Halloo ${pushname} Aku Katashi
 
 â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
- *INFO OWNER*
- ðŸ“§ Instagram : https://instagram.com/${instagram}
- ðŸª€ Whatsapp : https://wa.me/${owner}
- ðŸ“Œ Youtube : ${yt}
  
 *${prefix}sticker*
 *${prefix}owner*
@@ -659,10 +656,7 @@ case "menu":
 
 â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
  
- Join Grup ${namabot}!
  
- ${grupct}
-
 â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
  *INFO BOT KATASHI*
  ❏ NAMA : *Katashi-Botz*
@@ -674,7 +668,6 @@ case "menu":
 ❏ PREIFIX : *『${prefix}』*
 ❏ Hit Today : ${hit_today.length} Hit
 ❏ Total Hit : ${totalhit} Hit
-❏ Total Chat : ${totalchat.length} Chat
 â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
 `;
         sendButImage(from, menu, "ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2", thumb, [
