@@ -168,7 +168,6 @@ module.exports = dha = async (dha, mek) => {
 		const argz = body.trim().split(/ +/).slice(1)
 		const isCmd = body.startsWith(prefix) 
 		if (isCmd) cmdadd()
-		if (prefix && command) cmdadd();
 		const totalhit = JSON.parse(fs.readFileSync('./database/totalcmd.json'))[0].totalcmd
         const q = args.join(' ')
 
