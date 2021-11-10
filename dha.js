@@ -639,48 +639,9 @@ headerType: 4
 }
 dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 }
-
-case "menu":
-          case "m":
-          case "help":
-        var menu = `Halloo ${pushname} Aku Katashi
-
-â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
- 
-*${prefix}sticker*
-*${prefix}owner*
-*${prefix}info*
-
-â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
- 
- 
-â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
- *INFO BOT KATASHI*
- ❏ NAMA : *Katashi-Botz*
-❏ API : @6289626029135
-❏ OWNER : *©Katashi*
-❏ API : *@6289626029135*
-❏ AKTIF : *${runtime(process.uptime())}*
-❏ BATERAI : *${baterai}%*
-❏ PREIFIX : *『${prefix}』*
-
-â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
-buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
-
-               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
-
-               buttonsMessage = {
-               contentText: `${menu}`,
-               footerText: '\`\`\`ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2\`\`\`', imageMessage: imageMsg,
-               buttons: buttons,
-               headerType: 4
-}
-
-               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
-              dha.relayWAMessage(prep)
-                break
-        case 'menu2':
-        case 'help2':
+break
+        case 'menu':
+        case 'help':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
         
 𝗜𝗡𝗙𝗢 𝗣𝗘𝗡𝗚𝗚𝗨𝗡𝗔 𝗕𝗢𝗧
