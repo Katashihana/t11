@@ -61,7 +61,6 @@ const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
-const { cmdadd } = require("./lib/totalcmd.js");
 
 var kuis = false
 hit_today = []
