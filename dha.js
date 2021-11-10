@@ -58,11 +58,9 @@ const { mediafireDl } = require('./lib/mediafire.js')
 const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
-const premium = require("./lib/premium");
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
-const _sewa = require("./lib/sewa");
 
 var kuis = false
 hit_today = []
@@ -88,7 +86,6 @@ ban =[]
 // Database
 let register = JSON.parse(fs.readFileSync('./database/user/register.json'))
 let welkom = JSON.parse(fs.readFileSync('./database/group/welcome.json'))
-let _premium = JSON.parse(fs.readFileSync('./database/user/premium.json'));
 let _afk = JSON.parse(fs.readFileSync('./database/user/afk.json'));
 let _leveling = JSON.parse(fs.readFileSync('./database/group/leveling.json'))
 let _level = JSON.parse(fs.readFileSync('./database/user/level.json'))
@@ -97,25 +94,8 @@ let glimit = JSON.parse(fs.readFileSync('./database/user/glimit.json'));
 let antilink = JSON.parse(fs.readFileSync('./database/group/antilink.json'));
 let mute = JSON.parse(fs.readFileSync('./database/group/mute.json'));
 let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
-let sewa = JSON.parse(fs.readFileSync('./database/group/sewa.json'));
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
 
-// GAME
-let tebakanime = JSON.parse(fs.readFileSync('./database/tebakanime.json'))
-let tebakgambar = JSON.parse(fs.readFileSync('./database/tebakgambar.json'))
-let asahotak = JSON.parse(fs.readFileSync('./database/asahotak.json'))
-let caklontong = JSON.parse(fs.readFileSync('./database/caklontong.json'))
-let tebaksiapaaku = JSON.parse(fs.readFileSync('./database/tebaksiapaaku.json'))
-let tebakbendera = JSON.parse(fs.readFileSync('./database/tebakbendera.json'))
-let susunkata = JSON.parse(fs.readFileSync('./database/susunkata.json'))
-let tebakata = JSON.parse(fs.readFileSync('./database/tebakata.json'))
-let tebaklirik = JSON.parse(fs.readFileSync('./database/tebaklirik.json'))
-let tebakjenaka = JSON.parse(fs.readFileSync('./database/tebakjenaka.json'))
-let tebakimia = JSON.parse(fs.readFileSync('./database/tebakimia.json'))
-let kuismath = JSON.parse(fs.readFileSync('./database/kuismath.json'))
-let tebaklagu = JSON.parse(fs.readFileSync('./database/tebaklagu.json'))
-let tebaktebakan = JSON.parse(fs.readFileSync('./database/tebaktebakan.json'))
-let family100 = [];
 
 // Sticker Cmd
 const addCmd = (id, command) => {
@@ -228,8 +208,6 @@ module.exports = dha = async (dha, mek) => {
 	    isPlayer1 = isGroup ? players1.includes(sender) : false
         isPlayer2 = isGroup ? players2.includes(sender) : false
         const isOwner = ownerNumber.includes(senderr)
-        const isPremium = premium.checkPremiumUser(sender, _premium)
-        const isSewa = _sewa.checkSewaGroup(from, sewa)
         const isAfkOn = afk.checkAfkUser(sender, _afk)
         const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
@@ -554,13 +532,9 @@ function banChat() {
         return true
     }
 }
-        
-        // Sewa
-             _sewa.expiredCheck(dha, sewa)
              
         // MUTE
              if (isMuted){
-             if (!isGroupAdmins && !isPremium) return
  }
             
               const getWin = (userId) => {
@@ -574,179 +548,7 @@ function banChat() {
               return _win[position].win
             }
         }
-      // GAME 
-             game.cekWaktuFam(dha, family100)
-          
-            if (tebakgambar.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakgambar[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var http = randomNomor(100)
-                    atm.addKoinUser(sender, http, _uang)
-                    await reply(`*_🎮 Tebak Gambar  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${http} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakgambar*`)
-                    delete tebakgambar[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-                }
-            }
-        if (game.isfam(from, family100)) {
-            var anjuy = game.getjawaban100(from, family100)
-            for (let i of anjuy){
-                if (budy.toLowerCase().includes(i)){
-                    var htgmp = Math.floor(Math.random() * 20) + 1
-                    atm.addKoinUser(sender, htgmp, _uang)
-                    await reply(`*Jawaban benar*\n*Jawaban :* ${i}\n*Hadiah :* $${htgmp}\n*Jawaban yang blum tertebak :* ${anjuy.length - 1}`)
-                    var anug = anjuy.indexOf(i)
-                    anjuy.splice(anug, 1)
-                }
-            }
-            if (anjuy.length < 1){
-                dha.sendMessage(from, `Semua jawaban sudah tertebak\nKirim *${prefix}family100* untuk bermain lagi`, text)
-                family100.splice(game.getfamposi(from, family100), 1)
-            }
-       }
-            if (tebakanime.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakanime[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmu = randomNomor(100)
-                    atm.addKoinUser(sender, htgmu, _uang)
-                    await reply(`*_🎮 Tebak Anime 🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmu} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakanime*`)
-                    delete tebakanime[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakanime.json", JSON.stringify(tebakanime))
-                }
-            }
-            if (tebaklagu.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebaklagu[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htpl = randomNomor(100)
-                    atm.addKoinUser(sender, htpl, _uang)
-                    await reply(`*_🎮 Tebak Lagu 🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htpl} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebaklagu*`)
-                    delete tebaklagu[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebaklagu.json", JSON.stringify(tebaklagu))
-                }
-            }
-            if (tebaktebakan.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebaktebakan[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htpu = randomNomor(100)
-                    atm.addKoinUser(sender, htpu, _uang)
-                    await reply(`*_🎮 Tebak Tebakan 🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htpu} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebaktebakan*`)
-                    delete tebaktebakan[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebaktebakan.json", JSON.stringify(tebaktebakan))                    
-                }
-            }
-            if (kuismath.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = kuismath[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htcc = randomNomor(100)
-                    atm.addKoinUser(sender, htcc, _uang)
-                    await reply(`*_🎮 Kuis Matematika  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htcc} 💰_\n\nIngin bermain lagi? kirim *${prefix}kuismath*`)
-                    delete kuismath[sender.split('@')[0]]
-                    fs.writeFileSync("./database/kuismath.json", JSON.stringify(kuismath))
-                }
-            }
-          if (asahotak.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = asahotak[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgm = randomNomor(100)
-                    atm.addKoinUser(sender, htgm, _uang)
-                    await reply(`*_🎮 Asah Otak  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgm} 💰_\n\nIngin bermain lagi? kirim *${prefix}asahotak*`)
-                    delete asahotak[sender.split('@')[0]]
-                    fs.writeFileSync("./database/asahotak.json", JSON.stringify(asahotak))
-                }
-            }
-          if (caklontong.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = caklontong[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmi = randomNomor(100)
-                    atm.addKoinUser(sender, htgmi, _uang)
-                    await reply(`*_🎮 Caklontong  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmi} 💰_\n\nIngin bermain lagi? kirim *${prefix}caklontong*`)
-                    delete caklontong[sender.split('@')[0]]
-                    fs.writeFileSync("./database/caklontong.json", JSON.stringify(caklontong))
-                }
-            }
-          if (tebakjenaka.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakjenaka[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmuu = randomNomor(100)
-                    atm.addKoinUser(sender, htgmuu, _uang)
-                    await reply(`*_🎮 Tebak Jenaka  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmuu} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakjenaka*`)
-                    delete tebakjenaka[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakjenaka.json", JSON.stringify(tebakjenaka))
-                }
-            }
-            if (tebaklirik.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebaklirik[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmii = randomNomor(100)
-                    atm.addKoinUser(sender, htgmii, _uang)
-                    await reply(`*_🎮 Tebak Lirik 🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmii} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebaklirik*`)
-                    delete tebaklirik[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebaklirik.json", JSON.stringify(tebaklirik))
-                }
-            }
-            if (tebakimia.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakimia[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmcc = randomNomor(100)
-                    atm.addKoinUser(sender, htgmcc, _uang)
-                    await reply(`*_🎮 Tebak Kimia 🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmcc} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakkimia*`)
-                    delete tebakimia[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakimia.json", JSON.stringify(tebakimia))
-                }
-            }
-          if (tebaksiapaaku.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebaksiapaaku[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htgmk = randomNomor(100)
-                    atm.addKoinUser(sender, htgmk, _uang)
-                    await reply(`*_🎮 Tebak Siapakah Aku  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htgmk} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebaksiapaaku*`)
-                    delete tebaksiapaaku[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebaksiapaaku.json", JSON.stringify(tebaksiapaaku))
-                }
-            }
-          if (tebakbendera.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakbendera[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var html = randomNomor(100)
-                    atm.addKoinUser(sender, html, _uang)
-                    await reply(`*_🎮 Tebak Bendera  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${html} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakbendera*`)
-                    delete tebakbendera[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakbendera.json", JSON.stringify(tebakbendera))
-                }
-            }
-          if (susunkata.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = susunkata[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htmp = randomNomor(100)
-                    atm.addKoinUser(sender, htmp, _uang)
-                    await reply(`*_🎮 Susun Kata  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htmp} 💰_\n\nIngin bermain lagi? kirim *${prefix}susunkata*`)
-                    delete susunkata[sender.split('@')[0]]
-                    fs.writeFileSync("./database/susunkata.json", JSON.stringify(susunkata))
-                }
-            }
-          if (tebakata.hasOwnProperty(sender.split('@')[0]) && !isCmd) {
-                kuis = true
-                jawaban = tebakata[sender.split('@')[0]]
-                if (budy.toLowerCase() == jawaban) {
-                	var htmu = randomNomor(100)
-                    atm.addKoinUser(sender, htmu, _uang)
-                    await reply(`*_🎮 Tebak Kata  🎮_*\n\n*•* *Jawaban Benar🎉*\n*•* *Mendapatkan* : _Rp ${htmu} 💰_\n\nIngin bermain lagi? kirim *${prefix}tebakkata*`)
-                    delete tebakata[sender.split('@')[0]]
-                    fs.writeFileSync("./database/tebakata.json", JSON.stringify(tebakata))
-                }
-            }
+        
 // AFK
 	if (isGroup) {
 		if (!mek.key.fromMe && mek.key.fromMe) return
@@ -842,8 +644,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 𝗜𝗡𝗙𝗢 𝗣𝗘𝗡𝗚𝗚𝗨𝗡𝗔 𝗕𝗢𝗧
 ❏ NAMA : *${pushname}*
 ❏ API : *@${sender.split('@')[0]}*
-❏ STATUS : *${isOwner ? 'OWNER' : isPremium ? 'Premium' : 'Gratisan'}*
-❏ LIMIT : *${isPremium ? 'Unlimited' : `${gcount}`}*
 
 𝗜𝗡𝗙𝗢 𝗕𝗢𝗧
 ❏ NAMA : *Katashi-Botz*
@@ -864,15 +664,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}profile*
 *き⃟🦈 ${prefix}waktu*
 *き⃟🦈 ${prefix}botstat*
-*き⃟🦈 ${prefix}sewabot*
-*き⃟🦈 ${prefix}listsewa*
 *き⃟🦈 ${prefix}owner*
 *き⃟🦈 ${prefix}ping*
 *き⃟🦈 ${prefix}runtime*
 *き⃟🦈 ${prefix}donasi*
-*き⃟🦈 ${prefix}leaderboard*
-*き⃟🦈 ${prefix}cekpremium*
-*き⃟🦈 ${prefix}listpremium*
 *き⃟🦈 ${prefix}bugreport* [ keluhan ]
 
 𝖦𝖱𝖴𝖯 𝖬𝖤𝖭𝖴
@@ -880,12 +675,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}getbio* _reply_
 *き⃟🦈 ${prefix}afk* _alasan_
 *き⃟🦈 ${prefix}kontak* _nomor|nama_
-*き⃟🦈 ${prefix}ceksewa*
 *き⃟🦈 ${prefix}kickall*
 *き⃟🦈 ${prefix}infogrup*
-*き⃟🦈 ${prefix}promote*
 *き⃟🦈 ${prefix}promoteall*
-*き⃟🦈 ${prefix}demote*
 *き⃟🦈 ${prefix}demoteall*
 *き⃟🦈 ${prefix}listonline*
 *き⃟🦈 ${prefix}tagall* _teks_
@@ -900,14 +692,11 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}hidetag* _teks/reply teks_
 *き⃟🦈 ${prefix}linkgc*
 *き⃟🦈 ${prefix}getdeskgc*
+*き⃟🦈 ${prefix}revoke*
 
 𝖦𝖠𝖬𝖤 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}limitgame*
 *き⃟🦈 ${prefix}slot*
-*き⃟🦈 ${prefix}gelud* _@tag_
 *き⃟🦈 ${prefix}tictactoe* _@tag_
-*き⃟🦈 ${prefix}caklontong*
-*き⃟🦈 ${prefix}tebakgambar*
 *き⃟🦈 ${prefix}suit* _batu/kertas/gunting_
 
 𝖨𝖲𝖫𝖠𝖬 𝖬𝖤𝖭𝖴
@@ -975,20 +764,24 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}xs*
 *き⃟🦈 ${prefix}asupan*
 
+*MAKER MENU*
+*き⃟🦈 ${prefix}wasted*
+*き⃟🦈 ${prefix}squidrip*
+*き⃟🦈 ${prefix}wanted*
+*き⃟🦈 ${prefix}deltrash*
 
-
-*INFORMATION MENU*
-*き⃟🦈 ${prefix}cuacabandara
-*き⃟🦈 ${prefix}cuaca1 <_Nama Daerah_>
-*き⃟🦈 ${prefix}cuaca <_Nama Daerah>
-*き⃟🦈 ${prefix}rscovid
-*き⃟🦈 ${prefix}jadwalbola 
-*き⃟🦈 ${prefix}jadwaltvnow 
-*き⃟🦈 ${prefix}trendingtwitter
-*き⃟🦈 ${prefix}mostviewfilm
-*き⃟🦈 ${prefix}infoloker
-*き⃟🦈 ${prefix}datasekolah <query>
-*き⃟🦈 ${prefix}datasekolah2 <query>
+*INFORMATION MENU
+き⃟🦈 ${prefix}cuacabandara
+き⃟🦈 ${prefix}cuaca1 <_Nama Daerah_>
+き⃟🦈 ${prefix}cuaca <_Nama Daerah>
+き⃟🦈 ${prefix}rscovid
+き⃟🦈 ${prefix}jadwalbola 
+き⃟🦈 ${prefix}jadwaltvnow 
+き⃟🦈 ${prefix}trendingtwitter
+き⃟🦈 ${prefix}mostviewfilm
+き⃟🦈 ${prefix}infoloker
+き⃟🦈 ${prefix}datasekolah <query>
+き⃟🦈 ${prefix}datasekolah2 <query>*
 
 *SPAM MENU*
 *き⃟🦈 ${prefix}spamsms <89xnxx>
@@ -1056,6 +849,12 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈️ ${prefix}megumin*
 *き⃟🦈 ${prefix}otakudesu*
 *き⃟🦈️ ${prefix}otakuongoing*
+*き⃟🦈 ${prefix}neko*
+*き⃟🦈 ${prefix}gura*
+*き⃟🦈 ${prefix}kaneki*
+*き⃟🦈 ${prefix}lolim*
+*き⃟🦈 ${prefix}remm*
+*き⃟🦈 ${prefix}vanpire*
 *き⃟🦈 ${prefix}nhentai *code*
 
 𝖮𝖳𝖧𝖤𝖱 𝖬𝖤𝖭𝖴 
@@ -1080,7 +879,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}animeindo (text)
 *き⃟🦈 ${prefix}kodepos2 (text) 
 *き⃟🦈 ${prefix}gabut 
-
+*き⃟🦈 ${prefix}darkjoke*
 
 𝖮𝖶𝖭𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈️ ${prefix}bc* _teks_
@@ -1094,9 +893,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}getquoted*
 *き⃟🦈 ${prefix}addupdate* _fiturnya_
 *き⃟🦈️ ${prefix}exif* _nama|author_
-*き⃟🦈 ${prefix}sewa add/del* _waktunya_
-*き⃟🦈️ ${prefix}premium add* _@tag|nomor_
-*き⃟🦈 ${prefix}premium del* _@tag|nomor_
 *き⃟🦈 ${prefix}setpp*
 *き⃟🦈 ${prefix}setbio*
 *き⃟🦈 ${prefix}setname*
@@ -1161,7 +957,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}putra _Text_
 *き⃟🦈 ${prefix}simi _Text_
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
-               buttons = [{buttonId: `${prefix}command`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}store`,buttonText:{displayText:'SIMPLE BUTTON MENU'},type:1}]
+               buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
 
@@ -1219,11 +1015,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
         case 'limitgame': 
         case 'balance': 
                const balance = atm.checkATMuser(sender, _uang)
-               if (isPremium) return reply(`Limit Game : Unlimited\nBalance : Rp.${balance}`)
                textImg(`Limit Game : ${cekGLimit(sender, gcount, glimit)}/${gcount}\nBalance : Rp.${balance}`)
                break
          case 'gelud':
-               if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
                if (!isGroup) return reply(mess.only.group)
                if (mek.message.extendedTextMessage.contextInfo.mentionedJid > 1) return reply('Hanya bisa dengan 1 orang')
                if (!mek.message.extendedTextMessage.contextInfo.mentionedJid[0]) return
@@ -1262,7 +1056,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
                break
         case 'tictactoe':
         case 'ttt':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
               if (!isGroup) return reply(mess.only.group)
               if (args.length < 1) return reply('Tag Lawan Anda! ')
               if (isTTT) return reply('Sedang Ada Permainan Di Grub Ini, Harap Tunggu')
@@ -1281,314 +1074,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 Ketik Y/N untuk menerima atau menolak permainan
 
 Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contextInfo: {mentionedJid: [player2]}})
-              gameAdd(sender, glimit)
-              break
-       case 'family100':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (game.isfam(from, family100)) return reply(`Masih ada soal yang belum di selesaikan`)
-              anu = await axios.get(`https://api.zeks.me/api/family100?apikey=apivinz`)
-              reply(`*JAWABLAH SOAL BERIKUT*\n\n*Soal :* ${anu.data.result.question}\n*Total Jawaban :* ${anu.data.result.aswer.length}\n\nWaktu : ${gamewaktu}s`)
-              let anoh = anu.data.result.aswer
-              let rgfds = []
-              for (let i of anoh){
-              let fefs = i.split('/') ? i.split('/')[0] : i
-              let iuhbb = fefs.startsWith(' ') ? fefs.replace(' ','') : fefs
-              let axsf = iuhbb.endsWith(' ') ? iuhbb.replace(iuhbb.slice(-1), '') : iuhbb
-              rgfds.push(axsf.toLowerCase())
-}
-              game.addfam(from, rgfds, gamewaktu, family100)
-              gameAdd(sender, glimit)
-              break
-       case 'tebakanime':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebakanime.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-              get_result = await fetchJson(`https://lolhuman.herokuapp.com/api/tebakchara?apikey=${setting.lolkey}`)
-              get_result = get_result.result
-              ini_image = get_result.image
-              jawaban = get_result.name
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              ini_buffer = await getBuffer(ini_image)
-              dha.sendMessage(from, ini_buffer, image, { quoted: mek, caption: '*+* ```Tebak Anime```\n\n• *Petunjuk* :'+kisi_kisi+'\n• *Waktu* : 30s' }).then(() => {
-              tebakanime[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakanime.json", JSON.stringify(tebakanime))
-})
-              await sleep(30000)
-              if (tebakanime.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("*Jawaban*: " + jawaban)
-              delete tebakanime[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakanime.json", JSON.stringify(tebakanime))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebaklagu':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebaklagu.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-              get_result = await fetchJson(`https://api.xteam.xyz/game/tebaklagu?apikey=${setting.xteamkey}&id=4mFuArYRh3SO8jfffYLSER`)
-              get_result = get_result.result
-              ini_audio = get_result.preview
-              jawaban = get_result.judul
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              ini_buffer = await getBuffer(ini_audio)
-              reply('*+* ```Tebak Lagu```\n\n• *Petunjuk* :'+kisi_kisi+'\n• *Waktu* : 30s')
-              dha.sendMessage(from, ini_buffer, audio, {quoted: mek}).then(() => {
-              tebaklagu[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebaklagu.json", JSON.stringify(tebaklagu))
-})
-              await sleep(30000)
-              if (tebaklagu.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("*Jawaban*: " + jawaban)
-              delete tebaklagu[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebaklagu.json", JSON.stringify(tebaklagu))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebaktebakan':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebaktebakan.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://api.xteam.xyz/game/tebaktebakan?APIKEY=${setting.xteamkey}`)
-              get_result = get_result.result
-              jawaban = get_result.jawaban
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.soal
-              dha.sendMessage(from, '*+* ```Tebak Tebakan```\n\n• *soal* :'+pertanyaan+'\n• *kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              tebaktebakan[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebaktebakan.json", JSON.stringify(tebaktebakan))
-})
-              await sleep(30000)
-              if (tebaktebakan.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebaktebakan[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebaktebakan.json", JSON.stringify(tebaktebakan))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'kuismath':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (kuismath.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-              get_result = await fetchJson(`https://api-yogipw.herokuapp.com/api/kuis/math`)
-              ini_image = get_result.soal
-              jawaban = get_result.jawaban
-              ini_buffer = await getBuffer(ini_image)
-              dha.sendMessage(from, ini_buffer, image, { quoted: mek, caption: '*+* ```Kuis Matematika```\n\nSilahkan jawab soal berikut ini\n\n• *Waktu* : 50s' }).then(() => {
-              kuismath[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/kuismath.json", JSON.stringify(kuismath))
-})
-              await sleep(50000)
-              if (kuismath.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("*Jawaban*: " + jawaban)
-              delete kuismath[sender.split('@')[0]]
-              fs.writeFileSync("./database/kuismath.json", JSON.stringify(kuismath))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebakgambar':
-              if (tebakgambar.hasOwnProperty(sender.split('@')[0])) return reply("Selesein yg sebelumnya dulu atuh")
-              get_result = await fetchJson(`https://rest-api-megumin1.herokuapp.com/api/kuis/tebakgambar?apikey=beta`)
-              ini_image = get_result.soal
-              jawaban = get_result.jawaban
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              ini_buffer = await getBuffer(ini_image)
-              dha.sendMessage(from, ini_buffer, image, { quoted: mek, caption: 'Silahkan jawab soal berikut ini\n\nPetunjuk :'+kisi_kisi+'\nWaktu : 30s' }).then(() => {
-              tebakgambar[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-})
-              await sleep(30000)
-              if (tebakgambar.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("*Jawaban*: " + jawaban)
-              delete tebakgambar[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakgambar.json", JSON.stringify(tebakgambar))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'siapaaku':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebaksiapaaku.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://api.zeks.me/api/siapa-aku?apikey=apivinz`)
-              get_result = get_result.result
-              jawaban = get_result.answer
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.question
-              dha.sendMessage(from, '*+* ```Tebak Siapakah Aku```\n\n• *soal* :'+pertanyaan+'\n• *kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              tebaksiapaaku[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebaksiapaaku.json", JSON.stringify(tebaksiapaaku))
-})
-              await sleep(30000)
-              if (tebaksiapaaku.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebaksiapaaku[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebaksiapaaku.json", JSON.stringify(tebaksiapaaku))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebakkata':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebakata.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://hardianto-chan.herokuapp.com/api/tebakkata?apikey=hardianto`)
-              get_result = get_result.math.soal
-              jawaban = get_result.math.jawaban
-              pertanyaan = get_result.pertanyaan
-              dha.sendMessage(from, '*+* ```Tebak Kata```\n\n• *Soal* :'+pertanyaan+'\n• *Waktu :* 30s', text, { quoted: mek}).then(() => {
-              tebakata[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakata.json", JSON.stringify(tebakata))
-})
-              await sleep(30000)
-              if (tebakata.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebakata[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakata.json", JSON.stringify(tebakata))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebaklirik':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebaklirik.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://hardianto-chan.herokuapp.com/api/tebaklirik?apikey=hardianto`)
-              get_result = get_result.math.soal
-              jawaban = get_result.math.jawaban
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.question
-              dha.sendMessage(from, '*+* ```Tebak Lirik```\n\n• *Soal* :'+pertanyaan+'\n• *Kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              tebaklirik[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebaklirik.json", JSON.stringify(tebaklirik))
-})
-              await sleep(30000)
-              if (tebaklirik.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebaklirik[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebaklirik.json", JSON.stringify(tebaklirik))
-}
-              gameAdd(sender, glimit)
-              break
-      case 'tebakjenaka':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebakjenaka.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://lolhuman.herokuapp.com/api/tebak/jenaka?apikey=${setting.lolkey}`)
-              get_result = get_result.result
-              jawaban = get_result.answer
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.question
-              dha.sendMessage(from, '*+* ```Tebak Jenaka```\n\n• *Soal* :'+pertanyaan+'\n• *Kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              tebakjenaka[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakjenaka.json", JSON.stringify(tebakjenaka))
-})
-              await sleep(30000)
-              if (tebakjenaka.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebakjenaka[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakjenaka.json", JSON.stringify(tebakjenaka))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'kimiakuis':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebakimia.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://hardianto-chan.herokuapp.com/api/tebakkimia?apikey=hardianto`)
-              get_result = get_result.math.unsur
-              jawaban = get_result.math.lambang
-              pertanyaan = get_result.nama
-              dha.sendMessage(from, '*+* ```Tebak Kimia```\n\n• *Soal* :'+pertanyaan+'\n• *Waktu :* 30s', text, { quoted: mek}).then(() => {
-              tebakimia[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakimia.json", JSON.stringify(tebakimia))
-})
-              await sleep(30000)
-              if (tebakimia.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebakimia[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakimia.json", JSON.stringify(tebakimia))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'tebakbendera':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (tebakbendera.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://lolhuman.herokuapp.com/api/tebak/bendera?apikey=${setting.lolkey}`)
-              get_result = get_result.result
-              jawaban = get_result.name
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.flag
-              dha.sendMessage(from, '*+* ```Tebak Bendera```\n\n• *Bendera* :'+pertanyaan+'\n• *kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              tebakbendera[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/tebakbendera.json", JSON.stringify(tebakbendera))
-})
-              await sleep(30000)
-              if (tebakbendera.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete tebakbendera[sender.split('@')[0]]
-              fs.writeFileSync("./database/tebakbendera.json", JSON.stringify(tebakbendera))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'susunkata':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (susunkata.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://hardianto-chan.herokuapp.com/api/susunkata?apikey=hardianto`)
-              get_result = get_result.math.soal
-              jawaban = get_result.math.jawaban
-              pertanyaan = get_result.pertanyaan
-              dha.sendMessage(from, '*+* ```Susun Kata```\n\n• *Soal* :'+pertanyaan+'\n• *Waktu :* 30s', text, { quoted: mek}).then(() => {
-              susunkata[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/susunkata.json", JSON.stringify(susunkata))
-})
-              await sleep(30000)
-              if (susunkata.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete susunkata[sender.split('@')[0]]
-              fs.writeFileSync("./database/susunkata.json", JSON.stringify(susunkata))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'asahotak':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (asahotak.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://hardianto-chan.herokuapp.com/api/asahotak?apikey=hardianto`)
-              get_result = get_result.math.soal
-              jawaban = get_result.math.jawaban
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.pertanyaan
-              dha.sendMessage(from, '*+* ```Asah Otak```\n\n• *soal* :'+pertanyaan+'\n• *kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              asahotak[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/asahotak.json", JSON.stringify(asahotak))
-})
-              await sleep(30000)
-              if (asahotak.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete asahotak[sender.split('@')[0]]
-              fs.writeFileSync("./database/asahotak.json", JSON.stringify(asahotak))
-}
-              gameAdd(sender, glimit)
-              break
-       case 'caklontong':
-              if (isGame(sender, isPremium, gcount, glimit)) return reply(`Limit game kamu sudah habis`)
-              if (caklontong.hasOwnProperty(sender.split('@')[0])) return reply("Masih ada soal yg belum terjawab")
-              get_result = await fetchJson(`https://rest-api-megumin1.herokuapp.com/api/kuis/caklontong?apikey=beta`)
-              get_result = get_result.result
-              jawaban = get_result.answer
-              kisi_kisi = jawaban.replace(/[b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z]/gi, '_')
-              pertanyaan = get_result.question
-              dha.sendMessage(from, '*+* ```Caklontong```\n\n• *soal* :'+pertanyaan+'\n• *kisi²* :'+kisi_kisi, text, { quoted: mek}).then(() => {
-              caklontong[sender.split('@')[0]] = jawaban.toLowerCase()
-              fs.writeFileSync("./database/caklontong.json", JSON.stringify(caklontong))
-})
-              await sleep(30000)
-              if (caklontong.hasOwnProperty(sender.split('@')[0])) {
-              console.log(color("Jawaban: " + jawaban))
-              reply("Jawaban: " + jawaban)
-              delete caklontong[sender.split('@')[0]]
-              fs.writeFileSync("./database/caklontong.json", JSON.stringify(caklontong))
-}
               gameAdd(sender, glimit)
               break
        case 'slot':
@@ -1645,85 +1130,8 @@ Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contex
 }
               break
 //------------------< Sewa >-------------------
-       case 'sewa':
-              if (!isGroup)return reply(mess.only.group)
-              if (!isOwner) return reply(mess.only.owner)
-              if (args.length < 1) return reply(`Penggunaan :\n*${prefix}sewa* add/del waktu`)
-              if (args[0].toLowerCase() === 'add'){
-            _sewa.addSewaGroup(from, args[1], sewa)
-              reply(`Success`)
-              } else if (args[0].toLowerCase() === 'del'){
-              sewa.splice(_sewa.getSewaPosition(from, sewa), 1)
-              fs.writeFileSync('./database/group/sewa.json', JSON.stringify(sewa))
-              reply(mess.success)
-              } else {
-              reply(`Penggunaan :\n*${prefix}sewa* add/del waktu`)
-}
-              break
-       case 'sewalist': 
-       case 'listsewa':
-              let txtnyee = `List Sewa\nJumlah : ${sewa.length}\n\n`
-              for (let i of sewa){
-              let cekvipp = ms(i.expired - Date.now())
-              txtnyee += `*ID :* ${i.id} \n*Expire :* ${cekvipp.days} day(s) ${cekvipp.hours} hour(s) ${cekvipp.minutes} minute(s) ${cekvipp.seconds} second(s)\n\n`
-}
-              reply(txtnyee)
-              break
-       case 'sewacheck':
-       case 'ceksewa': 
-              if (!isGroup) return reply(mess.only.group)
-              if (!isSewa) return reply(`Group ini tidak terdaftar dalam list sewabot. Ketik ${prefix}sewabot untuk info lebih lanjut`)
-              let cekvip = ms(_sewa.getSewaExpired(from, sewa) - Date.now())
-              let premiumnya = `*「 SEWA EXPIRE 」*\n\n➸ *ID*: ${from}\n➸ *Expired :* ${cekvip.days} day(s) ${cekvip.hours} hour(s) ${cekvip.minutes} minute(s)`
-              reply(premiumnya)
-              break
-//------------------< Premium >-------------------
-       case 'premium': 
-              if (!isOwner) return reply(mess.only.owner)
-              if (args[0] === 'add') {
-              if (mek.message.extendedTextMessage != undefined) {
-              mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
 
-              premium.addPremiumUser(mentioned[0], args[2], _premium)
-              reply(`*「 PREMIUM ADDED 」*\n\n➸ *ID*: ${mentioned[0]}\n➸ *Expired*: ${ms(toMs(args[2])).days} day(s) ${ms(toMs(args[2])).hours} hour(s) ${ms(toMs(args[2])).minutes} minute(s)`)
-                        
-              } else {
-                            
-              premium.addPremiumUser(args[1] + '@s.whatsapp.net', args[2], _premium)
-              reply(`*「 PREMIUM ADDED 」*\n\n➸ *ID*: ${args[1]}@s.whatsapp.net\n➸ *Expired*: ${ms(toMs(args[2])).days} day(s) ${ms(toMs(args[2])).hours} hour(s) ${ms(toMs(args[2])).minutes} minute(s)`)
-}
-              } else if (args[0] === 'del') {
-              if (mek.message.extendedTextMessage != undefined) {
-              mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
-            _premium.splice(premium.getPremiumPosition(mentioned[0], _premium), 1)
-              fs.writeFileSync('./database/user/premium.json', JSON.stringify(_premium))
-              reply(mess.success)
-              } else {
-            _premium.splice(premium.getPremiumPosition(args[1] + '@s.whatsapp.net', _premium), 1)
-              fs.writeFileSync('./database/user/premium.json', JSON.stringify(_premium))
-              reply(mess.success)
-}
-              } else {
-              reply(mess.wrongFormat)
-}
-              break
-       case 'premiumcheck':
-       case 'cekpremium': 
-              if (!isPremium) return reply(mess.only.premium)
-              const cekExp = ms(await premium.getPremiumExpired(sender, _premium) - Date.now())
-              reply(`*「 PREMIUM EXPIRE 」*\n\n➸ *ID*: ${sender}\n➸ *Premium left*: ${cekExp.days} day(s) ${cekExp.hours} hour(s) ${cekExp.minutes} minute(s)`)
-              break
-       case 'listprem':
-       case 'listpremium':          
-              let txt = `「 *PREMIUM USER LIST* 」\n\n`
-              let men = [];
-              for (let i of _premium){
-              men.push(i.id)
-              const checkExp = ms(i.expired - Date.now())
-              txt += `➸ *ID :* @${i.id.split("@")[0]}\n➸ *Expired*: ${checkExp.days} day(s) ${checkExp.hours} hour(s) ${checkExp.minutes} minute(s)\n\n`
-}
-              mentions(txt, men, true)
-              break
+//------------------< Premium >-------------------
        case 'belipremium':
        case 'buypremium':
        case 'sewabot':
@@ -1904,7 +1312,6 @@ case 'buttonown':
 //------------------< Sticker Cmd >-------------------
        case 'addcmd': 
        case 'setcmd':
-              if (!isPremium) return reply(`Kamu bukan user premium, kirim perintah *${prefix}buypremium* untuk membeli premium`)
               if (isQuotedSticker) {
               if (!q) return reply(`Penggunaan : ${command} cmdnya dan tag stickernya`)
               var kodenya = mek.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage.fileSha256.toString('base64')
@@ -1915,7 +1322,6 @@ case 'buttonown':
 }
               break
        case 'delcmd':
-              if (!isPremium) return reply(`Kamu bukan user premium, kirim perintah *${prefix}buypremium* untuk membeli premium`)
               if (!isQuotedSticker) return reply(`Penggunaan : ${command} tagsticker`)
               var kodenya = mek.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage.fileSha256.toString('base64')
             _scommand.splice(getCommandPosition(kodenya), 1)
@@ -1988,7 +1394,6 @@ case 'buttonown':
 }
              break
       case 'ytmp3':
-            if (!isPremium) return reply(mess.only.premium)
             if (args.length < 1) return reply('Link Nya Mana?')
             if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
             teks = args.join(' ')
@@ -2012,7 +1417,7 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
 })
             break
      case 'ytmp4':
-            if (!isPremium) return reply(mess.only.premium)
+            if (!isGroup) return reply(mess.only.group);
             if (args.length < 1) return reply('Link Nya Mana?')
             if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
             teks = args.join(' ')
@@ -2036,7 +1441,7 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
 })
             break
         case 'mediafire':
-               if (!isPremium) return reply(mess.only.premium)
+               if (!isGroup) return reply(mess.only.group);
                if (args.length < 1) return reply('Link Nya Mana? ')
                if(!isUrl(args[0]) && !args[0].includes('mediafire')) return reply(mess.error.Iv)
                reply(mess.wait)
@@ -2325,7 +1730,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
 })
                break
          case 'asupan': // shansekai                
-               if (!isPremium) return reply(mess.only.premium)
+               if (!isGroup) return reply(mess.only.group);
                reply(mess.wait)
                asupan()
               .then(async (body) => {
@@ -3255,46 +2660,6 @@ case 'linkgc':
              dha.groupAdd(from, [entah])
 }
              break
-      case 'promote':
-             reply('🗿')
-             if (!isGroupAdmins) return reply(mess.only.admin)
-             if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) return;
-             if (mek.message.extendedTextMessage.contextInfo.participant === undefined) {
-             entah = mek.message.extendedTextMessage.contextInfo.mentionedJid
-             if (entah.length > 0) {
-             var mems_ids = []
-             for (let ids of entah) {
-             mems_ids.push(ids)
-}
-             dha.groupMakeAdmin(from, mems_ids)
-             } else {
-             dha.groupMakeAdmin(from, entah)
-}
-             } else {
-             entah = mek.message.extendedTextMessage.contextInfo.participant
-             dha.groupMakeAdmin(from, [entah])
-}
-             break
-      case 'demote':
-             reply('🗿')
-             if (!isGroupAdmins) return reply(mess.only.admin)
-             if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) return;
-             if (mek.message.extendedTextMessage.contextInfo.participant === undefined) {
-             entah = mek.message.extendedTextMessage.contextInfo.mentionedJid
-             if (entah.length > 0) {
-             var mems_ids = []
-             for (let ids of entah) {
-             mems_ids.push(ids)
-}
-             dha.groupDemoteAdmin(from, mems_ids)
-             } else {
-             dha.groupDemoteAdmin(from, [entah[0]])
-}
-             } else {
-             entah = mek.message.extendedTextMessage.contextInfo.participant
-             dha.groupDemoteAdmin(from, [entah])
-}
-             break
        case 'setgrupname':
               if (!isGroupAdmins) return reply(mess.only.admin)
               if (!isGroup) return reply(mess.only.group)
@@ -3341,7 +2706,7 @@ case 'linkgc':
               thu = await dha.getStatus(`${sender.split('@')[0]}@s.whatsapp.net`, MessageType.text)
               me = dha.user
               uptime = process.uptime()
-              profile = `-----[ *USER INFO* ]-----\n\n➸ *Username:* ${pushname}\n➸ *Status:* ${thu.status}\n➸ *Premium*: ${isPremium ? 'Ya' : 'No'}\n➸ *Admin*: ${isGroupAdmins ? 'Ya' : 'No'}\n➸ *Prefix :* Multi Prefix\n\n=_=_=_=_=_=_=_=_=_=_=_=_=\n\nYour progress:\n➸ *Level*: ${Levelnye}\n➸ *XP*: ${Xpluu} / ${requiredXplu}`
+              profile = `-----[ *USER INFO* ]-----\n\n➸ *Username:* ${pushname}\n➸ *Status:* ${thu.status}\n➸ *Admin*: ${isGroupAdmins ? 'Ya' : 'No'}\n➸ *Prefix :* Multi Prefix\n\n=_=_=_=_=_=_=_=_=_=_=_=_=\n\nYour progress:\n➸ *Level*: ${Levelnye}\n➸ *XP*: ${Xpluu} / ${requiredXplu}`
               buff = await getBuffer(profil)
               dha.sendMessage(from, buff, image, {quoted: freply, caption: profile})
               break
@@ -3911,7 +3276,7 @@ case 'caripesan':  //by ANU TEAM
              break
 case 'nekopoilatest':
                 case 'Nekopoilatest':
-                if (!isPremium) return reply(mess.prem)
+                if (!isGroup) return reply(mess.only.group);
                     get_result = await fetchJson(`https://zenzapi.xyz/api/nekopoi/latest?apikey=Katashi`)
                     get_results = get_result.result
                     ini_txt = ""
@@ -3924,7 +3289,7 @@ case 'nekopoilatest':
                     break
                 case 'nekopoisearch':
                 case 'Nekopoisearch':
-                if (!isPremium) return reply(mess.prem)
+                if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} Isekai Harem`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://zenzapi.xyz/api/nekopoi/search?query=${query}&apikey=Katashi`)
@@ -3939,7 +3304,7 @@ case 'nekopoilatest':
                     break
 case 'nekopoisearch':
                 case 'Nekopoisearch':
-                if (!isPremium) return reply(mess.prem)
+                if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} Isekai Harem`)
                     pee = args.join(" ")
                     get_result = await fetchJson(`https://zenzapi.xyz/api/sauce?url=${pee}&apikey=Katashi`)
@@ -4028,7 +3393,7 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
 break
 case 'xs':
 case 'Xs':
-if (!isPremium) return reply(mess.prem)
+if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
                     query = args.join(" ")
 pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideosearch?query=${query}&apikey=Ikyy69`)
@@ -4048,7 +3413,7 @@ case 'xvideo':
 case 'xv':
 case 'Xvideo':
 case 'Xv':
-if (!isPremium) return reply(mess.prem)
+if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
                     c = args.join(" ")
 x = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideodetail?url=${c}&apikey=Ikyy69`)
@@ -4060,7 +3425,7 @@ case 'xnxx':
 case 'Xnxx':
 case 'xn':
 case 'Xn':
-if (!isPremium) return reply(mess.prem)
+if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
                     c = args.join(" ")
 x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/detail?url=${c}`)
@@ -4604,13 +3969,6 @@ case 'Alay':
 					if (args.length < 1) return reply('kasih teks lah^_^!!!')
 					data = await fetchJson(`https://api.zeks.xyz/api/alaymaker?kata=${body.slice(6)}&apikey=Iyungputra`)
 					reply(data.result)
-					break
-case 'chord':
-case 'Chord':
-					     if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
-                    query = args.join(" ")			
-					anu = await fetchJson(`https://zenzapi.xyz/api/chordlagu?query=${query}&apikey=Katashi`)
-					reply(anu.result.result)
 					break
 case 'wangy':
               if (!q) return
@@ -5218,7 +4576,7 @@ case 'Vaksin':
                     reply(ini_txt)
                     break
 case 'Hitungmatauang':
-case 'hitungmatauang':l
+case 'hitungmatauang':
         if (!isGroup) return reply(mess.only.group);
         if (args.length < 1) return reply(`*Example :*\n${prefix}${command} usd|id|12`)
 					makell = args.join(" ")
@@ -5293,6 +4651,189 @@ case "fast":
           fs.unlinkSync(ran);
         });
         break;
+          case "tospam":
+                      reply(mess.wait)
+if (!isQuotedSticker && !isQuotedAudio && !isQuotedImage && budy.length > 10) {
+teks = body.slice(8)
+oi1 = teks.split('|')[0]
+oi2 = teks.split('|')[1]
+if (Number(oi2) >= 50) return reply('Kebanyakan!')
+if (!Number(oi2)) return reply('Jumlah harus berupa angka!')
+	  for (let i = 0; i < oi2; i++) {
+	  dha.sendMessage(from, `${oi1}`, MessageType.text)
+	  }
+} else if (!isQuotedSticker && !isQuotedAudio && !isQuotedImage && budy.length < 10) {
+teks = mek.message.extendedTextMessage.contextInfo.quotedMessage.conversation
+if (!Number(args[0])) return reply('Jumlah harus berupa angka!')
+if (Number(args[0]) >= 50) return reply('Kebanyakan!')
+	  for (let i = 0; i < args[0]; i++) {
+	  dha.sendMessage(from, teks, MessageType.text)
+	  }
+} else if (isQuotedSticker) {
+	encmedian = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+	         median = await dha.downloadAndSaveMediaMessage(encmedian)
+				anu = fs.readFileSync(median)
+	if (!Number(args[0])) return reply('Jumlah harus berupa angka!')
+	if (Number(args[0]) >= 50) return reply('Kebanyakan!')
+	  for (let i = 0; i < args[0]; i++) {
+	  dha.sendMessage(from, anu, sticker)
+	  }
+} else if (isQuotedAudio) {
+	encmediat = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+	            mediat = await dha.downloadAndSaveMediaMessage(encmediat)
+				anu = fs.readFileSync(mediat)
+	if (!Number(args[0])) return reply('Jumlah harus berupa angka!')
+	if (Number(args[0]) >= 50) return reply('Kebanyakan!')
+	  for (let i = 0; i < args[0]; i++) {
+	  dha.sendMessage(from, anu, audio, {mimetype: 'audio/mp4', duration: 359996400, ptt:true})
+	  }
+} else if (isQuotedImage) {
+	boij = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek
+	delb = await dha.downloadMediaMessage(boij)
+	teks = body.slice(6)
+	oi1 = teks.split('|')[0]
+oi2 = teks.split('|')[1]
+if (Number(oi2) >= 50) return reply('Kebanyakan!')
+	if (!Number(oi2)) return reply('Jumlah harus berupa angka!')
+	  for (let i = 0; i < oi2; i++) {
+	  dha.sendMessage(from, delb, MessageType.image, {caption: oi1})
+	  }
+}
+	  break
+   case "vampire":
+     
+   if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
+   reply(mess.wait)
+   bapakao = body.slice(9)
+   sendMediaURL(from, `https://bx-hunter.herokuapp.com/api/flamingtext/vampire?text=${bapakao}&apikey=Ikyy69`)
+   break
+case "remm":
+   if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
+   reply(mess.wait)
+   bapakao = body.slice(6)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx5?apikey=hardianto&text=${bapakao}`)
+   break
+case "lolim":
+   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
+   reply(mess.wait)
+   bapakao = body.slice(7)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx2?apikey=hardianto&nama=${bapakao}`)
+   break
+case "kaneki":
+   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
+   reply(mess.wait)
+   bapakao = body.slice(8)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx1?apikey=hardianto&nama=${bapakao}`)
+   break
+case "gura":
+   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
+   reply(mess.wait)
+   reply(mess.wait)
+   bapakao = body.slice(6)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gura?apikey=hardianto&nama=${bapakao}`)
+   break
+case "neko":
+   reply(mess.wait)
+   bapakao = body.slice(9)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/anime/random?sfw=neko&apikey=hardianto`)
+   break
+case "darkjokes":
+  case "darkjoke":
+   bapakao = body.slice(9)
+   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/darkmeme?apikey=hardianto`)
+   break
+      case "revoke":
+        if (!mek.key.fromMe && !isGroupAdmins) return reply("Only admin");
+        if (!isBotGroupAdmins) return reply("Jadikan Bot Sebagai Admin Untuk Menggunakan Fitur Tersebut");
+        if (!isGroup) return;
+        dha.revokeInvite(from);
+        reply("```Succes revoke link group```");
+        break;
+case 'wanted':
+case 'Wanted':
+	var imgbb = require('imgbb-uploader')
+	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+	  ted = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo: mek
+	  reply(mess.wait)
+	  owgi = await dha.downloadAndSaveMediaMessage(ted)
+	  tels = body.slice(7)
+	  anu = await imgbb("520bd6f6209077d1777c2a4f20c509c2", owgi)
+	  hehe = await getBuffer(`https://fdz-app.herokuapp.com/api/maker/wanted?picurl=${anu.display_url}`)
+	 dha.sendMessage(from, hehe, image, {quoted:mek})
+	} else {
+	  reply('Foto Nya Mana Gan ðŸ—¿')
+	}
+	break
+      
+      case "deltrash":
+        if (
+          ((isMedia && !mek.message.videoMessage) || isQuotedImage) &&
+          args.length == 0
+        ) {
+          ted = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          reply("Loading.....");
+          owgi = await dha.downloadAndSaveMediaMessage(ted);
+          //	  console.log(owgi)
+          anu = await imgbb("3395a377ebac7e9f744c3683b44a2a59", owgi);
+          console.log(anu);
+          hehe = await getBuffer(
+            `https://fdz-app.herokuapp.com/api/maker/deltrash?imgurl=${anu.display_url}`
+          );
+          dha.sendMessage(from, hehe, image, {
+            quoted: mek,
+            thumbnail: Buffer.alloc(0),
+          });
+        }
+        break;
+
+      case "squidrip":
+        if (
+          ((isMedia && !mek.message.videoMessage) || isQuotedImage) &&
+          args.length == 0
+        ) {
+          ted = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          reply("Loading.....");
+          owgi = await dha.downloadAndSaveMediaMessage(ted);
+          console.log(owgi);
+          anu = await imgbb("dc773cce66f3dcf3ab3bc83dc7bf3555", owgi);
+          console.log(anu);
+          hehe = await getBuffer(
+            `https://fdz-app.herokuapp.com/api/maker/rip?picurl=${anu.display_url}`
+          );
+          dha.sendMessage(from, hehe, image, {
+            quoted: mek,
+            thumbnail: Buffer.alloc(0),
+          });
+        }
+        break;
+case 'wasted':
+case 'Wasted':
+	var imgbb = require('imgbb-uploader')
+	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+	  ted = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo: mek
+	  reply(mess.wait)
+	  owgi = await dha.downloadAndSaveMediaMessage(ted)
+	  tels = body.slice(7)
+	  anu = await imgbb("520bd6f6209077d1777c2a4f20c509c2", owgi)
+	  hehe = await getBuffer(`https://fdz-app.herokuapp.com/api/maker/wasted?imgurl=${anu.display_url}`)
+	 dha.sendMessage(from, hehe, image, {quoted:mek})
+	} else {
+	  reply('Foto Nya Mana Gan ðŸ—¿')
+	}
+	break
+case 'lirik':
+if (args.length == 0) return reply(`kamu ganteng`)
+                    c = args.join(" ")
+x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query={c}&apikey=katashi`)
+dha.sendMessage(from, `${x.result}`, text)
+break
+
 
 default:
 if (fs.existsSync(`./media/${from}.json`)) {
