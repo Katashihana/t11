@@ -837,7 +837,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}anime*
 *き⃟🦈️ ${prefix}lolivideo*
 *き⃟🦈 ${prefix}husbu*
-*き⃟🦈️ ${prefix}waifu*
 *き⃟🦈️ ${prefix}milf*
 *き⃟🦈 ${prefix}neko*
 *き⃟🦈️ ${prefix}kanna*
@@ -1518,18 +1517,6 @@ case 'tiktok':
                buff = await getBuffer(o[0].thumb)
                dha.sendMessage(from, buff, image, {quoted: mek, caption: ot})
                break
-            case 'waifu':
-            
-v = await fetchJson(`https://api.waifu.pics/sfw/waifu`)
-inifile = sendMediaURL(from, v.url, )
-buttons = [{buttonId: `${prefix + command}`,buttonText:{displayText: `➡️Next`},type:1},{buttonId:`${prefix}nhentaibot`,buttonText:{displayText:'NHENTAI BOT'},type:1}]
-              imageMsg = ( await dha.prepareMessage(from, inifile, 'imageMessage', {thumbnail: Buffer.alloc(0)})).message.imageMessage
-              buttonsMessage = {footerText:'Jangan Lupa Donasi Ya Kak ☕', imageMessage: imageMsg,
-              contentText:`klik Next untuk ke gambar selanjut nya`,buttons,headerType:4}
-              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
-              dha.relayWAMessage(prep)
-              fs.unlinkSync(`./${sender}.jpeg`)
-break
        case 'loli':
        case 'husbu':
        case 'milf':
@@ -4828,9 +4815,9 @@ case 'Wasted':
 	}
 	break
 case 'lirik':
-if (args.length == 0) return reply(`kamu ganteng`)
-                    c = args.join(" ")
-x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query={c}&apikey=katashi`)
+if (args.length == 0) return reply(`lagunya?`)
+                    query = args.join(" ")
+x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query={query}&apikey=katashi`)
 dha.sendMessage(from, `${x.result}`, text)
 break
 
