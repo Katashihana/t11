@@ -213,6 +213,10 @@ module.exports = dha = async (dha, mek) => {
         const isMuted = isGroup ? mute.includes(from) : false
         const isAntiLink = isGroup ? antilink.includes(from) : false
         const isWelkom = isGroup ? welkom.includes(from) : false
+
+
+    const totalhit = JSON.parse(fs.readFileSync("./lib/totalcmd.json"))[0]
+      .totalcmd;
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -637,8 +641,69 @@ headerType: 4
 dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 }
 
-        case 'menu':
-        case 'help':
+case "menu":
+          case "m":
+          case "help":
+            if (isBanned) return reply(mess.ban)
+        var menu = `Halloo ${pushname} Aku ${namabot}
+
+â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
+ *INFO OWNER*
+ ðŸ“§ Instagram : https://instagram.com/${instagram}
+ ðŸª€ Whatsapp : https://wa.me/${owner}
+ ðŸ“Œ Youtube : ${yt}
+ 
+*${prefix}sticker*
+*${prefix}owner*
+*${prefix}info*
+
+â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
+ 
+ Join Grup ${namabot}!
+ 
+ ${grupct}
+
+â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
+ *INFO BOT KATASHI*
+ ❏ NAMA : *Katashi-Botz*
+❏ API : @6289626029135
+❏ OWNER : *©Katashi*
+❏ API : *@6289626029135*
+❏ AKTIF : *${runtime(process.uptime())}*
+❏ BATERAI : *${baterai}%*
+❏ PREIFIX : *『${prefix}』*
+❏ Hit Today : ${hit_today.length} Hit
+❏ Total Hit : ${totalhit} Hit
+❏ Total Chat : ${totalchat.length} Chat
+â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
+`;
+        sendButImage(from, menu, "ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2", thumb, [
+          {
+            buttonId: `${prefix}menu2`,
+            buttonText: {
+              displayText: `â‹®â˜° Semua Menu`,
+            },
+            type: 1,
+          },
+          {
+            buttonId: `${prefix}owner`,
+            buttonText: {
+              displayText: `â‹®â˜° Pemilik Bot`,
+            },
+            type: 1,
+          },
+        {
+            buttonId: `${prefix}rules`,
+            buttonText: {
+              displayText: `Syarat & KetentuanðŸ“Œ`,
+            },
+            type: 1,
+          },
+        ]);
+        break;
+
+        case 'menu2':
+        case 'help2':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
         
 𝗜𝗡𝗙𝗢 𝗣𝗘𝗡𝗚𝗚𝗨𝗡𝗔 𝗕𝗢𝗧
@@ -4817,7 +4882,7 @@ case 'Wasted':
 case 'lirik':
 if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
-x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query={query}&apikey=katashi`)
+x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query=${query}&apikey=katashi`)
 dha.sendMessage(from, `${x.result}`, text)
 break
 
