@@ -663,33 +663,22 @@ case "menu":
 ❏ AKTIF : *${runtime(process.uptime())}*
 ❏ BATERAI : *${baterai}%*
 ❏ PREIFIX : *『${prefix}』*
-â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
-`;
-        sendButImage(from, menu, "ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2", thumb, [
-          {
-            buttonId: `${prefix}menu2`,
-            buttonText: {
-              displayText: `â‹®â˜° Semua Menu`,
-            },
-            type: 1,
-          },
-          {
-            buttonId: `${prefix}owner`,
-            buttonText: {
-              displayText: `â‹®â˜° Pemilik Bot`,
-            },
-            type: 1,
-          },
-        {
-            buttonId: `${prefix}rules`,
-            buttonText: {
-              displayText: `Syarat & KetentuanðŸ“Œ`,
-            },
-            type: 1,
-          },
-        ]);
-        break;
 
+â‹â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â‹
+buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
+
+               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
+
+               buttonsMessage = {
+               contentText: `${menu}`,
+               footerText: '\`\`\`ALLERTâš ï¸\n\nJIKA ANDA MEMAKAI WHATSAPP MOD DAN TOMBOL DIBAWAH TIDAK TERLIHAT\nSILAHKAN KETIK /menu2\`\`\`', imageMessage: imageMsg,
+               buttons: buttons,
+               headerType: 4
+}
+
+               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
+              dha.relayWAMessage(prep)
+                break
         case 'menu2':
         case 'help2':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
