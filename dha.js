@@ -204,7 +204,6 @@ module.exports = dha = async (dha, mek) => {
         isPlayer2 = isGroup ? players2.includes(sender) : false
         const isOwner = ownerNumber.includes(senderr)
         const isAfkOn = afk.checkAfkUser(sender, _afk)
-        const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
         const isAntiLink = isGroup ? antilink.includes(from) : false
         const isWelkom = isGroup ? welkom.includes(from) : false
@@ -432,66 +431,8 @@ module.exports = dha = async (dha, mek) => {
         if(time2 < "05:00:00"){
         var ucapanWaktu = 'Selamat Malam🌃'
 }
-         const levelRole = level.getLevelingLevel(sender, _level)
-        var role = 'Warrior III'
-        if (levelRole <= 5) {
-            role = 'Warrior II'
-        } else if (levelRole <= 10) {
-            role = 'Warrior I'
-        } else if (levelRole <= 15) {
-            role = 'Elite III'
-        } else if (levelRole <= 20) {
-            role = 'Elite II'
-        } else if (levelRole <= 25) {
-            role = 'Elite I'
-        } else if (levelRole <= 30) {
-            role = 'Master III'
-        } else if (levelRole <= 35) {
-            role = 'Master II'
-        } else if (levelRole <= 40) {
-            role = 'Master I'
-        } else if (levelRole <= 45) {
-            role = 'GrandMaster III'
-        } else if (levelRole <= 50) {
-            role = 'GrandMaster II'
-        } else if (levelRole <= 55) {
-            role = 'GrandMaster I'
-        } else if (levelRole <= 60) {
-            role = 'Epic III'
-        } else if (levelRole <= 65) {
-            role = 'Epic II'
-        } else if (levelRole <= 70) {
-            role = 'Epic I'
-        } else if (levelRole <= 75) {
-            role = 'Legend III'
-        } else if (levelRole <= 80) {
-            role = 'Legend II'
-        } else if (levelRole <= 85) {
-            role = 'Legend I'
-        } else if (levelRole <= 90) {
-            role = 'Mythic'
-        } else if (levelRole <= 95) {
-            role = 'Mythical Glory'
-        } else if (levelRole >= 100) {
-            role = 'Immortal'
-        } 
-       // FUNCTION LEVELING
-       if (isGroup && !mek.key.fromMe && !level.isGained(sender) && isLevelingOn) {
-       try {
-       level.addCooldown(sender)
-       const checkATM = atm.checkATMuser(sender, _uang)
-       if (checkATM === undefined) atm.addATM(sender, _uang)
-       const uangsaku = Math.floor(Math.random() * (15 - 25 + 1) + 20)
-       atm.addKoinUser(sender, uangsaku, _uang)
-       const currentLevel = level.getLevelingLevel(sender, _level)
-       const amountXp = Math.floor(Math.random() * (15 - 25 + 1) + 20)
-       const requiredXp = 10 * Math.pow(currentLevel, 2) + 50 * currentLevel + 100
-       level.addLevelingXp(sender, amountXp, _level)
-       if (requiredXp <= level.getLevelingXp(sender, _level)) {
-       level.addLevelingLevel(sender, 1, _level)
-       const userLevel = level.getLevelingLevel(sender, _level)
-       const fetchXp = 10 * Math.pow(userLevel, 2) + 50 * userLevel + 100
-       reply(`*「 LEVEL UP 」*\n\n➸ *Nama :* ${pushname}\n➸ *Xp :* ${level.getLevelingXp(sender, _level)} / ${fetchXp}\n➸ *Level :* ${currentLevel} -> ${level.getLevelingLevel(sender, _level)} 🆙 \n➸ *Role*: *${role}*\n\nCongrats!! 🎉🎉`)
+
+    
 } 
        } catch (err) {
        console.error(err)
@@ -1223,7 +1164,7 @@ case 'buttongc':
               teksnya = `*「GRUP MENU」*
 *き⃟🦈 ${prefix}groupsetting*
 *き⃟🦈 ${prefix}getbio* _reply_
-*き⃟?? ${prefix}afk* _alasan_
+*き⃟🦈 ${prefix}afk* _alasan_
 *き⃟🦈 ${prefix}kontak* _nomor|nama_
 *き⃟🦈 ${prefix}ceksewa*
 *き⃟🦈 ${prefix}kickall*
