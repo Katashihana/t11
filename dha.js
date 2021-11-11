@@ -701,10 +701,12 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
 𝖨𝖲𝖫𝖠𝖬 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}kisahnabi*
-*き⃟🦈 ${prefix}listdaerah
-*き⃟🦈 ${prefix}randomquran _Text_
-*き⃟🦈 ${prefix}surah <query>
-*き⃟🦈 ${prefix}quotesislam
+*き⃟🦈 ${prefix}listdaerah*
+*き⃟🦈 ${prefix}randomquran _Text_*
+*き⃟🦈 ${prefix}surah <query>*
+*き⃟🦈 ${prefix}quotesislam*
+*き⃟🦈 ${prefix}surahaudio <query>*
+*き⃟🦈 ${prefix}ayataudio <query>*
 
 𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}fbdl*
@@ -719,13 +721,14 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}tiktoknowm*
 *き⃟🦈 ${prefix}tiktokaudio*
 *き⃟🦈 ${prefix}mediafire*
-*き⃟🦈 ${prefix}nhentaipdf* _code_k_
-*き⃟🦈 ${prefix}xvideo _Link_
-*き⃟🦈 ${prefix}xs _Text_
-*き⃟🦈 ${prefix}xs2 _Text_
-*き⃟🦈 ${prefix}xnxx _Link_
-*き⃟🦈 ${prefix}ytmp42 <query>
-*き⃟🦈 ${prefix}tiktok2 <query>
+*き⃟🦈 ${prefix}nhentaipdf* _code_*
+*き⃟🦈 ${prefix}xvideo _Link_*
+*き⃟🦈 ${prefix}xs _Text_*
+*き⃟🦈 ${prefix}xs2 _Text_*
+*き⃟🦈 ${prefix}xnxx _Link_*
+*き⃟🦈 ${prefix}ytmp42 <query>*
+*き⃟🦈 ${prefix}tiktok2 <query>*
+*き⃟🦈 ${prefix}jooxplay <query>*
 
 
 *RANDOM TEXT*
@@ -770,18 +773,19 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}wanted*
 *き⃟🦈 ${prefix}deltrash*
 
-*INFORMATION MENU
+*INFORMATION MENU*
 き⃟🦈 ${prefix}cuacabandara
 き⃟🦈 ${prefix}cuaca1 <_Nama Daerah_>
 き⃟🦈 ${prefix}cuaca <_Nama Daerah>
 き⃟🦈 ${prefix}rscovid
 き⃟🦈 ${prefix}jadwalbola 
 き⃟🦈 ${prefix}jadwaltvnow 
-き⃟🦈 ${prefix}trendingtwitter
-き⃟🦈 ${prefix}mostviewfilm
-き⃟🦈 ${prefix}infoloker
-き⃟🦈 ${prefix}datasekolah <query>
-き⃟🦈 ${prefix}datasekolah2 <query>*
+*き⃟🦈 ${prefix}trendingtwitter*
+*き⃟🦈 ${prefix}mostviewfilm*
+*き⃟🦈 ${prefix}infoloker*
+*き⃟🦈 ${prefix}datasekolah <query>*
+*き⃟🦈 ${prefix}datasekolah2 <query>*
+*き⃟🦈 ${prefix}infogempa <query>*
 
 *SPAM MENU*
 *き⃟🦈 ${prefix}spamsms <89xnxx>
@@ -3063,8 +3067,8 @@ case 'caripesan':  //by ANU TEAM
        case 'lolkey':
        case 'cekapikey':
               if (args.length < 1) return reply(`Ketik ${prefix}lolkey [Apikeynya]`) 
-              anu = await fetchJson(`https://lolhuman.herokuapp.com/api/checkapikey?apikey=${q}`)
-              teks = `*YOUR APIKEY*\n\n➸ Ussername= ${anu.result.username}\n➸ Request= ${anu.result.requests}\n➸ Today= ${anu.result.today}\n➸ Akun Type= ${anu.result.account_type}\n➸ Expired= ${anu.result.expired}\n➸ API = https://lolhuman.herokuapp.com`
+              anu = await fetchJson(`https://dha.herokuapp.com/api/checkapikey?apikey=${q}`)
+              teks = `*YOUR APIKEY*\n\n➸ Ussername= ${anu.result.username}\n➸ Request= ${anu.result.requests}\n➸ Today= ${anu.result.today}\n➸ Akun Type= ${anu.result.account_type}\n➸ Expired= ${anu.result.expired}\n➸ API = https://dha.herokuapp.com`
               dha.sendMessage(from, teks, text, {quoted: troli})
               break
        case 'bugreport':
@@ -4325,7 +4329,7 @@ reply(mess.wait)
               ranp = getRandom('.gif')
               rano = getRandom('.webp')
               anu1 = `https://api.memegen.link/images/custom/${top}/${bottom}.png?background=${teks}`
-              sendStickerFromUrl(from, `${anu1}`, mess.success)
+              sendWebp(from, anu1)
               } else {
               reply('Gunakan foto/stiker!')
 }
@@ -4402,7 +4406,7 @@ reply(mess.wait)
 					reply(anu.result)
 					break  
 					case 'cerpen':
-                case 'Cerpen':l
+                case 'Cerpen':
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cerpen`)
@@ -4820,6 +4824,65 @@ if (args.length == 0) return reply(`lagunya?`)
 x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query=${query}&apikey=katashi`)
 dha.sendMessage(from, `${x.result}`, text)
 break
+case 'surahaudio':
+case 'Surahaudio':
+if (args.length == 0) return reply(`Surah Ke?`)
+                    query = args.join(" ")	
+x = await getBuffer(`https://zenzapi.xyz/api/quran/audio/${query}?apikey=Katashi`)
+reply(mess.wait)
+dha.sendMessage(from, x, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+break
+case 'ayataudio':
+case 'Ayataudio':
+        if (args.length < 1) return reply(`Ayat Ke Brp?`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+u = await fetchJson(`https://zenzapi.xyz/api/quran/audio/${r1}/${r2}?apikey=Katashi`)
+reply(mess.wait)
+ookk = await getBuffer(u.result.audio)
+dha.sendMessage(from, ookk, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+break
+case 'infogempa':
+case 'Infogempa':
+                    ini_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`)
+                    ini_buffer = await getBuffer(ini_result.map)
+                    ini_txt = `Waktu : ${ini_result.waktu}\n`
+                    ini_txt += `Magnitude : ${ini_result.magnitude}\n`
+                    ini_txt += `Kedalaman : ${ini_result.kedalaman}\n`
+                    ini_txt += `Kordinat : ${ini_result.koordinat}\n`
+                    ini_txt += `Lokasi : ${ini_result.lokasi}\n`
+                    ini_txt += `Potensi : ${ini_result.potensi}`
+                    dha.sendMessage(from, ini_buffer, image, { caption: ini_txt })
+                    break
+case 'qrmaker':
+case 'qrmaker':
+if (args.length == 0) return reply(`textnya?`)
+                    query = args.join(" ")	
+loh = await getBuffer(`https://docs-jojo.herokuapp.com/api/qrcode?text=${query}`)
+reply(mess.wait)
+dha.sendMessage(from, loh, image)
+break
+case 'jooxplay':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/downloader/joox?query=${query}&apikey=Katashi`)
+                    yoo = get_result.result
+                    ini_txt = `Title : ${yoo.lagu}\n`
+                    ini_txt += `Album : ${yoo.album}\n`
+                    ini_txt += `Artists : ${yoo.penyanyi}\n`
+                    ini_txt += `Uploaded : ${yoo.publish}\n`
+                    thumbnail = await getBuffer(yoo.img)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    reply(mess.wait)
+                    get_audio = await getBuffer(yoo.mp3Link)
+                    await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${yoo.lagu}.mp3`, quoted: mek })
+                    get_video = await getBuffer(yoo.mp4aLink)
+                    await dha.sendMessage(from, get_video, video)
+                    break
+
+
+
 
 
 default:
