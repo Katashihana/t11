@@ -655,6 +655,18 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 ❏ PREIFIX : *『${prefix}』*
 
    ━━━━━ 𝗔𝗟𝗟 𝗠𝗘𝗡𝗨 ━━━━━
+   
+ NEW FITUR
+*き⃟🦈 ${prefix}asupan* _product_
+*き⃟🦈 ${prefix}doujin* _text_
+*き⃟🦈 ${prefix}cosplay2* 
+*き⃟🦈 ${prefix}waifu*
+*き⃟🦈 ${prefix}tts* _text_
+*き⃟🦈 ${prefix}quotes* 
+*き⃟🦈 ${prefix}translate2* _kode|text_
+*き⃟🦈 ${prefix}bahasa* 
+*き⃟🦈 ${prefix}barkodemaker* _text_
+*き⃟🦈 ${prefix}faktaunik* 
 
 𝖨𝖭𝖥𝖮 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}update*
@@ -744,6 +756,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}tongue
 *き⃟🦈 ${prefix}renungan
 *き⃟🦈 ${prefix}randomcerpen
+*き⃟🦈 ${prefix}quotes* 
+*き⃟🦈 ${prefix}faktaunik
 
 𝖲𝖳𝖨𝖪𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}dadu*
@@ -772,6 +786,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}squidrip*
 *き⃟🦈 ${prefix}wanted*
 *き⃟🦈 ${prefix}deltrash*
+*き⃟🦈 ${prefix}barkodemaker* _text_
 
 *INFORMATION MENU*
 き⃟🦈 ${prefix}cuacabandara
@@ -859,6 +874,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}remm*
 *き⃟🦈 ${prefix}vanpire*
 *き⃟🦈 ${prefix}nhentai *code*
+*き⃟🦈 ${prefix}doujin* _text_
+*き⃟🦈 ${prefix}cosplay2* 
+*き⃟🦈 ${prefix}waifu*
 
 𝖮𝖳𝖧𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}tourl*
@@ -883,6 +901,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}kodepos2 (text) 
 *き⃟🦈 ${prefix}gabut 
 *き⃟🦈 ${prefix}darkjoke*
+*き⃟🦈 ${prefix}tts* _text_
+*き⃟🦈 ${prefix}translate2* _kode|text_
+*き⃟🦈 ${prefix}bahasa* 
 
 𝖮𝖶𝖭𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈️ ${prefix}bc* _teks_
@@ -935,6 +956,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}jarak <query>
 *き⃟🦈 ${prefix}nhentaisearch <query>
 *き⃟🦈 ${prefix}komiku <query>
+*き⃟🦈 ${prefix}doujin* _text_
 
 𝖥𝖴𝖭 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}mining*
@@ -959,6 +981,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}katashi _Text_
 *き⃟🦈 ${prefix}putra _Text_
 *き⃟🦈 ${prefix}simi _Text_
+*き⃟🦈 ${prefix}asupan* _product_* 
+*き⃟🦈 ${prefix}tts* _text_
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
@@ -1720,21 +1744,6 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                throw err
 })
                break
-         case 'asupan': // shansekai                
-               if (!isGroup) return reply(mess.only.group);
-               reply(mess.wait)
-               asupan()
-              .then(async (body) => {
-               asupann = body.split('\n')
-               asupanx = asupann[Math.floor(Math.random() * asupann.length)]
-               sendMediaURL(from, `http://sansekai.my.id/ptl_repost/${asupanx}`, '\`\`\`ASUPAN BRO GUA DAPAT DARI LORD ©Katashi\`\`\`')
-               console.log('Success sending video!')
-})
-              .catch(async (err) => {
-               console.log(err)
-               reply(`${err}`)
-})
-               break              
         case 'nulis':
         case 'tulis':
                if (args.length < 1) return reply('Yang mau di tulis apaan?')
@@ -2141,32 +2150,13 @@ break
                break      
 //------------------<18+ Menu>-----------------------   
        case 'randombokep':
+       if (!mek.key.fromMe && !isOwner) return
               bokep = body.slice(1)
               const bo =['https://www.mediafire.com/download/8hnhjcf3pseubgy','https://www.mediafire.com/download/cty9phda3d1s62u','https://www.mediafire.com/download/8hnhjcf3pseubgy']
               const kep = bo[Math.floor(Math.random() * bo.length)]
               dha.sendMessage(from, '*PERMINTAAN:* '+bokep+'\n*DOSA TANGGUNG PRIBADI*\n*NI BRO FREE BUAT KAMU DOWNLOAD SENDIRI:* '+ kep, text, { quoted: ftoko, caption: `NI BOKEP SAYA DAPAT DARI *©Katashi* DOSA TANGGUNG SENDIRI🗿`})
               break
- 
-case 'asupan1':
-			dha.updatePresence(from, Presence.composing) 
-				reply(mess.wait)
-				data = fs.readFileSync('./lib/asupan.js');
-				jsonData = JSON.parse(data);
-				randIndex = Math.floor(Math.random() * jsonData.length);
-				randKey = jsonData[randIndex];
-				asupan = await getBuffer(randKey.result)
-				dha.sendMessage(from, asupan, video, {quoted: mek, caption: '```ASUPAN NIH:V```'})
-				break        
-case 'asupan2':
-			dha.updatePresence(from, Presence.composing) 
-				reply(mess.wait)
-				data = fs.readFileSync('./lib/asupan2.js');
-				jsonData = JSON.parse(data);
-				randIndex = Math.floor(Math.random() * jsonData.length);
-				randKey = jsonData[randIndex];
-				asupan = await getBuffer(randKey.result)
-				dha.sendMessage(from, asupan, video, {quoted: mek, caption: '```ASUPAN NIH:V```'})
-				break 				                                 
+                     
 //------------------<WAR MENU>---------------    
  case 'pvp':
 if (!mek.key.fromMe && !isOwner) return
@@ -3384,6 +3374,7 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
 break
 case 'xs':
 case 'Xs':
+if (!isOwner)return reply(mess.only.owner)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
                     query = args.join(" ")
@@ -3404,6 +3395,7 @@ case 'xvideo':
 case 'xv':
 case 'Xvideo':
 case 'Xv':
+if (!isOwner)return reply(mess.only.owner)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
                     c = args.join(" ")
@@ -3416,6 +3408,7 @@ case 'xnxx':
 case 'Xnxx':
 case 'xn':
 case 'Xn':
+if (!isOwner)return reply(mess.only.owner)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
                     c = args.join(" ")
@@ -3451,6 +3444,7 @@ case 'xnxxsearch':
 case 'xs2':
  case 'Xnxxsearch':
 case 'Xs2':
+if (!isOwner)return reply(mess.only.owner)
 if (args.length == 0) return reply(`Example: ${prefix + command} query`)
                     c = args[0]
 pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xnxxsearch?query=${c}&apikey=Ikyy69`)
@@ -3477,6 +3471,7 @@ reply('Sukses')
 break
 case 'cuaca':
 case 'Cuaca':
+if (!isOwner)return reply(mess.only.owner)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args[0]
                     get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=vZ7wFVI3`)
@@ -4880,8 +4875,223 @@ case 'jooxplay':
                     get_video = await getBuffer(yoo.mp4aLink)
                     await dha.sendMessage(from, get_video, video)
                     break
+case 'faktaunik':
+case 'fakta':
+reply(mess.wait)
+x = await fetchJson(`https://docs-jojo.herokuapp.com/api/fakta-unik`)
+dha.sendMessage(from, `${x.result}`, text)
+break
+case 'barmaker':
+case 'barkodemaker':
+if (args.length == 0) return reply(`textnya?`)
+                    query = args.join(" ")	
+lih = await getBuffer(`https://api.zeks.me/api/barcode?apikey=Iyungputra&text=${query}`)
+reply(mess.wait)
+dha.sendMessage(from, lih, image)
+break
+case 'artinama':
+if (args.length == 0) return reply(`lagunya?`)
+                    query = args.join(" ")
+x = await fetchJson(`https://api.zeks.me/api/artinama?apikey=Iyungputra&nama=${query}`)
+dha.sendMessage(from, `${x.result}`, text)
+break
+case 'tts':
+case 'tts':
+       if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+aud = await getBuffer(`https://api.zeks.me/api/tts?apikey=Iyungputra&code=${r1}&text=${r2}`)
+reply(mess.wait)
+dha.sendMessage(from, aud, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+break
+case "bahasa"://FIXED BY ARASYAA!!!!
+case "kodebahasa"://FIXED BY ARASYAA!!!!
+case "code"://FIXED BY ARASYAA!!!!
+  reply(`*List Kode Bahasa Untuk Fitur tts id*
 
-
+  af: Afrikaans,
+  sq: Albanian,
+  ar: Arabic,
+  hy: Armenian,
+  ca: Catalan,
+  zh: Chinese,
+  zh-cn: Chinese (Mandarin/China),
+  zh-tw: Chinese (Mandarin/Taiwan),
+  zh-yue: Chinese (Cantonese),
+  hr: Croatian,
+  cs: Czech,
+  da: Danish,
+  nl: Dutch,
+  en: English,
+  en-au: English (Australia),
+  en-uk: English (United Kingdom),
+  en-us: English (United States),
+  eo: Esperanto,
+  fi: Finnish,
+  fr: French,
+  de: German,
+  el: Greek,
+  ht: Haitian Creole,
+  hi: Hindi,
+  hu: Hungarian,
+  is: Icelandic,
+  id: Indonesian,
+  it: Italian,
+  ja: Japanese,
+  ko: Korean,
+  la: Latin,
+  lv: Latvian,
+  mk: Macedonian,
+  no: Norwegian,
+  pl: Polish,
+  pt: Portuguese,
+  pt-br: Portuguese (Brazil),
+  ro: Romanian,
+  ru: Russian,
+  sr: Serbian,
+  sk: Slovak,
+  es: Spanish,
+  es-es: Spanish (Spain),
+  es-us: Spanish (United States),
+  sw: Swahili,
+  sv: Swedish,
+  ta: Tamil,
+  th: Thai,
+  tr: Turkish,
+  vi: Vietnamese,
+  cy: Welsh
+  
+  Ketik /tts _Kode Bahasa_ _Text_
+  contoh /tts id Arasya Ganteng`)
+  break
+case 'translate2':
+if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+x = await fetchJson(`https://kocakz.herokuapp.com/api/edu/translate?lang=${r1}&text=${r2}`)
+dha.sendMessage(from, `${x.text}`, text)
+break
+case 'quotes':
+case 'randomquotes':
+                    quotes = await fetchJson(`https://kocakz.herokuapp.com/api/random/text/quotes`)
+                    quotes = quotes.result
+                    author = quotes.by
+                    iyah = quotes.quote
+                    reply(`_${iyah}_\n\n*â€• ${author}*`)
+                    break
+case 'waifu':
+case 'radomwaifu':
+waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/waifu`)
+reply(mess.wait)
+dha.sendMessage(from, waipu, image)
+break
+case 'cosplay2':
+case 'randomcosplay2':
+waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/cosplay`)
+reply(mess.wait)
+dha.sendMessage(from, waipu, image)
+break
+case 'doujindesuSearch': // Update By KATASHI
+case 'doujinSearch': // Update By KATASHI
+case 'doujin': // Update By KATASHI
+        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Teksnya?`)
+                    query = args.join(" ")	
+reply(mess.wait)
+					data = await fetchJson(`https://velgrynd.herokuapp.com/api/doujindesuSearch?query=${query}`, {method: 'get'})
+					teks = 'DOUJIN DESU SEARCH\n'
+					for (let i of data.result) {
+						teks += `*Nama:* : ${i.title}\n*Skor:* ${i.score}\n*Status:* ${i.status}\n*View:* ${i.link}\n*-:* ${i.thumb}\n\nDOUJIN DESU SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'bocil':
+reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dapuhy.ga/api/asupan/asupanbocil?apikey=T3SleesqYU6gyfM`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case '+62':
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://dha.herokuapp.com/api/asupan?apikey=rivalgans`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'santuy':
+case 'Santuy':
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dapuhy.ga/api/asupan/asupansantuy?apikey=T3SleesqYU6gyfM`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'ukhti':
+case 'Ukhti':
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dapuhy.ga/api/asupan/asupanukhty?apikey=T3SleesqYU6gyfM`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'rikagusriani':
+case 'Rikagusriani':
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dapuhy.ga/api/asupan/asupanrikagusriani?apikey=T3SleesqYU6gyfM`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'ghea':
+case 'Ghea':
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dapuhy.ga/api/asupan/asupanghea?apikey=T3SleesqYU6gyfM`)
+                    ini_buffer = await getBuffer(get_result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+                    case 'chat':
+	case 'Chat':
+			if (args[0].startsWith('08')) return reply('Awali nomor dengan 62')
+            if (args[0].startsWith('+62')) return reply('Awali nomor dengan 62')
+			if (args.length < 1) return reply(`Penggunaan ${prefix}chat 62xxxx|teks`)
+            var pc = body.slice(6)
+            var nomor = pc.split("|")[0];
+            var org = pc.split("|")[1];
+            dha.sendMessage(nomor+'@s.whatsapp.net', org, MessageType.text)   
+            reply(`Sukses mengirim chat:\n${org},@${nomor}`)
+            break
+case 'vietnam':
+          case 'malaysia':
+          case 'korea':
+          case 'indonesia':
+          case 'japan':
+          case 'thailand':
+          case 'china':
+              x = await fetchJson(`https://apikatashi.herokuapp.com/api/cewe/${command}?apikey=Alphabot`)
+reply(mess.wait)
+gamb = await getBuffer(x.result.url)
+dha.sendMessage(from, gamb, image, {quoted: mek})
+break
+              break
+case 'asupan':
+               list = []
+               listmenu = [`bocil`,`+62`,`santuy`,`ukhti`,`rikagusriani`,`ghea`,`vietnam`,`malaysia`,`indonesia`,`korea`,`japan`,`thailand`,`china`,`owner`]
+               listmenuu = [`BOCIL`,`INDONESIA`,`SANTUY`,`UKHTI`,`RIKA GUSRIANI`,`GHEA`,`VIETNAM`,`MALAYSIA`,`INDONESIA`,`KOREA`,`JAPANESE`,`THAILAND`,`CHINA`,`ORANG TANPAN`]
+               nombor = 1
+               startnum = 0
+               for (let x of listmenu) {
+               const yy = {title: 'silahkan pilih menunya ' + nombor++,
+                    rows: [
+                       {
+                        title: `${listmenuu[startnum++]}`,
+                        description: ``,
+                        rowId: `${prefix}${x}`
+                      }
+                    ]
+                   }
+                        list.push(yy)
+           }
+               listmsg(from, `${ucapanWaktu}`,  `Hai kak......\n*${pushname}*\nPilih Disini`, list)
+               break
 
 
 
