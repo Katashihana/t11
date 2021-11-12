@@ -983,6 +983,64 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}simi _Text_
 *き⃟🦈 ${prefix}asupan* _product_* 
 *き⃟🦈 ${prefix}tts* _text_
+
+#- *List Kode Bahasa Untuk Fitur tts id*
+
+  af: Afrikaans,
+  sq: Albanian,
+  ar: Arabic,
+  hy: Armenian,
+  ca: Catalan,
+  zh: Chinese,
+  zh-cn: Chinese (Mandarin/China),
+  zh-tw: Chinese (Mandarin/Taiwan),
+  zh-yue: Chinese (Cantonese),
+  hr: Croatian,
+  cs: Czech,
+  da: Danish,
+  nl: Dutch,
+  en: English,
+  en-au: English (Australia),
+  en-uk: English (United Kingdom),
+  en-us: English (United States),
+  eo: Esperanto,
+  fi: Finnish,
+  fr: French,
+  de: German,
+  el: Greek,
+  ht: Haitian Creole,
+  hi: Hindi,
+  hu: Hungarian,
+  is: Icelandic,
+  id: Indonesian,
+  it: Italian,
+  ja: Japanese,
+  ko: Korean,
+  la: Latin,
+  lv: Latvian,
+  mk: Macedonian,
+  no: Norwegian,
+  pl: Polish,
+  pt: Portuguese,
+  pt-br: Portuguese (Brazil),
+  ro: Romanian,
+  ru: Russian,
+  sr: Serbian,
+  sk: Slovak,
+  es: Spanish,
+  es-es: Spanish (Spain),
+  es-us: Spanish (United States),
+  sw: Swahili,
+  sv: Swedish,
+  ta: Tamil,
+  th: Thai,
+  tr: Turkish,
+  vi: Vietnamese,
+  cy: Welsh
+  
+  Ketik /tts _Kode Bahasa_ _Text_
+  contoh /tts id Putra Ganteng -#
+
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
@@ -1899,21 +1957,6 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               sendWebp(from, pjrr)
 }
 )
-              break
-       case 'loliv':
-       case 'lolivid':
-       case 'lolivideo':
-              reply(mess.wait)
-              anu = await fetchText('https://raw.githubusercontent.com/AlvioAdjiJanuar/random/main/loli.txt')
-             .then(async (body) => {
-              anu = body.split('\n')
-              anu = anu[Math.floor(Math.random() * anu.length)]
-              sendMediaURL(from, anu)
-})
-             .catch(async (err) => {
-              console.error(err)
-              reply(`${err}`)
-})
               break
        case 'gifstiker':
 				case 's':
@@ -4895,76 +4938,22 @@ if (args.length == 0) return reply(`lagunya?`)
 x = await fetchJson(`https://api.zeks.me/api/artinama?apikey=Iyungputra&nama=${query}`)
 dha.sendMessage(from, `${x.result}`, text)
 break
-case 'tts':
-case 'tts':
-       if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
+case 'textrepeat':
+        if (args.length < 1) return reply(`teks|jumlah`)
 					makell = args.join(" ")
 					r1 = makell.split("|")[0];
 					r2 = makell.split("|")[1];
-aud = await getBuffer(`https://api.zeks.me/api/tts?apikey=Iyungputra&code=${r1}&text=${r2}`)
-reply(mess.wait)
-dha.sendMessage(from, aud, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+x = await fetchJson(`https://yahaakatashiganz.herokuapp.com/api/repeat?text=${r1}&jumlah=${r2}&apikey=Katashi`)
+dha.sendMessage(from, `${x.result}`, text)
 break
-case "bahasa"://FIXED BY ARASYAA!!!!
-case "kodebahasa"://FIXED BY ARASYAA!!!!
-case "code"://FIXED BY ARASYAA!!!!
-  reply(`*List Kode Bahasa Untuk Fitur tts id*
-
-  af: Afrikaans,
-  sq: Albanian,
-  ar: Arabic,
-  hy: Armenian,
-  ca: Catalan,
-  zh: Chinese,
-  zh-cn: Chinese (Mandarin/China),
-  zh-tw: Chinese (Mandarin/Taiwan),
-  zh-yue: Chinese (Cantonese),
-  hr: Croatian,
-  cs: Czech,
-  da: Danish,
-  nl: Dutch,
-  en: English,
-  en-au: English (Australia),
-  en-uk: English (United Kingdom),
-  en-us: English (United States),
-  eo: Esperanto,
-  fi: Finnish,
-  fr: French,
-  de: German,
-  el: Greek,
-  ht: Haitian Creole,
-  hi: Hindi,
-  hu: Hungarian,
-  is: Icelandic,
-  id: Indonesian,
-  it: Italian,
-  ja: Japanese,
-  ko: Korean,
-  la: Latin,
-  lv: Latvian,
-  mk: Macedonian,
-  no: Norwegian,
-  pl: Polish,
-  pt: Portuguese,
-  pt-br: Portuguese (Brazil),
-  ro: Romanian,
-  ru: Russian,
-  sr: Serbian,
-  sk: Slovak,
-  es: Spanish,
-  es-es: Spanish (Spain),
-  es-us: Spanish (United States),
-  sw: Swahili,
-  sv: Swedish,
-  ta: Tamil,
-  th: Thai,
-  tr: Turkish,
-  vi: Vietnamese,
-  cy: Welsh
-  
-  Ketik /tts _Kode Bahasa_ _Text_
-  contoh /tts id Arasya Ganteng`)
-  break
+case 'pinterest':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
+                    query = args.join(" ")
+                    ini_url = await fetchJson(`https://viko-api.herokuapp.com/api/pinterest?query=${query}&apikey=katashi`)
+                    ini_url = ini_url.url_download
+                    ini_buffer = await getBuffer(ini_url)
+                    await dha.sendMessage(from, ini_buffer, image, { quoted: mek })
+                    break
 case 'translate2':
 if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
 					makell = args.join(" ")
@@ -5004,6 +4993,43 @@ reply(mess.wait)
 					teks = 'DOUJIN DESU SEARCH\n'
 					for (let i of data.result) {
 						teks += `*Nama:* : ${i.title}\n*Skor:* ${i.score}\n*Status:* ${i.status}\n*View:* ${i.link}\n*-:* ${i.thumb}\n\nDOUJIN DESU SEARCH\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'tts':
+       if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+aud = await getBuffer(`https://api.zeks.me/api/tts?apikey=Iyungputra&code=${r1}&text=${r2}`)
+reply(mess.wait)
+dha.sendMessage(from, aud, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+break
+case 'caribioskop': // Update By KATASHI
+case 'caribioskop': // Update By KATASHI
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+if (args.length == 0) return reply(`kotanya?`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/bioskop?kota=${query}`, {method: 'get'})
+					teks = 'CARI BIOSKOP\n'
+					for (let x of data.result) {
+						teks += `*Nama:* : ${x.title}\n*Alamat* : ${x.alamat}\n*Bintang* : ${x.bintang}\n*Image* : ${x.img}\n*Link* : ${x.url}\n\n*CARI BIOSKOP*\n`
+					}
+					reply(teks.trim())
+					
+					break
+case 'linkwa': // Update By KATASHI
+case 'linkwa': // Update By KATASHI
+        if (!isGroup) return reply(mess.only.group);
+reply(mess.wait)
+if (args.length == 0) return reply(`kotanya?`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://zenzapi.xyz/api/wagroup?query=${query}&apikey=Katashi`, {method: 'get'})
+					teks = 'GROUP WA\n'
+					for (let x of data.result) {
+						teks += `*Perusahaan:* : ${x.nama}\n*Url* : ${x.link}\n\n*GROUP WA*\n`
 					}
 					reply(teks.trim())
 					
