@@ -5271,7 +5271,7 @@ Reminder berhasil diaktifkan!
         }
         break;
 case 'addprem':  
-if (!isOwner && !mek.key.fromMe) return reply(`LU SIAPA AJG`)
+if (!isOwner) return reply(`LU SIAPA AJG`)
 					adprem = `${args[0].replace('@','')}@s.whatsapp.net`
 					prem.push(adprem)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
@@ -5279,7 +5279,7 @@ if (!isOwner && !mek.key.fromMe) return reply(`LU SIAPA AJG`)
 					break				
 		case 'dellprem':  
 					
-					if (!isOwner && !mek.key.fromMe) return reply(mess.own)    
+					if (!isOwner) return reply(mess.own)    
 					delp = body.slice(10)
 					prem.splice(`${delp}@s.whatsapp.net`, 1)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
