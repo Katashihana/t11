@@ -4933,6 +4933,7 @@ case 'fakta':
 reply(mess.wait)
 x = await fetchJson(`https://docs-jojo.herokuapp.com/api/fakta-unik`)
 dha.sendMessage(from, `${x.result}`, text)
+reply(mess.success)
 break
 case 'barmaker':
 case 'barkodemaker':
@@ -4947,6 +4948,7 @@ if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
 x = await fetchJson(`https://api.zeks.me/api/artinama?apikey=Iyungputra&nama=${query}`)
 dha.sendMessage(from, `${x.result}`, text)
+reply(mess.success)
 break
 case 'textrepeat':
         if (args.length < 1) return reply(`teks|jumlah`)
@@ -4955,6 +4957,7 @@ case 'textrepeat':
 					r2 = makell.split("|")[1];
 x = await fetchJson(`https://yahaakatashiganz.herokuapp.com/api/repeat?text=${r1}&jumlah=${r2}&apikey=Katashi`)
 dha.sendMessage(from, `${x.result}`, text)
+reply(mess.success)
 break
 case 'pinterest':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -4988,12 +4991,14 @@ case 'radomwaifu':
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/waifu`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
+reply(mess.success)
 break
 case 'cosplay2':
 case 'randomcosplay2':
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/cosplay`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
+reply(mess.success)
 break
 case 'doujindesuSearch': // Update By KATASHI
 case 'doujinSearch': // Update By KATASHI
@@ -5294,13 +5299,7 @@ case 'listprem':
 					teks += `\n*Total : ${prem.length}*`
 					dha.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": prem } })
 					break
-case 'randomnama':
-if (args.length == 0) return reply(`Gendernya?\nMale or Famale`)
-                    query = args.join(" ")	
-					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/random-name?gender=${query}`)
-					reply(data.result)
-					reply(mess.success)
-					break
+
 
 
 default:
