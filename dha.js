@@ -61,6 +61,9 @@ const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
+const reminder = require("./lib/reminder")
+const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
+
 
 var kuis = false
 hit_today = []
@@ -95,6 +98,44 @@ let antilink = JSON.parse(fs.readFileSync('./database/group/antilink.json'));
 let mute = JSON.parse(fs.readFileSync('./database/group/mute.json'));
 let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
+const _reminder = JSON.parse(fs.readFileSync("./database/reminder.json"));
+
+const getPremiumExpired = (sender) => {
+
+		    let position = null
+		    Object.keys(prem).forEach((i) => {
+		        if (prem[i].id === sender) {
+		            position = i
+		        }
+		    })
+		    if (position !== null) {
+		        return prem[position].expired
+		    }
+		} 
+		
+		const expiredCheck = () => {
+		    setInterval(() => {
+		        let position = null
+		        Object.keys(prem).forEach((i) => {
+		            if (Date.now() >= prem[i].expired) {
+		                position = i
+		            }
+		        })
+		        if (position !== null) {
+		            console.log(`Premium expired: ${prem[position].id}`)
+		            prem.splice(position, 1)
+		            fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+		             }
+		    }, 1000)
+		} 
+		
+		const getAllPremiumUser = () => {
+		    const array = []
+		    Object.keys(prem).forEach((i) => {
+		        array.push(prem[i].id)
+		    })
+		    return array
+		}
 
 
 // Sticker Cmd
@@ -212,7 +253,8 @@ module.exports = dha = async (dha, mek) => {
         const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
         const isAntiLink = isGroup ? antilink.includes(from) : false
-        const isWelkom = isGroup ? welkom.includes(from) : false
+        const isWelkom = isGroup ? welkom.includes(from) : true
+        const isPremium= prem.includes(sender)
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -653,20 +695,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 ❏ AKTIF : *${runtime(process.uptime())}*
 ❏ BATERAI : *${baterai}%*
 ❏ PREIFIX : *『${prefix}』*
+❏ HIT TODAY : *${hit_today.length} Hit*
+❏ TOTAL HIT : *${totalhit} Hit*
 
    ━━━━━ 𝗔𝗟𝗟 𝗠𝗘𝗡𝗨 ━━━━━
-   
- NEW FITUR
-*き⃟🦈 ${prefix}asupan* _product_
-*き⃟🦈 ${prefix}doujin* _text_
-*き⃟🦈 ${prefix}cosplay2* 
-*き⃟🦈 ${prefix}waifu*
-*き⃟🦈 ${prefix}tts* _text_
-*き⃟🦈 ${prefix}quotes* 
-*き⃟🦈 ${prefix}translate2* _kode|text_
-*き⃟🦈 ${prefix}bahasa* 
-*き⃟🦈 ${prefix}barkodemaker* _text_
-*き⃟🦈 ${prefix}faktaunik* 
 
 𝖨𝖭𝖥𝖮 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}update*
@@ -680,7 +712,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}ping*
 *き⃟🦈 ${prefix}runtime*
 *き⃟🦈 ${prefix}donasi*
-*き⃟🦈 ${prefix}bugreport* [ keluhan ]
+*き⃟🦈 ${prefix}report* [ keluhan ]
 
 𝖦𝖱𝖴𝖯 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}groupsetting*
@@ -705,6 +737,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}linkgc*
 *き⃟🦈 ${prefix}getdeskgc*
 *き⃟🦈 ${prefix}revoke*
+*き⃟🦈 ${prefix}reminder* _text/waktu_
 
 𝖦𝖠𝖬𝖤 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}slot*
@@ -741,6 +774,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}ytmp42 <query>*
 *き⃟🦈 ${prefix}tiktok2 <query>*
 *き⃟🦈 ${prefix}jooxplay <query>*
+*き⃟🦈 ${prefix}tts* _kode|text_
+*き⃟🦈 ${prefix}pinterest* _text_
+*き⃟🦈${prefix}artinama* _text_
 
 
 *RANDOM TEXT*
@@ -758,6 +794,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}randomcerpen
 *き⃟🦈 ${prefix}quotes* 
 *き⃟🦈 ${prefix}faktaunik
+*き⃟?? ${prefix}cerpencinta* 
+*き⃟🦈${prefix}artinama* _text_
+*き⃟🦈${prefix}randomnama* _gender_
 
 𝖲𝖳𝖨𝖪𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}dadu*
@@ -768,6 +807,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}smeme* _teks|teks_
 *き⃟🦈️ ${prefix}swm* _pack|author_
 *き⃟🦈️ ${prefix}take* _pack|author_
+*き⃟🦈 ${prefix}caristicker* _text_
 
 𝖳𝖮𝖮𝖫𝖲 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}toimg*
@@ -827,11 +867,12 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}githubstalk*
 
 *RANDOM IMAGE*
-*き⃟🦈 ${prefix}naruto
+*き⃟🦈 ${prefix}narutobanner
 *き⃟🦈 ${prefix}aesthetic
 *き⃟🦈 ${prefix}bts
 *き⃟🦈 ${prefix}blackpink
 *き⃟🦈 ${prefix}ppcp
+*き⃟🦈 ${prefix}pinterest* _text_
 
 𝖠𝖣𝖣 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}addvn*
@@ -904,6 +945,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}tts* _text_
 *き⃟🦈 ${prefix}translate2* _kode|text_
 *き⃟🦈 ${prefix}bahasa* 
+*き⃟🦈 ${prefix}linkwa* _text_
 
 𝖮𝖶𝖭𝖤𝖱 𝖬𝖤𝖭𝖴 
 *き⃟🦈️ ${prefix}bc* _teks_
@@ -922,7 +964,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}setname*
 *き⃟🦈 ${prefix}getpp*
 *き⃟🦈 ${prefix}sharelock*
-*き⃟🦈 ${prefix}chat* _nomor|teks_
+*き⃟🦈 ${prefix}chat* _nomor|teks_*
+*き⃟🦈 ${prefix}listptrem* _text_
+*き⃟🦈 ${prefix}addprem* member
+*き⃟🦈 ${prefix}delprem* member
 
 𝖲𝖤𝖠𝖱𝖢𝖧𝖨𝖭𝖦 𝖬𝖤𝖭𝖴
 *き⃟🦈 ${prefix}ytsearch* _query_
@@ -957,6 +1002,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}nhentaisearch <query>
 *き⃟🦈 ${prefix}komiku <query>
 *き⃟🦈 ${prefix}doujin* _text_
+*き⃟🦈 ${prefix}caribioskop* _lokask_
 
 𝖥𝖴𝖭 𝖬𝖤𝖭𝖴 
 *き⃟🦈 ${prefix}mining*
@@ -1226,7 +1272,7 @@ Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contex
 *Katashi SEWA BOT WA*
 FITUR:ANTILINK,WELCOME,ADD,KICK,DEMOTE,DAN MASIH BANYAK LAGI
 
-HARGA PERMANEN:~20k~ PROMO!!! *10K* MINAT? HUBUNGI OWNER`
+HARGA PERMANEN:~15k~ PROMO!!! *5k* MINAT? HUBUNGI OWNER`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: mek, caption: teksnya })
               break             
 //------------------< bayar menu >-------------------  
@@ -2110,24 +2156,6 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               fs.unlinkSync(ran)
 })
               break
-       case 'smeme': 
-reply('Loading.... ')
-top = arg.split('|')[0]
-bottom = arg.split('|')[1]
-var imgbb = require('imgbb-uploader')
-if ((isMedia && !mek.message.videoMessage || isQuotedImage || isQuotedSticker) && args.length > 0) {
-ger = isQuotedImage || isQuotedSticker ? JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo : mek 
-owgi = await  dha.downloadAndSaveMediaMessage(ger)
-anu = await imgbb("cedeb44b8d204947a6833ca1412ca77d", owgi)
-teks = `${anu.display_url}`
-ranp = getRandom('.gif')
-rano = getRandom('.webp')
-anu1 = `https://api.memegen.link/images/custom/${top}/${bottom}.png?background=${teks}`
-sendStickerUrl(from, `${anu1}`)
-} else {
-reply('Gunakan foto/stiker!')
-}
-break
 
        case 'memeimg':
        case 'memegen':                    
@@ -2193,7 +2221,7 @@ break
                break      
 //------------------<18+ Menu>-----------------------   
        case 'randombokep':
-       if (!mek.key.fromMe && !isOwner) return
+       if (!mek.key.fromMe && !isOwner && isPremium) return
               bokep = body.slice(1)
               const bo =['https://www.mediafire.com/download/8hnhjcf3pseubgy','https://www.mediafire.com/download/cty9phda3d1s62u','https://www.mediafire.com/download/8hnhjcf3pseubgy']
               const kep = bo[Math.floor(Math.random() * bo.length)]
@@ -2669,7 +2697,7 @@ case 'linkgc':
 				dha.sendMessage(from, yeh, text, {quoted: mek})
 				break
             case 'kick':
-             if (!isGroupAdmins) return reply(mess.only.admin)
+             if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
              if (!isGroup) return reply(mess.only.group)
              kick(from, mentionUser)
              break
@@ -2730,7 +2758,7 @@ case 'linkgc':
               thu = await dha.getStatus(`${sender.split('@')[0]}@s.whatsapp.net`, MessageType.text)
               me = dha.user
               uptime = process.uptime()
-              profile = `-----[ *USER INFO* ]-----\n\n➸ *Username:* ${pushname}\n➸ *Status:* ${thu.status}\n➸ *Admin*: ${isGroupAdmins ? 'Ya' : 'No'}\n➸ *Prefix :* Multi Prefix\n\n=_=_=_=_=_=_=_=_=_=_=_=_=\n\nYour progress:\n➸ *Level*: ${Levelnye}\n➸ *XP*: ${Xpluu} / ${requiredXplu}`
+              profile = `-----[ *USER INFO* ]-----\n\n➸ *Username:* ${pushname}\n➸ *Status:* ${thu.status}\n➸ *Admin*: ${isGroupAdmins ? 'Ya' : 'No'}\n➸ *Prefix :* Multi Prefix\n\n=_=_=_=_=_=_=_=_=_=_=_=_=\n\n`
               buff = await getBuffer(profil)
               dha.sendMessage(from, buff, image, {quoted: freply, caption: profile})
               break
@@ -2755,7 +2783,7 @@ case 'linkgc':
               dha.sendMessage(from, await getBuffer(pic), image, {quoted: mek, caption: ingfo, contextInfo: {"mentionedJid": [groupMetadata.owner.replace('@c.us', '@s.whatsapp.net')]}})
               break
        case 'tagall':
-              if (!isGroupAdmins) return reply(mess.only.admin)
+              if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
               if (!isGroup) return reply(mess.only.group)
               let arr = [];
               let txti = `*[ TAG ALL ]*\n\n${q ? q : ''}\n\n`
@@ -2772,7 +2800,7 @@ case 'linkgc':
 }
               break
        case 'leave':
-              if (!isGroupAdmins) return reply(mess.only.admin)
+              if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
               if (!isGroup) return reply(mess.only.group)
               setTimeout( () => {
               dha.groupLeave(from) 
@@ -2794,7 +2822,7 @@ case 'linkgc':
 }
              break
       case 'hidetag':
-             if (!isGroupAdmins) return reply(mess.only.admin)
+             if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
              try {
              quotedText = mek.message.extendedTextMessage.contextInfo.quotedMessage.conversation
              hideTag(from, `${quotedText}`)
@@ -2803,7 +2831,7 @@ case 'linkgc':
 }
              break
       case 'sider':
-             if (!isGroupAdmins) return reply(mess.only.admin)
+             if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
              if(!isGroup) return reply(mess.only.group)
              try {
              infom = await dha.messageInfo(from, mek.message.extendedTextMessage.contextInfo.stanzaId)
@@ -2869,12 +2897,6 @@ case 'linkgc':
               Toxic().then(toxic => {
               reply (toxic)
 })
-              break
-        case 'citacita':
-              const cita =['http://piyobot.000webhostapp.com/citacita1.mp3','http://piyobot.000webhostapp.com/citacita2.mp3','http://piyobot.000webhostapp.com/citacita3.mp3','http://piyobot.000webhostapp.com/citacita4.mp3','http://piyobot.000webhostapp.com/citacita5.mp3','http://piyobot.000webhostapp.com/citacita6.mp3','http://piyobot.000webhostapp.com/citacita7.mp3','http://piyobot.000webhostapp.com/citacita8.mp3','http://piyobot.000webhostapp.com/citacita9.mp3','http://piyobot.000webhostapp.com/citacita10.mp3','http://piyobot.000webhostapp.com/citacita11.mp3','http://piyobot.000webhostapp.com/citacita12.mp3','http://piyobot.000webhostapp.com/citacita13.mp3','http://piyobot.000webhostapp.com/citacita14.mp3','http://piyobot.000webhostapp.com/citacita15.mp3','http://piyobot.000webhostapp.com/citacita16.mp3','http://piyobot.000webhostapp.com/citacita17.mp3','http://piyobot.000webhostapp.com/citacita18.mp3','http://piyobot.000webhostapp.com/citacita19.mp3','http://piyobot.000webhostapp.com/citacita20.mp3','http://piyobot.000webhostapp.com/citacita21.mp3','http://piyobot.000webhostapp.com/citacita22.mp3','http://piyobot.000webhostapp.com/citacita23.mp3','http://piyobot.000webhostapp.com/citacita24.mp3','http://piyobot.000webhostapp.com/citacita25.mp3','http://piyobot.000webhostapp.com/citacita26.mp3','http://piyobot.000webhostapp.com/citacita27.mp3','http://piyobot.000webhostapp.com/citacita28.mp3','http://piyobot.000webhostapp.com/citacita29.mp3','http://piyobot.000webhostapp.com/citacita30.mp3','http://piyobot.000webhostapp.com/citacita31.mp3','http://piyobot.000webhostapp.com/citacita32.mp3','http://piyobot.000webhostapp.com/citacita33.mp3','http://piyobot.000webhostapp.com/citacita34.mp3','http://piyobot.000webhostapp.com/citacita35.mp3']
-              const cita3 = cita[Math.floor(Math.random() * cita.length)]
-              cita2 = await getBuffer(cita3)
-              dha.sendMessage(from, cita2, audio,{mimetype: 'audio/mp4', ptt:true, quoted: mek})
               break
        case 'apakah':
               apakah = body.slice(1)
@@ -3104,7 +3126,7 @@ case 'caripesan':  //by ANU TEAM
               teks = `*YOUR APIKEY*\n\n➸ Ussername= ${anu.result.username}\n➸ Request= ${anu.result.requests}\n➸ Today= ${anu.result.today}\n➸ Akun Type= ${anu.result.account_type}\n➸ Expired= ${anu.result.expired}\n➸ API = https://dha.herokuapp.com`
               dha.sendMessage(from, teks, text, {quoted: troli})
               break
-       case 'bugreport':
+       case 'report':
               if (args.length < 1) return reply(`Ketik ${prefix}bugreport [fiturnya] [Error Nya Gimana]`) 
               teks = args.join(' ')
               reply('Terima Kasih Telah Melaporkan Bug Pada Owner, Jika Itu Sekedar Iseng Maka Akan Di Ban Oleh Bot!')
@@ -3171,7 +3193,7 @@ case 'caripesan':  //by ANU TEAM
                break
         case 'mute':
                if (!isGroup) return reply(mess.only.group)
-               if (!isGroupAdmins) return reply(mess.only.admin)
+               if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
                if (args.length < 1) return reply('!mute enable/disable')
                if (args[0].toLowerCase() === 'enable'){
                if (isMuted) return reply(`udah di mute`)
@@ -3190,7 +3212,7 @@ case 'caripesan':  //by ANU TEAM
         case 'grupsetting':
         case 'groupsetting':
                if (!isGroup) return reply(mess.only.group)
-               if (!isGroupAdmins) return reply(mess.only.admin)
+               if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
                list = []
                com = [`group buka`,`leveling enable`,`welcome enable`,`antilink enable`,`mute enable`]
                comm = [`group tutup`,`leveling disable`,`welcome disable`,`antilink disable`,`mute disable`]
@@ -3220,7 +3242,7 @@ case 'caripesan':  //by ANU TEAM
              break
  		case 'group':
 					if (!isGroup) return reply(ind.groupo())
-					if (!isGroupAdmins) return reply(ind.admin())
+					if (!isGroupAdmins && isPremium) return reply(ind.admin())
 					if (!isBotGroupAdmins) return reply(ind.badmin())
 					if (args[0] === 'buka') {
 					    reply(`*BERHASIL MEMBUKA GROUP*`)
@@ -3417,7 +3439,7 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
 break
 case 'xs':
 case 'Xs':
-if (!isOwner)return reply(mess.only.owner)
+if (!isPremium) return reply(mess.prem)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
                     query = args.join(" ")
@@ -3438,7 +3460,7 @@ case 'xvideo':
 case 'xv':
 case 'Xvideo':
 case 'Xv':
-if (!isOwner)return reply(mess.only.owner)
+if (!isPremium) return reply(mess.prem)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
                     c = args.join(" ")
@@ -3451,7 +3473,7 @@ case 'xnxx':
 case 'Xnxx':
 case 'xn':
 case 'Xn':
-if (!isOwner)return reply(mess.only.owner)
+if (!isPremium) return reply(mess.prem)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
                     c = args.join(" ")
@@ -3487,7 +3509,7 @@ case 'xnxxsearch':
 case 'xs2':
  case 'Xnxxsearch':
 case 'Xs2':
-if (!isOwner)return reply(mess.only.owner)
+if (!isPremium) return reply(mess.prem)
 if (args.length == 0) return reply(`Example: ${prefix + command} query`)
                     c = args[0]
 pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xnxxsearch?query=${c}&apikey=Ikyy69`)
@@ -3506,7 +3528,7 @@ break
         case 'meadmin':
         case 'Meadmin':
 if (!isGroup) return reply('Khusus Group')
-if (!isOwner) return
+if (!isPremium) return reply(mess.prem)
 if (isGroupAdmins) return reply('Lu Dah Admin Om')
 if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 dha.groupMakeAdmin(from, [sender])
@@ -3514,7 +3536,7 @@ reply('Sukses')
 break
 case 'cuaca':
 case 'Cuaca':
-if (!isOwner)return reply(mess.only.owner)
+if (!isPremium) return reply(mess.prem)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args[0]
                     get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=vZ7wFVI3`)
@@ -3608,24 +3630,6 @@ case 'Del':
 		        case 'Delete':                
 				dha.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
 				break
-case 'meme':
-case 'Meme':
-reply(mess.wait)
-anu = await fetchJson(`https://api-yuzzu.herokuapp.com/api/darkjokes?apikey=Yuzzu`)
-buff = await getBuffer(anu.result.result)
-gbutsan = [{buttonId:`meme`,buttonText:{displayText:'LANJUT'},type:1}]
-mhan = await dha.prepareMessage(from, buff, image, {thumbnail: buff})
-const buttonMessagessss = {
-imageMessage: mhan.message.imageMessage,
-contentText: `Ngedark Bos`,
-footerText: '*_©Katashi Hana_*',
-buttons: gbutsan,
-headerType: 4
-}
-dha.sendMessage(from, buttonMessagessss, MessageType.buttonsMessage, {
-        thumbnail: fs.readFileSync('./dha.jpg'),
-        caption: 'Tes',
-            quoted: mek})
 case 'listdaerah': //By itsmeval
 case 'Listdaerah':
 anu = await fetchJson(`https://api.zeks.xyz/api/jadwalsholat?apikey=Iyungputra&daerah=malang`, {method: 'get'})
@@ -3822,6 +3826,7 @@ case 'Liputan': // Update By KATASHI
 					break
 case 'spamcall':
 case 'Spamcall':
+if (!isPremium) return reply(mess.prem)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
                     await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
@@ -4221,6 +4226,7 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
 					break
 case 'spamsms':
 case 'Spamsms':
+if (!isPremium) return reply(mess.prem)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
                     reply(mess.wait)
@@ -4284,6 +4290,7 @@ dha.sendMessage(from, x, image, {quoted: mek})
 break
 case 'nhentaisearch': // Update By KATASHI
 case 'Nhentaisearch': // Update By KATASHI
+if (!isPremium) return reply(mess.prem)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -4313,6 +4320,7 @@ case 'Kisahnabi':
                     break
 case 'jarak':
 case 'Jarak':
+if (!isPremium) return reply(mess.prem)
         if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} jakarta - yogyakarta`)
                     pauls = args.join(" ")
@@ -4413,6 +4421,7 @@ case 'Quotesislam':
 					break
 case 'apikey':
 case 'apikey':
+if (!isPremium) return reply(mess.prem)
                     if (args.length == 0) return reply(`Example: ${prefix + command} apikeynya`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://viko-api.herokuapp.com/api/cekapikey?apikey=${query}`)
@@ -4457,6 +4466,7 @@ reply(mess.wait)
                     break
 case 'cersex':
                 case 'Cersex':
+                if (!isPremium) return reply(mess.prem)
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cersex`)
@@ -4953,6 +4963,7 @@ case 'pinterest':
                     ini_url = ini_url.url_download
                     ini_buffer = await getBuffer(ini_url)
                     await dha.sendMessage(from, ini_buffer, image, { quoted: mek })
+                    reply(mess.success)
                     break
 case 'translate2':
 if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
@@ -4961,6 +4972,7 @@ if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa
 					r2 = makell.split("|")[1];
 x = await fetchJson(`https://kocakz.herokuapp.com/api/edu/translate?lang=${r1}&text=${r2}`)
 dha.sendMessage(from, `${x.text}`, text)
+reply(mess.success)
 break
 case 'quotes':
 case 'randomquotes':
@@ -4969,6 +4981,7 @@ case 'randomquotes':
                     author = quotes.by
                     iyah = quotes.quote
                     reply(`_${iyah}_\n\n*â€• ${author}*`)
+                    reply(mess.success)
                     break
 case 'waifu':
 case 'radomwaifu':
@@ -4985,6 +4998,7 @@ break
 case 'doujindesuSearch': // Update By KATASHI
 case 'doujinSearch': // Update By KATASHI
 case 'doujin': // Update By KATASHI
+if (!isPremium) return reply(mess.prem)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -4995,7 +5009,7 @@ reply(mess.wait)
 						teks += `*Nama:* : ${i.title}\n*Skor:* ${i.score}\n*Status:* ${i.status}\n*View:* ${i.link}\n*-:* ${i.thumb}\n\nDOUJIN DESU SEARCH\n`
 					}
 					reply(teks.trim())
-					
+					reply(mess.success)
 					break
 case 'tts':
        if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
@@ -5005,6 +5019,7 @@ case 'tts':
 aud = await getBuffer(`https://api.zeks.me/api/tts?apikey=Iyungputra&code=${r1}&text=${r2}`)
 reply(mess.wait)
 dha.sendMessage(from, aud, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+reply(mess.success)
 break
 case 'caribioskop': // Update By KATASHI
 case 'caribioskop': // Update By KATASHI
@@ -5018,11 +5033,10 @@ if (args.length == 0) return reply(`kotanya?`)
 						teks += `*Nama:* : ${x.title}\n*Alamat* : ${x.alamat}\n*Bintang* : ${x.bintang}\n*Image* : ${x.img}\n*Link* : ${x.url}\n\n*CARI BIOSKOP*\n`
 					}
 					reply(teks.trim())
-					
+					reply(mess.success)
 					break
 case 'linkwa': // Update By KATASHI
 case 'linkwa': // Update By KATASHI
-        if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 if (args.length == 0) return reply(`kotanya?`)
                     query = args.join(" ")	
@@ -5032,9 +5046,261 @@ if (args.length == 0) return reply(`kotanya?`)
 						teks += `*Perusahaan:* : ${x.nama}\n*Url* : ${x.link}\n\n*GROUP WA*\n`
 					}
 					reply(teks.trim())
-					
+					reply(mess.success)
 					break
+					case 'cerpencinta':
+case 'cerpencinta':	
+					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/cinta?apikey=katashi`)
+					reply(data.result)
+					reply(mess.success)
+					break
+					       case 'caristicker':
+					case 'cs':
+					case 'cstic':
+					case 'searchsticker':
+					case 'searchstiker':
+					        if (!isGroup) return reply(mess.only.group);
+if (args.length == 0) return reply(`Apanyang Mau Di Cari??`)
+                    query = args.join(" ")	
+              aud = await fetchJson(`https://api.zeks.me/api/searchsticker?apikey=Iyungputra&q=${query}`)
+              reply(mess.wait)
+              yahajaha = aud.sticker
+               rjpp = yahajaha[Math.floor(Math.random() * yahajaha.length)];
+sendWebp(from, rjpp)
+reply(mess.success)
+              break
+case "reminder": // by Slavyan
+        if (!q)
+          return reply(
+            `CONTOH PENGGUNANNYA:\n${prefix}reminder text/2s\n\nNOTE: \n*s* - seconds\n*m* - minutes\n*h* - hours\n*d* - days`
+          );
+        teks = body.slice(10);
+        const messRemind = teks.split("/")[0];
+        const timeRemind = teks.split("/")[1];
+        typeRemind = "Text";
+        if (isQuotedImage) typeRemind = "Image";
+        if (isQuotedSticker) typeRemind = "Sticker";
+        if (isQuotedAudio) typeRemind = "Audio";
+        if (!isQuotedImage && !isQuotedAudio && !isQuotedSticker)
+          typeRemind = "Text";
+        const parsedTime = ms(toMs(timeRemind));
+        reminder.addReminder(
+          sender,
+          messRemind,
+          typeRemind,
+          timeRemind,
+          _reminder
+        );
+        if (!isQuotedImage && !isQuotedSticker && !isQuotedAudio) {
+          await dha.sendMessage(
+            from,
+            `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+    
+Reminder berhasil diaktifkan!
+âž¸ Pesan: ${messRemind}
+âž¸ Type: Text
+âž¸ Durasi: ${parsedTime.hours} jam ${parsedTime.minutes} menit ${
+              parsedTime.seconds
+            } detik
+âž¸ Untuk: @${sender.split("@")[0]}
+    `,
+            text,
+            { contextInfo: { mentionedJid: [sender] } }
+          );
+          const intervRemind = setInterval(async () => {
+            if (Date.now() >= reminder.getReminderTime(sender, _reminder)) {
+              anu = await reminder.getReminderMsg(sender, _reminder);
+              dha.sendMessage(
+                from,
+                `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
 
+â° @${sender.split("@")[0]} â°
+âž¸ Pesan: ${messRemind}
+âž¸ Type: ${reminder.getReminderType(sender, _reminder)}`,
+                text,
+                { contextInfo: { mentionedJid: [sender] } }
+              );
+              _reminder.splice(
+                reminder.getReminderPosition(sender, _reminder),
+                1
+              );
+              fs.writeFileSync(
+                "./database/reminder.json",
+                JSON.stringify(_reminder)
+              );
+              clearInterval(intervRemind);
+            }
+          }, 1000);
+        } else if (isQuotedSticker) {
+          encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+            .message.extendedTextMessage.contextInfo;
+          media = await dha.downloadAndSaveMediaMessage(encmedia);
+          await dha.sendMessage(
+            from,
+            `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+    
+Reminder berhasil diaktifkan!
+âž¸ Pesan: ${messRemind}
+âž¸ Type: Sticker
+âž¸ Durasi: ${parsedTime.hours} jam ${parsedTime.minutes} menit ${
+              parsedTime.seconds
+            } detik
+âž¸ Untuk: @${sender.split("@")[0]}
+    `,
+            text,
+            { contextInfo: { mentionedJid: [sender] } }
+          );
+          const intervRemind = setInterval(async () => {
+            if (Date.now() >= reminder.getReminderTime(sender, _reminder)) {
+              anu = await reminder.getReminderMsg(sender, _reminder);
+              dha.sendMessage(
+                from,
+                `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+
+â° @${sender.split("@")[0]} â°
+âž¸ Pesan: ${messRemind}
+âž¸ Type: ${reminder.getReminderType(sender, _reminder)}`,
+                text,
+                { contextInfo: { mentionedJid: [sender] } }
+              );
+              dha.sendMessage(from, fs.readFileSync(media), sticker);
+              _reminder.splice(
+                reminder.getReminderPosition(sender, _reminder),
+                1
+              );
+              fs.writeFileSync(
+                "./database/reminder.json",
+                JSON.stringify(_reminder)
+              );
+              clearInterval(intervRemind);
+            }
+          }, 1000);
+        } else if (isQuotedImage) {
+          encmedia = isQuotedImage
+            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
+                .extendedTextMessage.contextInfo
+            : mek;
+          media = await dha.downloadAndSaveMediaMessage(encmedia);
+          await dha.sendMessage(
+            from,
+            `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+    
+Reminder berhasil diaktifkan!
+âž¸ Pesan: ${messRemind}
+âž¸ Type: Image
+âž¸ Durasi: ${parsedTime.hours} jam ${parsedTime.minutes} menit ${
+              parsedTime.seconds
+            } detik
+âž¸ Untuk: @${sender.split("@")[0]}
+    `,
+            text,
+            { contextInfo: { mentionedJid: [sender] } }
+          );
+          const intervRemind = setInterval(async () => {
+            if (Date.now() >= reminder.getReminderTime(sender, _reminder)) {
+              anu = await reminder.getReminderMsg(sender, _reminder);
+              teks = `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+
+â° @${sender.split("@")[0]} â°
+âž¸ Pesan: ${messRemind}
+âž¸ Type: ${reminder.getReminderType(sender, _reminder)}`;
+              dha.sendMessage(from, media, image, {
+                contextInfo: { mentionedJid: [sender] },
+                caption: teks,
+              });
+              _reminder.splice(
+                reminder.getReminderPosition(sender, _reminder),
+                1
+              );
+              fs.writeFileSync(
+                "./database/reminder.json",
+                JSON.stringify(_reminder)
+              );
+              clearInterval(intervRemind);
+            }
+          }, 1000);
+        } else if (isQuotedAudio) {
+          encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
+            .message.extendedTextMessage.contextInfo;
+          media = await dha.downloadAndSaveMediaMessage(encmedia);
+          await dha.sendMessage(
+            from,
+            `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+    
+Reminder berhasil diaktifkan!
+âž¸ Pesan: ${messRemind}
+âž¸ Type: Audio
+âž¸ Durasi: ${parsedTime.hours} jam ${parsedTime.minutes} menit ${
+              parsedTime.seconds
+            } detik
+âž¸ Untuk: @${sender.split("@")[0]}
+    `,
+            text,
+            { contextInfo: { mentionedJid: [sender] } }
+          );
+          const intervRemind = setInterval(async () => {
+            if (Date.now() >= reminder.getReminderTime(sender, _reminder)) {
+              anu = await reminder.getReminderMsg(sender, _reminder);
+              dha.sendMessage(
+                from,
+                `â”€â”€ ã€Œ REMINDER ã€ â”€â”€
+
+â° @${sender.split("@")[0]} â°
+âž¸ Pesan: ${messRemind}
+âž¸ Type: ${reminder.getReminderType(sender, _reminder)}`,
+                text,
+                { contextInfo: { mentionedJid: [sender] } }
+              );
+              dha.sendMessage(from, fs.readFileSync(media), audio, {
+                contextInfo: { mentionedJid: [sender] },
+                mimetype: "audio/mp4",
+                ptt: true,
+                caption: teks,
+              });
+              _reminder.splice(
+                reminder.getReminderPosition(sender, _reminder),
+                1
+              );
+              fs.writeFileSync(
+                "./database/reminder.json",
+                JSON.stringify(_reminder)
+              );
+              clearInterval(intervRemind);
+            }
+          }, 1000);
+        }
+        break;
+case 'addprem':  
+if (!isOwner && !mek.key.fromMe) return reply(`LU SIAPA AJG`)
+					adprem = `${args[0].replace('@','')}@s.whatsapp.net`
+					prem.push(adprem)
+					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+					reply(`BERHASIL MENAMBAHKAN USER PREMIUM`)
+					break				
+		case 'dellprem':  
+					
+					if (!isOwner && !mek.key.fromMe) return reply(mess.own)    
+					delp = body.slice(10)
+					prem.splice(`${delp}@s.whatsapp.net`, 1)
+					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+					reply(`Berhasil Menghapus wa.me/${delp} Dari Daftar Premium`)
+					break
+case 'listprem':
+		case 'premlist'://By M4N1K
+					teks = '*List Premium:*\n\n'
+					for (let manikgans of prem) {
+						teks += `- ${manikgans}\n`
+					}
+					teks += `\n*Total : ${prem.length}*`
+					dha.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": prem } })
+					break
+case 'randomnama':
+if (args.length == 0) return reply(`Gendernya?\nMale or Famale`)
+                    query = args.join(" ")	
+					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/random-name?gender=${query}`)
+					reply(data.result)
+					reply(mess.success)
+					break
 
 
 default:
