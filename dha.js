@@ -252,7 +252,7 @@ module.exports = dha = async (dha, mek) => {
         const isAfkOn = afk.checkAfkUser(sender, _afk)
         const isLevelingOn = isGroup ? _leveling.includes(from) : false
         const isMuted = isGroup ? mute.includes(from) : false
-        const isAntiLink = isGroup ? antilink.includes(from) : false
+        const isAntiLink = isGroup ? antilink.includes(from) : true
         const isWelkom = isGroup ? welkom.includes(from) : true
         const isPremium= prem.includes(sender)
         
@@ -621,6 +621,9 @@ function banChat() {
         //auto vn 
         await dha.updatePresence(from, Presence.recording)
 
+const createSerial = (size) => {
+            return crypto.randomBytes(size).toString('hex').slice(0, size)
+}
        // CMD
         if (isCmd && !isGroup)
 		    atm.addKoinUser(sender, randomNomor(20), _uang)
@@ -777,7 +780,20 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}tts* _kode|text_
 *き⃟🦈 ${prefix}pinterest* _text_
 *き⃟🦈${prefix}artinama* _text_
+*き⃟🦈${prefix}dafontdownload* _Link_
+*き⃟🦈${prefix}splay* _text_
 
+*ASUPAN MENU*
+*き⃟🦈${prefix}asupan* 
+*き⃟🦈${prefix}ukhty* 
+*き⃟🦈${prefix}santuy* 
+*き⃟🦈${prefix}vietnam* 
+*き⃟🦈${prefix}malaysia* 
+*き⃟🦈${prefix}korea* 
+*き⃟🦈${prefix}indonesia* 
+*き⃟🦈${prefix}japan* 
+*き⃟🦈${prefix}thailand* 
+*き⃟🦈${prefix}china* 
 
 *RANDOM TEXT*
 *き⃟🦈 ${prefix}randombokep
@@ -820,6 +836,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 *き⃟🦈 ${prefix}xvideos*
 *き⃟🦈 ${prefix}xs*
 *き⃟🦈 ${prefix}asupan*
+*き⃟🦈${prefix}tiktokporn* _Premuser_
+*き⃟🦈${prefix}hentaivideo* _Premuser_
 
 *MAKER MENU*
 *き⃟🦈 ${prefix}wasted*
@@ -3439,7 +3457,7 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
 break
 case 'xs':
 case 'Xs':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
                     query = args.join(" ")
@@ -3460,7 +3478,7 @@ case 'xvideo':
 case 'xv':
 case 'Xvideo':
 case 'Xv':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
                     c = args.join(" ")
@@ -3473,7 +3491,7 @@ case 'xnxx':
 case 'Xnxx':
 case 'xn':
 case 'Xn':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
                     c = args.join(" ")
@@ -3509,7 +3527,7 @@ case 'xnxxsearch':
 case 'xs2':
  case 'Xnxxsearch':
 case 'Xs2':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
 if (args.length == 0) return reply(`Example: ${prefix + command} query`)
                     c = args[0]
 pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xnxxsearch?query=${c}&apikey=Ikyy69`)
@@ -3528,7 +3546,7 @@ break
         case 'meadmin':
         case 'Meadmin':
 if (!isGroup) return reply('Khusus Group')
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
 if (isGroupAdmins) return reply('Lu Dah Admin Om')
 if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 dha.groupMakeAdmin(from, [sender])
@@ -3536,7 +3554,7 @@ reply('Sukses')
 break
 case 'cuaca':
 case 'Cuaca':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args[0]
                     get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=vZ7wFVI3`)
@@ -3826,7 +3844,7 @@ case 'Liputan': // Update By KATASHI
 					break
 case 'spamcall':
 case 'Spamcall':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
                     await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
@@ -4226,7 +4244,7 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
 					break
 case 'spamsms':
 case 'Spamsms':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
                     reply(mess.wait)
@@ -4290,7 +4308,7 @@ dha.sendMessage(from, x, image, {quoted: mek})
 break
 case 'nhentaisearch': // Update By KATASHI
 case 'Nhentaisearch': // Update By KATASHI
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -4320,14 +4338,14 @@ case 'Kisahnabi':
                     break
 case 'jarak':
 case 'Jarak':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} jakarta - yogyakarta`)
                     pauls = args.join(" ")
                     teks1 = pauls.split("-")[0].trim()
                     teks2 = pauls.split("-")[1].trim()
                     reply(mess.wait)
-                    get_result = await fetchJson(`https://ziy.herokuapp.com/api/jarak?asal=${teks1}&tujuan=${teks2}&apikey=xZiyy`)
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jaraktempuh?apikey=PinnBotwibu&kota1=${teks1}&kota2=${teks2}`)
                     x = get_result.result
                     ini_txt = `Informasi Jarak dari ${teks1} ke ${teks2} :\n\n`
                     ini_txt += `\`\`\`â—ª Asal :\`\`\` ${x.from.name}\n`
@@ -4421,7 +4439,7 @@ case 'Quotesislam':
 					break
 case 'apikey':
 case 'apikey':
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} apikeynya`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://viko-api.herokuapp.com/api/cekapikey?apikey=${query}`)
@@ -4466,7 +4484,7 @@ reply(mess.wait)
                     break
 case 'cersex':
                 case 'Cersex':
-                if (!isPremium) return reply(mess.prem)
+                if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cersex`)
@@ -5003,7 +5021,7 @@ break
 case 'doujindesuSearch': // Update By KATASHI
 case 'doujinSearch': // Update By KATASHI
 case 'doujin': // Update By KATASHI
-if (!isPremium) return reply(mess.prem)
+if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -5299,6 +5317,118 @@ case 'listprem':
 					teks += `\n*Total : ${prem.length}*`
 					dha.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": prem } })
 					break
+case 'splay':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`http://hadi-api.herokuapp.com/api/soundcloud/play?query=${query}`)
+                    yoo = get_result.result
+                    ini_txt = `Title : ${yoo.title}\n`
+                    ini_txt += `Link : ${yoo.originalLink}\n`
+                    ini_txt += `Information : ${get_result.msg}\n`
+                    thumbnail = await getBuffer(yoo.thumbnail)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    reply(mess.wait)
+                    get_audio = await getBuffer(yoo.download)
+                    await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${yoo.lagu}.mp3`, quoted: mek })
+                    break
+case 'dafontdownload':
+case 'ddownload':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} who ask satan`)
+                    query = args.join(" ")
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/downloader/dafont?url=${query}&apikey=Katashi`)
+                    yoo = get_result.result
+                    ini_txt = `Title : ${yoo.judul}\n`
+                    ini_txt += `Style : ${yoo.style}\n`
+                    ini_txt += `Link : ${yoo.url}\n`
+                    reply(ini_txt)
+                    reply(mess.wait)
+                    owwwh = yoo.url
+                    yaa = await getBuffer(yoo.url)
+                    dha.sendMessage(from, yaa, document, {quoted: mek, mimetype: 'zip', filename: `${yoo.judul}.zip` })
+                    break
+case 'hentaivid':
+case 'hentaivideo':
+                    if (!isPremium) return reply(`Only Prem`)
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/hentaivid?apikey=Katashi`)
+                    yoo = get_result.result
+                    reply(mess.wait)
+                    ini_txt = `Title : ${yoo.title}\n`
+                    ini_txt += `Link : ${yoo.link}\n`
+                    ini_txt += `Kategori : ${yoo.category}\n`
+                    ini_txt += `Share : ${yoo.share_count}\n`
+                    ini_txt += `View : ${yoo.views_count}\n`
+                    ini_txt += `Type : ${yoo.type}\n`
+                    reply(ini_txt)
+                    reply(mess.wait)
+                    horny1 = await getBuffer(yoo.video_1)
+                    await dha.sendMessage(from, horny1, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    reply(mess.wait)
+                    horny2 = await getBuffer(yoo.video_2)
+                    await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    break
+case 'tiktokpron':
+case 'porntiktok':
+case 'ttporn':
+                    if (!isPremium) return reply(`Only Prem`)
+                    get_result = await fetchJson(`https://zenzapi.xyz/api/tikporn?apikey=Katashi`)
+                    yoo = get_result.result
+                    reply(mess.wait)
+                    ini_txt = `Title : ${yoo.title}\n`
+                    ini_txt += `Link : ${yoo.source}\n`
+                    ini_txt += `Deks : ${yoo.desc}\n`
+                    ini_txt += `Date : ${yoo.upload}\n`
+                    ini_txt += `Like : ${yoo.like}\n`
+                    ini_txt += `Dislike : ${yoo.dislike}\n`
+                    ini_txt += `Faforite : ${yoo.favorite}\n`
+                    ini_txt += `View : ${yoo.views}\n`
+                    ini_txt += `Tag : ${yoo.tags}\n`
+                    thumbnail = await getBuffer(yoo.thumb)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    reply(mess.wait)
+                    horny2 = await getBuffer(yoo.video)
+                    await dha.sendMessage(from, horny2, video, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    break
+case 'tebakumur':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} kontol`)
+                    ini_name = args.join(" ")
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/tebakumur?apikey=PinnBotWibu&name=${ini_name}`)
+                    get_result = get_result.result
+                    ini_txt = `Nama : ${get_result.name}\n`
+                    ini_txt += `Umur : ${get_result.age}`
+                    reply(ini_txt)
+                    break
+case 'asupan':
+reply(mess.wait)
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=PinnBotWibu`)
+                    ini_buffer = await getBuffer(get_result.result)
+                    await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'santuy':
+reply(mess.wait)
+                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupansantuy?apikey=T3SleesqYU6gyfM`)
+                    await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+
+case 'ukhty':
+reply(mess.wait)
+                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupanukhty?apikey=T3SleesqYU6gyfM`)
+                    await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
+                    break
+case 'vietnam':
+case 'malaysia':
+case 'korea':
+case 'indonesia':
+case 'japan':
+case 'thailand':
+case 'china':
+reply(mess.wait)
+                    get_result = await fetchJson(`https://apikatashi.herokuapp.com/api/cewe/${command}?apikey=Alphabot`)
+                    ini_buffer = await getBuffer(get_result.result.url)
+                    await dha.sendMessage(from, ini_buffer, image, { quoted: mek})
+                    break
+                    
+
 
 
 
