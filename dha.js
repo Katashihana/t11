@@ -711,7 +711,6 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛Status : ${isOwner ? 'Owner' : 'User'}
 │◦➛Nama : ${pushname}
 │◦➛Api : *@${sender.split('@')[0]}*
-│◦➛Info Nomor : ${num.data.countrycode} - ${num.data.carrier.type} - ${num.data.carrier.name}
 └❏ - Katashi Bot
 
 
