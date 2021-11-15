@@ -399,7 +399,7 @@ module.exports = dha = async (dha, mek) => {
 })
 })
 }
-      const promoteAdmin = async function(to, target=[]){
+const promoteAdmin = async function(to, target=[]){
            if(!target.length > 0) { return  reply("No target..") }
            let g = await dha.groupMetadata(to)
            let owner = g.owner.replace("c.us","s.whatsapp.net")
@@ -1943,7 +1943,6 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
 //------------------< Stalk >-------------------
      
        case 'iguser':
-       case 'igstalk':
               try {
               if (args.length == 0) return reply(`Kirim perintah *${prefix}iguser [ username ]*\nContoh : ${prefix}iguser jessnolimit`)
               query = args.join(" ")
@@ -2239,7 +2238,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                break      
 //------------------<18+ Menu>-----------------------   
        case 'randombokep':
-       if (!mek.key.fromMe && !isOwner && isPremium) return
+       if (!isPremium) return reply(`Only Prem`)
               bokep = body.slice(1)
               const bo =['https://www.mediafire.com/download/8hnhjcf3pseubgy','https://www.mediafire.com/download/cty9phda3d1s62u','https://www.mediafire.com/download/8hnhjcf3pseubgy']
               const kep = bo[Math.floor(Math.random() * bo.length)]
@@ -3461,7 +3460,7 @@ if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} Blowjob`)
                     query = args.join(" ")
-pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideosearch?query=${query}&apikey=Ikyy69`)
+pepex = await fetchJson(`https://kocakz.herokuapp.com/api/media/xvideo/search?query=${query}`)
 reply(mess.wait)
 pepex = pepex.result
 ini_txt = ""
@@ -3482,20 +3481,26 @@ if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
                     c = args.join(" ")
-x = await fetchJson(`https://bx-hunter.herokuapp.com/api/xvideodetail?url=${c}&apikey=Ikyy69`)
+x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xvideo/detail?url=${c}`)
+anuu += `Low : ${x.result.low}\n`
+anuu += `High : ${x.result.high}\n`
+reply(anuu)
 reply(mess.wait)
 vid = await getBuffer(x.result.files.low)
 dha.sendMessage(from, vid, video, {quoted: mek})
 break
 case 'xnxx':
 case 'Xnxx':
-case 'xn':
+case 'xn2':
 case 'Xn':
 if (!isPremium) return reply(`Only Prem`)
 if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
                     c = args.join(" ")
 x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/detail?url=${c}`)
+anu10 += `Low : ${x.result.low}\n`
+anu10 += `High : ${x.result.high}\n`
+reply(anu10)
 reply(mess.wait)
 vid = await getBuffer(x.result.files.low)
 dha.sendMessage(from, vid, video, {quoted: mek})
@@ -3524,13 +3529,13 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
               dha.relayWAMessage(prep)
 break
 case 'xnxxsearch':
-case 'xs2':
+case 'xn':
  case 'Xnxxsearch':
 case 'Xs2':
 if (!isPremium) return reply(`Only Prem`)
 if (args.length == 0) return reply(`Example: ${prefix + command} query`)
                     c = args[0]
-pepex = await fetchJson(`https://bx-hunter.herokuapp.com/api/xnxxsearch?query=${c}&apikey=Ikyy69`)
+pepex = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/search?query=${c}`)
 reply(mess.wait)
 pepex = pepex.result
 ini_txt = ""
@@ -3540,7 +3545,7 @@ ini_txt += `Info : ${x.info}\n`
 ini_txt += `Link : ${x.link}\n\n\n`
 }
 anu = `${ini_txt}\n\n  *DOWNLOAD*
- ${prefix}xvideo [link xvid] = Video`
+ ${prefix}xnxx [link xvid] = Video`
 dha.sendMessage(from, anu, text, {quoted: mek})
 break
         case 'meadmin':
@@ -5362,10 +5367,10 @@ case 'hentaivideo':
                     reply(ini_txt)
                     reply(mess.wait)
                     horny1 = await getBuffer(yoo.video_1)
-                    await dha.sendMessage(from, horny1, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    await dha.sendMessage(from, horny1, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
                     reply(mess.wait)
                     horny2 = await getBuffer(yoo.video_2)
-                    await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
                     break
 case 'tiktokpron':
 case 'porntiktok':
@@ -5387,7 +5392,7 @@ case 'ttporn':
                     await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
                     reply(mess.wait)
                     horny2 = await getBuffer(yoo.video)
-                    await dha.sendMessage(from, horny2, video, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.zip` })
+                    await dha.sendMessage(from, horny2, video, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
                     break
 case 'tebakumur':
                     if (args.length == 0) return reply(`Example: ${prefix + command} kontol`)
@@ -5427,8 +5432,61 @@ reply(mess.wait)
                     ini_buffer = await getBuffer(get_result.result.url)
                     await dha.sendMessage(from, ini_buffer, image, { quoted: mek})
                     break
-                    
-
+case 'nhentaizip':
+case 'nhentaizip':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} kode nuklir`)
+                    query = args.join(" ")
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api-yogipw.herokuapp.com/api/nhentaidownloader?kode=${query}`)
+                    yoo = get_result.result
+                    ini_txt = `Title : ${yoo}\n`
+                    reply(ini_txt)
+                    reply(mess.wait)
+                    owwwh = yoo
+                    yaa = await getBuffer(yoo)
+                    dha.sendMessage(from, yaa, document, {quoted: mek, mimetype: 'zip', filename: `${query}.zip` })
+                    break
+                          case "demote":
+        if (!mek.key.fromMe && !isGroupAdmins) return reply("Admin Group Only");
+        if (!isGroup) return;
+        if (!isBotGroupAdmins) return reply("Jadikan Bot Sebagai Admin Untuk Menggunakan Fitur Tersebut");
+        dha.groupDemoteAdmin(from, mentionUser)
+        teks = `Succes Demote`;
+        dha.sendMessage(from, teks, text, {
+          quoted: mek,
+        });
+        break;
+      // Promote Members
+      case "promote":
+        if (!mek.key.fromMe && !isGroupAdmins) return reply("Admin Group Only");
+        if (!isGroup) return;
+        if (!isBotGroupAdmins) return reply("Jadikan Bot Sebagai Admin Untuk Menggunakan Fitur Tersebut");
+          dha.groupMakeAdmin(from, mentionUser)
+        teks = `Succes Promote`;
+        dha.sendMessage(from, teks, text, {
+          quoted: mek,
+        });
+        break;
+        case 'ytmp43':
+case 'ytmp43':
+if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.be/vfpUAEUWAlg`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`http://hadi-api.herokuapp.com/api/yt2/video?url=${query}`)
+                    yoo = get_result.result
+                    reply(mess.wait)
+                    ini_txt = `Title : ${yoo.title}\n`
+                    ini_txt += `Link : ${yoo.download_video}\n`
+                    ini_txt += `Size : ${yoo.size}\n`
+                    ini_txt += `Resolution : ${yoo.resolution}\n`
+                    reply(mess.wait)
+                    horny1 = await getBuffer(yoo.thumb)
+                    await dha.sendMessage(from, horny1, image, {quoted: mek, caption: ini_txt})
+                    reply(mess.wait)
+                    horny2 = await getBuffer(yoo.download_video)
+                    await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
+                    break
+        
+        
 
 
 

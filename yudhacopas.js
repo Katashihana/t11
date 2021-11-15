@@ -1,12 +1,46 @@
-const { WAConnection, Browsers } = require('@adiwajshing/baileys')
+const { WAConnection, Browsers, MessageType, Presence, Mimetype, GroupSettingChange, } = require('@adiwajshing/baileys')
 const { color, bgcolor } = require('./lib/color')
 const fs = require("fs-extra")
 const figlet = require('figlet')
 const { uncache, nocache } = require('./lib/loader')
 const setting = JSON.parse(fs.readFileSync('./setting.json'))
+const fetch = require("node-fetch");
 const welcome = require('./message/group')
 baterai = 'unknown'
 charging = 'unknown'
+const moment = require("moment-timezone");
+blocked = [];
+const time2 = moment().tz("Asia/Jakarta").format("HH:mm:ss");
+    if (time2 < "24:59:00") {
+      var ucapanWaktu = "Selamat malam";
+    }
+    if (time2 < "19:00:00") {
+      var ucapanWaktu = "Selamat senja";
+    }
+    if (time2 < "18:00:00") {
+      var ucapanWaktu = "Selamat sore";
+    }
+    if (time2 < "15:00:00") {
+      var ucapanWaktu = "Selamat siang";
+    }
+    if (time2 < "11:00:00") {
+      var ucapanWaktu = "Selamat pagi";
+    }
+    if (time2 < "05:00:00") {
+      var ucapanWaktu = "Selamat malam";
+    }
+const runtime = function (seconds) {
+  seconds = Number(seconds);
+  var d = Math.floor(seconds / (3600 * 24));
+  var h = Math.floor((seconds % (3600 * 24)) / 3600);
+  var m = Math.floor((seconds % 3600) / 60);
+  var s = Math.floor(seconds % 60);
+  var dDisplay = d > 0 ? d + (d == 1 ? " hari, " : " Hari, ") : "";
+  var hDisplay = h > 0 ? h + (h == 1 ? " jam, " : " Jam, ") : "";
+  var mDisplay = m > 0 ? m + (m == 1 ? " menit, " : " Menit, ") : "";
+  var sDisplay = s > 0 ? s + (s == 1 ? " detik" : " Detik") : "";
+  return dDisplay + hDisplay + mDisplay + sDisplay;
+};
 
 //nocache
 require('./dha.js')
@@ -98,6 +132,81 @@ const spinner = {
 	})
 	fs.writeFileSync(`./${setting.sessionName}.json`, JSON.stringify(dha.base64EncodedAuthInfo(), null, '\t'))
 
+///Test
+dha.on('group-update', async (anu) => {
+mek = { key: {
+  fromMe: false,
+    participant: `0@s.whatsapp.net`, ...(anu.jid ? { remoteJid: '6289626029135-1604595598@g.us' } : {})
+},
+ message: {
+    "contactMessage":{"displayName":'Katashi',"vcard":"BEGIN:VCARD\nVERSION:3.0\nN:2;Rival;;;\nFN:resku\nitem1.TEL;waid=6289626029135:+62 896-2602-9135\nitem1.X-ABLabel:Mobile\nEND:VCARD"
+ }}}
+metdata = await dha.groupMetadata(anu.jid)
+if(anu.announce == 'false'){
+teks = ` [ Group Opened ] \n\n_Group telah dibuka oleh admin_\n_Sekarang semua member bisa mengirim pesan_`
+dha.sendMessage(metdata.id, teks, MessageType.text, {quoted: mek})
+console.log(`- [ Group Opened ] - In ${metdata.subject}`)
+}
+else if(anu.announce == 'true'){
+teks = ` [ Group Closed ] \n\n_Group telah ditutup oleh admin_\n_Sekarang hanya admin yang dapat mengirim pesan_`
+dha.sendMessage(metdata.id, teks, MessageType.text, {quoted: mek})
+console.log(` [ Group Closed ]  In ${metdata.subject}`)
+}
+else if(!anu.desc == ''){
+tag = anu.descOwner.split('@')[0] + '@s.whatsapp.net'
+teks = ` [ Group Description Change ] \n\nDeskripsi Group telah diubah oleh Admin @${anu.descOwner.split('@')[0]}\n• Deskripsi Baru : ${anu.desc}`
+dha.sendMessage(metdata.id, teks, MessageType.text, {contextInfo: {"mentionedJid": [tag]}, quoted: mek})
+console.log(`- [ Group Description Change ] - In ${metdata.subject}`)
+  }
+else if(anu.restrict == 'false'){
+teks = `- [    ] -\n\nEdit Group info telah dibuka untuk member\nSekarang semua member dapat mengedit info Group Ini`
+dha.sendMessage(metdata.id, teks, MessageType.text, {quoted: mek})
+console.log(`- [ Group Setting Change ] - In ${metdata.subject}`)
+  }
+else if(anu.restrict == 'true'){
+teks = `- [    ] -\n\nEdit Group info telah ditutup untuk member\nSekarang hanya admin group yang dapat mengedit info Group Ini`
+dha.sendMessage(metdata.id, teks, MessageType.text, {quoted: mek})
+console.log(`- [ Group Setting Change ] - In ${metdata.subject}`)
+}
+})
+
+  //
+ antidel = true
+  dha.on("message-delete", async (m) => {
+    if (m.key.remoteJid == "status@broadcast") return;
+    if (!mek.key.fromMe && mek.key.fromMe) return;
+   if (antidel === false) return
+    m.message =
+      Object.keys(m.message)[0] === "ephemeralMessage"
+        ? m.message.ephemeralMessage.message
+        : m.message;
+    const jam = moment.tz("Asia/Jakarta").format("HH:mm:ss");
+    let d = new Date();
+    let locale = "id";
+    let gmt = new Date(0).getTime() - new Date("1 Januari 2021").getTime();
+    let weton = ["Pahing", "Pon", "Wage", "Kliwon", "Legi"][
+      Math.floor((d * 1 + gmt) / 84600000) % 5
+     ];
+    let week = d.toLocaleDateString(locale, { weekday: "long" });
+    let calender = d.toLocaleDateString(locale, {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+     const type = Object.keys(m.message)[0];
+     dha.sendMessage(
+      m.key.remoteJid,
+      `\`\`\`   \`\`\`
+  •> Nama : @${m.participant.split("@")[0]}
+  •> Waktu : ${jam} ${week} ${calender}
+  •> Type : ${type}`,
+      MessageType.text,
+      { quoted: m.message, contextInfo: { mentionedJid: [m.participant] } }
+    );
+
+    dha.copyNForward(m.key.remoteJid, m.message);
+  });
+
 	// Baterai
 	dha.on('CB:action,,battery', json => {
 		global.batteryLevelStr = json[2][0][1].value
@@ -115,6 +224,8 @@ const spinner = {
 		global.batrei.push(batterylevel)
 	})
 
+
+
 	// welcome
 	dha.on('group-participants-update', async (anu) => {
 		await welcome(dha, anu)
@@ -124,5 +235,7 @@ const spinner = {
 		require('./dha.js')(dha, message)
 	})
 }
+
+
 
 starts()
