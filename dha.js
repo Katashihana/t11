@@ -39,6 +39,7 @@ const { virtex, vipi } = require('./lib/virtex.js')
 const Mfake = fs.readFileSync ('./media/ganteng.jpg')
 const Mthumb = fs.readFileSync('./media/ganteng.jpg')
 const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
+const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
 		
 // stickwm
 const Exif = require('./lib/exif');
@@ -64,7 +65,7 @@ const atm = require("./lib/atm");
 const reminder = require("./lib/reminder")
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 
-
+autorespon = false
 var kuis = false
 hit_today = []
 ky_ttt = []
@@ -99,6 +100,7 @@ let mute = JSON.parse(fs.readFileSync('./database/group/mute.json'));
 let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
 const _reminder = JSON.parse(fs.readFileSync("./database/reminder.json"));
+const commandsDB = JSON.parse(fs.readFileSync('./database/commands.json'))
 
 const getPremiumExpired = (sender) => {
 
@@ -218,6 +220,7 @@ module.exports = dha = async (dha, mek) => {
 		const isGroup = from.endsWith('@g.us')
 		let sender = isGroup ? mek.participant : mek.key.remoteJid
 		let senderr = mek.key.fromMe ? dha.user.jid : mek.key.remoteJid.endsWith('@g.us') ? mek.participant : mek.key.remoteJid
+		const senderNumber = sender.split("@")[0]  
 		const totalchat = await dha.chats.all()
 		const groupMetadata = isGroup ? await dha.groupMetadata(from) : ''
 		const groupName = isGroup ? groupMetadata.subject : ''
@@ -522,6 +525,15 @@ const promoteAdmin = async function(to, target=[]){
         } else if (levelRole >= 100) {
             role = 'Immortal'
         } 
+        
+		pporang = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
+		      
+		const ofrply = await getBuffer(pporang)
+        if (!isGroup && !isCmd && !command && !mek.key.fromMe && !autorespon) {
+	simi = await fetchJson(`https://api.simsimi.net/v2/?text=${cmd}&lc=id`)
+                     sami = simi.success
+                        dha.sendMessage(from, `_${sami}_`, text, {thumbnail: ofrply, sendEphemeral: true, quoted:mek, contextInfo : {forwardingScore: 508, isForwarded: true}})
+                      }
        // FUNCTION LEVELING
        if (isGroup && !mek.key.fromMe && !level.isGained(sender) && isLevelingOn) {
        try {
@@ -685,21 +697,23 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
         case 'menu':
         case 'help':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
-        
-𝗜𝗡𝗙𝗢 𝗣𝗘𝗡𝗚𝗚𝗨𝗡𝗔 𝗕𝗢𝗧
-❏ NAMA : *${pushname}*
-❏ API : *@${sender.split('@')[0]}*
+╭─❒ 「 Bot Info 」 ❒
+│◦➛NAMA : *Katashi-Botz*
+│◦➛API : @6289626029135
+│◦➛OWNER : *©Katashi*
+│◦➛AKTIF : *${runtime(process.uptime())}*
+│◦➛TOTAL HIT : *${totalhit} Hit*
+│◦➛HIT TODAY : *${hit_today.length} Hit*
+│◦➛PREIFIX : *『${prefix}』*
+│◦➛BATERAI : *${baterai}%*
+└❏ - Katashi Bot
+╭─❒ 「 User Info 」 ❒
+│◦➛Status : ${isOwner ? 'Owner' : 'User'}
+│◦➛Nama : ${pushname}
+│◦➛Api : *@${sender.split('@')[0]}*
+│◦➛Info Nomor : ${num.data.countrycode} - ${num.data.carrier.type} - ${num.data.carrier.name}
+└❏ - Katashi Bot
 
-𝗜𝗡𝗙𝗢 𝗕𝗢𝗧
-❏ NAMA : *Katashi-Botz*
-❏ API : @6289626029135
-❏ OWNER : *©Katashi*
-❏ API : *@6289626029135*
-❏ AKTIF : *${runtime(process.uptime())}*
-❏ BATERAI : *${baterai}%*
-❏ PREIFIX : *『${prefix}』*
-❏ HIT TODAY : *${hit_today.length} Hit*
-❏ TOTAL HIT : *${totalhit} Hit*
 
    ━━━━━ 𝗔𝗟𝗟 𝗠𝗘𝗡𝗨 ━━━━━
 
@@ -5485,7 +5499,19 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.b
                     horny2 = await getBuffer(yoo.download_video)
                     await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
                     break
-        
+        case 'autorespon':
+      if (!isOwner && !mek.key.fromMe) return reply(`Owner Only`)
+       if (args.length < 1) return reply(`Penggunaan ${prefix}autorespon on/off`)
+           if (q === 'on'){
+              autorespon = false
+                    reply(`Berhasil mengaktifkan autorespon`)
+                } else if (q === 'off'){
+                    autorespon = true
+                    reply(`Berhasil menonaktifkan autorespon`)
+                } else {
+                    reply(mess.error.api)
+                }
+                break
         
 
 
