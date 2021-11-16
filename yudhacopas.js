@@ -171,41 +171,34 @@ console.log(`- [ Group Setting Change ] - In ${metdata.subject}`)
 })
 
   //
- antidel = true
-  dha.on("message-delete", async (m) => {
-    if (m.key.remoteJid == "status@broadcast") return;
-    if (!mek.key.fromMe && mek.key.fromMe) return;
-   if (antidel === false) return
-    m.message =
-      Object.keys(m.message)[0] === "ephemeralMessage"
-        ? m.message.ephemeralMessage.message
-        : m.message;
-    const jam = moment.tz("Asia/Jakarta").format("HH:mm:ss");
-    let d = new Date();
-    let locale = "id";
-    let gmt = new Date(0).getTime() - new Date("1 Januari 2021").getTime();
-    let weton = ["Pahing", "Pon", "Wage", "Kliwon", "Legi"][
-      Math.floor((d * 1 + gmt) / 84600000) % 5
-     ];
-    let week = d.toLocaleDateString(locale, { weekday: "long" });
-    let calender = d.toLocaleDateString(locale, {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-     const type = Object.keys(m.message)[0];
-     dha.sendMessage(
-      m.key.remoteJid,
-      `\`\`\`   \`\`\`
-  •> Nama : @${m.participant.split("@")[0]}
-  •> Waktu : ${jam} ${week} ${calender}
-  •> Type : ${type}`,
-      MessageType.text,
-      { quoted: m.message, contextInfo: { mentionedJid: [m.participant] } }
-    );
+   dha.on('message-delete', async (m) => {
+   if (m.key.remoteJid == 'status@broadcast') return
+   if (!m.key.fromMe) {
+   m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message
+   const jam = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+   let d = new Date
+   let c = dha.chats.get(m.key.remoteJid)
+   let a = c.messages.dict[`${m.key.id}|${m.key.fromMe ? 1 : 0}`]
+   let co3ntent = dha.generateForwardMessageContent(a, false)
+   let c3type = Object.keys(co3ntent)[0]
+   let locale = 'id'
+   let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
+   let weton = ['Pahing', 'Pon','Wage','Kliwon','Legi'][Math.floor(((d * 1) + gmt) / 84600000) % 5]
+   let week = d.toLocaleDateString(locale, { weekday: 'long' })
+   let calender = d.toLocaleDateString(locale, {
+   day: 'numeric',
+   month: 'long',
+   year: 'numeric'
+   })
+   dha.copyNForward(m.key.remoteJid, m.message)
+   dha.sendMessage(m.key.remoteJid, `\`\`\`Anti Delete\`\`\`
 
-    dha.copyNForward(m.key.remoteJid, m.message);
-  });
+    \`\`\`Nama : @${m.participant.split("@")[0]}\`\`\`
+    \`\`\`Tipe : ${c3type}\`\`\`
+    \`\`\`Tanggal : ${jam} - ${week} ${weton} - ${calender}\`\`\``, MessageType.text, {quoted: m.message, contextInfo: {"mentionedJid": [m.participant]}})
+         }
+      })
+
 
 	// Baterai
 	dha.on('CB:action,,battery', json => {

@@ -532,7 +532,7 @@ const promoteAdmin = async function(to, target=[]){
         if (!isGroup && !isCmd && !command && !mek.key.fromMe && !autorespon) {
 	simi = await fetchJson(`https://api.simsimi.net/v2/?text=${cmd}&lc=id`)
                      sami = simi.success
-                        dha.sendMessage(from, `_${sami}_`, text, {thumbnail: ofrply, sendEphemeral: true, quoted:mek, contextInfo : {forwardingScore: 508, isForwarded: true}})
+                        dha.sendMessage(from, `${sami}`, text, {thumbnail: ofrply, sendEphemeral: true, quoted:mek, contextInfo : {forwardingScore: 508, isForwarded: true}})
                       }
        // FUNCTION LEVELING
        if (isGroup && !mek.key.fromMe && !level.isGained(sender) && isLevelingOn) {
@@ -707,360 +707,377 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛PREIFIX : *『${prefix}』*
 │◦➛BATERAI : *${baterai}%*
 └❏ - Katashi Bot
-╭─❒ 「 User Info 」 ❒
+
+╭─❒ 「 User Info 」 
 │◦➛Status : ${isOwner ? 'Owner' : 'User'}
+│◦➛Premium : ${isPremium ? 'Yes' : 'No'}
 │◦➛Nama : ${pushname}
 │◦➛Api : *@${sender.split('@')[0]}*
 └❏ - Katashi Bot
 
-
+┌❏ INDONESIA TIME
+│◦➛Wib: *${moment().utcOffset('+0700').format('HH:mm')}* WIB 
+│◦➛Wita: *${moment().utcOffset('+0800').format('HH:mm')}* WITA 
+│◦➛Wt: *${moment().utcOffset('+0900').format('HH:mm')}* WIT
+└❏ - Katashi Bot
    ━━━━━ 𝗔𝗟𝗟 𝗠𝗘𝗡𝗨 ━━━━━
 
-𝖨𝖭𝖥𝖮 𝖬𝖤𝖭𝖴
-*き⃟🦈 ${prefix}update*
-*き⃟🦈 ${prefix}iklan*
-*き⃟🦈 ${prefix}level*
-*き⃟🦈 ${prefix}rules*
-*き⃟🦈 ${prefix}profile*
-*き⃟🦈 ${prefix}waktu*
-*き⃟🦈 ${prefix}botstat*
-*き⃟🦈 ${prefix}owner*
-*き⃟🦈 ${prefix}ping*
-*き⃟🦈 ${prefix}runtime*
-*き⃟🦈 ${prefix}donasi*
-*き⃟🦈 ${prefix}report* [ keluhan ]
-
-𝖦𝖱𝖴𝖯 𝖬𝖤𝖭𝖴
-*き⃟🦈 ${prefix}groupsetting*
-*き⃟🦈 ${prefix}getbio* _reply_
-*き⃟🦈 ${prefix}afk* _alasan_
-*き⃟🦈 ${prefix}kontak* _nomor|nama_
-*き⃟🦈 ${prefix}kickall*
-*き⃟🦈 ${prefix}infogrup*
-*き⃟🦈 ${prefix}promoteall*
-*き⃟🦈 ${prefix}demoteall*
-*き⃟🦈 ${prefix}listonline*
-*き⃟🦈 ${prefix}tagall* _teks_
-*き⃟🦈 ${prefix}leave*
-*き⃟🦈 ${prefix}kick* _reply_
-*き⃟🦈 ${prefix}add* _628xxx_
-*き⃟🦈 ${prefix}setnamegc*
-*き⃟🦈 ${prefix}setppgc*
-*き⃟🦈 ${prefix}getpp*
-*き⃟🦈 ${prefix}setdeskgc*
-*き⃟🦈 ${prefix}sider* _reply chat bot_
-*き⃟🦈 ${prefix}hidetag* _teks/reply teks_
-*き⃟🦈 ${prefix}linkgc*
-*き⃟🦈 ${prefix}getdeskgc*
-*き⃟🦈 ${prefix}revoke*
-*き⃟🦈 ${prefix}reminder* _text/waktu_
-
-𝖦𝖠𝖬𝖤 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}slot*
-*き⃟🦈 ${prefix}tictactoe* _@tag_
-*き⃟🦈 ${prefix}suit* _batu/kertas/gunting_
-
-𝖨𝖲𝖫𝖠𝖬 𝖬𝖤𝖭𝖴
-*き⃟🦈 ${prefix}kisahnabi*
-*き⃟🦈 ${prefix}listdaerah*
-*き⃟🦈 ${prefix}randomquran _Text_*
-*き⃟🦈 ${prefix}surah <query>*
-*き⃟🦈 ${prefix}quotesislam*
-*き⃟🦈 ${prefix}surahaudio <query>*
-*き⃟🦈 ${prefix}ayataudio <query>*
-
-𝖣𝖮𝖶𝖭𝖫𝖮𝖠𝖣 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}fbdl*
-*き⃟🦈 ${prefix}igdl*
-*き⃟🦈 ${prefix}twitter*
-*き⃟🦈 ${prefix}tiktok*
-*き⃟🦈 ${prefix}play*
-*き⃟🦈 ${prefix}ythd*
-*き⃟🦈 ${prefix}ytmp3*
-*き⃟🦈 ${prefix}ytmp4*
-*き⃟🦈 ${prefix}soundcloud*
-*き⃟🦈 ${prefix}tiktoknowm*
-*き⃟🦈 ${prefix}tiktokaudio*
-*き⃟🦈 ${prefix}mediafire*
-*き⃟🦈 ${prefix}nhentaipdf* _code_*
-*き⃟🦈 ${prefix}xvideo _Link_*
-*き⃟🦈 ${prefix}xs _Text_*
-*き⃟🦈 ${prefix}xs2 _Text_*
-*き⃟🦈 ${prefix}xnxx _Link_*
-*き⃟🦈 ${prefix}ytmp42 <query>*
-*き⃟🦈 ${prefix}tiktok2 <query>*
-*き⃟🦈 ${prefix}jooxplay <query>*
-*き⃟🦈 ${prefix}tts* _kode|text_
-*き⃟🦈 ${prefix}pinterest* _text_
-*き⃟🦈${prefix}artinama* _text_
-*き⃟🦈${prefix}dafontdownload* _Link_
-*き⃟🦈${prefix}splay* _text_
-
-*ASUPAN MENU*
-*き⃟🦈${prefix}asupan* 
-*き⃟🦈${prefix}ukhty* 
-*き⃟🦈${prefix}santuy* 
-*き⃟🦈${prefix}vietnam* 
-*き⃟🦈${prefix}malaysia* 
-*き⃟🦈${prefix}korea* 
-*き⃟🦈${prefix}indonesia* 
-*き⃟🦈${prefix}japan* 
-*き⃟🦈${prefix}thailand* 
-*き⃟🦈${prefix}china* 
-
-*RANDOM TEXT*
-*き⃟🦈 ${prefix}randombokep
-*き⃟🦈 ${prefix}style (text)
-*き⃟🦈 ${prefix}pastebin (text)
-*き⃟🦈 ${prefix}nickepep
-*き⃟🦈 ${prefix}fake
-*き⃟🦈 ${prefix}twich
-*き⃟🦈 ${prefix}cersex
-*き⃟🦈 ${prefix}cerpen
-*き⃟🦈 ${prefix}katacinta
-*き⃟🦈 ${prefix}tongue
-*き⃟🦈 ${prefix}renungan
-*き⃟🦈 ${prefix}randomcerpen
-*き⃟🦈 ${prefix}quotes* 
-*き⃟🦈 ${prefix}faktaunik
-*き⃟?? ${prefix}cerpencinta* 
-*き⃟🦈${prefix}artinama* _text_
-*き⃟🦈${prefix}randomnama* _gender_
-
-𝖲𝖳𝖨𝖪𝖤𝖱 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}dadu*
-*き⃟🦈 ${prefix}doge*
-*き⃟🦈 ${prefix}patrick*
-*き⃟🦈 ${prefix}gura*
-*き⃟🦈 ${prefix}stickeranime*
-*き⃟🦈 ${prefix}smeme* _teks|teks_
-*き⃟🦈️ ${prefix}swm* _pack|author_
-*き⃟🦈️ ${prefix}take* _pack|author_
-*き⃟🦈 ${prefix}caristicker* _text_
-
-𝖳𝖮𝖮𝖫𝖲 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}toimg*
-*き⃟🦈 ${prefix}tovideo*
-*き⃟🦈 ${prefix}tomp3*
-
-𝖣𝖤𝖶𝖠𝖲𝖠 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}xnxx* _link_
-*き⃟🦈 ${prefix}xnxxsearch*
-*き⃟🦈 ${prefix}xvideos*
-*き⃟🦈 ${prefix}xs*
-*き⃟🦈 ${prefix}asupan*
-*き⃟🦈${prefix}tiktokporn* _Premuser_
-*き⃟🦈${prefix}hentaivideo* _Premuser_
-
-*MAKER MENU*
-*き⃟🦈 ${prefix}wasted*
-*き⃟🦈 ${prefix}squidrip*
-*き⃟🦈 ${prefix}wanted*
-*き⃟🦈 ${prefix}deltrash*
-*き⃟🦈 ${prefix}barkodemaker* _text_
-
-*INFORMATION MENU*
-き⃟🦈 ${prefix}cuacabandara
-き⃟🦈 ${prefix}cuaca1 <_Nama Daerah_>
-き⃟🦈 ${prefix}cuaca <_Nama Daerah>
-き⃟🦈 ${prefix}rscovid
-き⃟🦈 ${prefix}jadwalbola 
-き⃟🦈 ${prefix}jadwaltvnow 
-*き⃟🦈 ${prefix}trendingtwitter*
-*き⃟🦈 ${prefix}mostviewfilm*
-*き⃟🦈 ${prefix}infoloker*
-*き⃟🦈 ${prefix}datasekolah <query>*
-*き⃟🦈 ${prefix}datasekolah2 <query>*
-*き⃟🦈 ${prefix}infogempa <query>*
-
-*SPAM MENU*
-*き⃟🦈 ${prefix}spamsms <89xnxx>
-*き⃟🦈 ${prefix}spamcall <89xnxx>
-
-*NEWS MENU*
-*き⃟🦈 ${prefix}cnn 
-*き⃟🦈 ${prefix}kompastv
-*き⃟🦈 ${prefix}tribunnews
-*き⃟🦈 ${prefix}liputan
-*き⃟🦈 ${prefix}foxnews
-
-𝖯𝖤𝖭𝖣𝖨𝖣𝖨𝖪𝖠𝖭 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}nulis
-*き⃟🦈 ${prefix}nuliskiri _Text_
-*き⃟🦈 ${prefix}nuliskanan _Text_
-*き⃟🦈 ${prefix}foliokiri _Text_
-*き⃟🦈 ${prefix}foliokanan _Text_
-
-𝖲𝖳𝖠𝖫𝖪𝖨𝖭𝖦 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}igstalk*
-*き⃟🦈 ${prefix}igstalk*
-*き⃟🦈 ${prefix}tiktokstalk*
-*き⃟🦈 ${prefix}githubstalk*
-
-*RANDOM IMAGE*
-*き⃟🦈 ${prefix}narutobanner
-*き⃟🦈 ${prefix}aesthetic
-*き⃟🦈 ${prefix}bts
-*き⃟🦈 ${prefix}blackpink
-*き⃟🦈 ${prefix}ppcp
-*き⃟🦈 ${prefix}pinterest* _text_
-
-𝖠𝖣𝖣 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}addvn*
-*き⃟🦈 ${prefix}listvn*
-*き⃟🦈 ${prefix}getvn*
-*き⃟🦈 ${prefix}addimg*
-*き⃟🦈 ${prefix}listimg*
-*き⃟🦈 ${prefix}getimg*
-*き⃟🦈 ${prefix}addvid*
-*き⃟🦈 ${prefix}listvid*
-*き⃟🦈 ${prefix}getvid*
-*き⃟🦈 ${prefix}addstik*
-*き⃟🦈 ${prefix}liststik*
-*き⃟🦈 ${prefix}getstik*
-*き⃟🦈 ${prefix}addcmd*
-*き⃟🦈 ${prefix}listcmd*
-*き⃟🦈 ${prefix}delcmd*
-
-𝖶𝖨𝖡𝖴 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}loli*
-*き⃟🦈 ${prefix}manga*
-*き⃟🦈 ${prefix}anime*
-*き⃟🦈️ ${prefix}lolivideo*
-*き⃟🦈 ${prefix}husbu*
-*き⃟🦈️ ${prefix}milf*
-*き⃟🦈 ${prefix}neko*
-*き⃟🦈️ ${prefix}kanna*
-*き⃟🦈 ${prefix}sagiri*
-*き⃟🦈 ${prefix}hentai*
-*き⃟🦈 ${prefix}cosplay*
-*き⃟🦈️ ${prefix}wallnime*
-*き⃟🦈️ ${prefix}kusonime*
-*き⃟🦈️ ${prefix}megumin*
-*き⃟🦈 ${prefix}otakudesu*
-*き⃟🦈️ ${prefix}otakuongoing*
-*き⃟🦈 ${prefix}neko*
-*き⃟🦈 ${prefix}gura*
-*き⃟🦈 ${prefix}kaneki*
-*き⃟🦈 ${prefix}lolim*
-*き⃟🦈 ${prefix}remm*
-*き⃟🦈 ${prefix}vanpire*
-*き⃟🦈 ${prefix}nhentai *code*
-*き⃟🦈 ${prefix}doujin* _text_
-*き⃟🦈 ${prefix}cosplay2* 
-*き⃟🦈 ${prefix}waifu*
-
-𝖮𝖳𝖧𝖤𝖱 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}tourl*
-*き⃟🦈 ${prefix}tinyurl*
-*き⃟🦈 ${prefix}bilamgangka*
-*き⃟🦈 ${prefix}artimimpi*
-*き⃟🦈 ${prefix}resepmasakan*
-*き⃟🦈 ${prefix}urlshort _Link_
-*き⃟🦈 ${prefix}urlshort2 _Text_
-*き⃟🦈 ${prefix}brainly <query>
-*き⃟🦈 ${prefix}image <query>
-*き⃟🦈 ${prefix}anime <random>
-*き⃟🦈 ${prefix}pinterest <query>
-*き⃟🦈 ${prefix}komiku <query>
-*き⃟🦈 ${prefix}lirik <query>
-*き⃟🦈 ${prefix}chara <query>
-*き⃟🦈 ${prefix}playstore <query>
-*き⃟🦈 ${prefix}otaku <query>
-*き⃟🦈 ${prefix}tokohindo
-*き⃟🦈 ${prefix}renungan
-*き⃟🦈 ${prefix}animeindo (text)
-*き⃟🦈 ${prefix}kodepos2 (text) 
-*き⃟🦈 ${prefix}gabut 
-*き⃟🦈 ${prefix}darkjoke*
-*き⃟🦈 ${prefix}tts* _text_
-*き⃟🦈 ${prefix}translate2* _kode|text_
-*き⃟🦈 ${prefix}bahasa* 
-*き⃟🦈 ${prefix}linkwa* _text_
-
-𝖮𝖶𝖭𝖤𝖱 𝖬𝖤𝖭𝖴 
-*き⃟🦈️ ${prefix}bc* _teks_
-*き⃟🦈 ${prefix}tobc* _audio_
-*き⃟🦈 ${prefix}term*
-*き⃟🦈 ${prefix}eval*
-*き⃟🦈 ${prefix}clearall*
-*き⃟🦈 ${prefix}leaveall*
-*き⃟🦈 ${prefix}join* _teks_
-*き⃟🦈️ ${prefix}shutdown*
-*き⃟🦈 ${prefix}getquoted*
-*き⃟🦈 ${prefix}addupdate* _fiturnya_
-*き⃟🦈️ ${prefix}exif* _nama|author_
-*き⃟🦈 ${prefix}setpp*
-*き⃟🦈 ${prefix}setbio*
-*き⃟🦈 ${prefix}setname*
-*き⃟🦈 ${prefix}getpp*
-*き⃟🦈 ${prefix}sharelock*
-*き⃟🦈 ${prefix}chat* _nomor|teks_*
-*き⃟🦈 ${prefix}listptrem* _text_
-*き⃟🦈 ${prefix}addprem* member
-*き⃟🦈 ${prefix}delprem* member
-
-𝖲𝖤𝖠𝖱𝖢𝖧𝖨𝖭𝖦 𝖬𝖤𝖭𝖴
-*き⃟🦈 ${prefix}ytsearch* _query_
-*き⃟🦈 ${prefix}shopee* _product_
-*き⃟🦈 ${prefix}playstore* _query_
-*き⃟🦈 ${prefix}google* _query_
-*き⃟🦈 ${prefix}image* _query_
-*き⃟🦈 ${prefix}ytsearch <query>
-*き⃟🦈 ${prefix}carimasakna _masakanya_
-*き⃟🦈 ${prefix}thelazy _Text_
-*き⃟🦈 ${prefix}palingmurah (text)
-*き⃟🦈 ${prefix}sfilesearch (text)
-*き⃟🦈 ${prefix}ytstalk (channel)
-*き⃟🦈 ${prefix}happymod <text>
-*き⃟🦈 ${prefix}film <text>
-*き⃟🦈 ${prefix}ytplaylist <text>
-*き⃟🦈 ${prefix}ytchannel <text> 
-*き⃟🦈 ${prefix}jav (text)
-*き⃟🦈 ${prefix}phsearch (text)
-*き⃟🦈 ${prefix}chord _Text_
-*き⃟🦈 ${prefix}nekopoirandom
-*き⃟🦈 ${prefix}nekopoisearch
-*き⃟🦈 ${prefix}ytstalk _Text_ 
-*き⃟🦈 ${prefix}jooxsearch <query>
-*き⃟🦈 ${prefix}pesantren <id>
-*き⃟🦈 ${prefix}kabupaten <id>
-*き⃟🦈 ${prefix}provinsi 
-*き⃟🦈 ${prefix}kusonime <query>
-*き⃟🦈 ${prefix}samehadaku <query>
-*き⃟🦈 ${prefix}dafontsearch <query>
-*き⃟🦈 ${prefix}jarak <query>
-*き⃟🦈 ${prefix}nhentaisearch <query>
-*き⃟🦈 ${prefix}komiku <query>
-*き⃟🦈 ${prefix}doujin* _text_
-*き⃟🦈 ${prefix}caribioskop* _lokask_
-
-𝖥𝖴𝖭 𝖬𝖤𝖭𝖴 
-*き⃟🦈 ${prefix}mining*
-*き⃟🦈 ${prefix}cekwatak*
-*き⃟🦈 ${prefix}cekmati* _nama_
-*き⃟🦈 ${prefix}wangy* _nama_
-*き⃟🦈 ${prefix}citacita*
-*き⃟🦈 ${prefix}toxic*
-*き⃟🦈 ${prefix}truth*
-*き⃟🦈 ${prefix}dare*
-*き⃟🦈 ${prefix}apakah*
-*き⃟🦈 ${prefix}bisakah*
-*き⃟🦈 ${prefix}kapankah*
-*き⃟🦈 ${prefix}rate*
-*き⃟🦈 ${prefix}jadian*
-*き⃟🦈 ${prefix}cantik*
-*き⃟🦈 ${prefix}ganteng*
-*き⃟🦈 ${prefix}beban*
-*き⃟🦈 ${prefix}babi*
-*き⃟🦈 ${prefix}cekganteng*
-*き⃟🦈 ${prefix}cekcantik*
-*き⃟🦈 ${prefix}katashi _Text_
-*き⃟🦈 ${prefix}putra _Text_
-*き⃟🦈 ${prefix}simi _Text_
-*き⃟🦈 ${prefix}asupan* _product_* 
-*き⃟🦈 ${prefix}tts* _text_
-
+╭────❒ 「 FITUR 」 
+│◦➛Status : ${isOwner ? 'Owner' : 'User'}
+│
+├──❏「 𝖨𝖭𝖥𝖮 」 
+│◦➛${prefix}update
+│◦➛${prefix}iklan
+│◦➛${prefix}level
+│◦➛${prefix}rules
+│◦➛${prefix}waktu
+│◦➛${prefix}botstat
+│◦➛${prefix}owner
+│◦➛${prefix}ping
+│◦➛${prefix}donasi
+│◦➛${prefix}report [ keluhan ]
+│◦➛${prefix}belipremium
+│
+├──❏「 GROUP 」 
+│◦➛* ${prefix}groupsetting*
+│◦➛* ${prefix}getbio* _reply_
+│◦➛* ${prefix}afk* _alasan_
+│◦➛* ${prefix}kontak* _nomor|nama_
+│◦➛* ${prefix}kickall*
+│◦➛* ${prefix}infogrup*
+│◦➛* ${prefix}promoteall*
+│◦➛* ${prefix}demoteall*
+│◦➛* ${prefix}listonline*
+│◦➛* ${prefix}tagall* _teks_
+│◦➛* ${prefix}leave*
+│◦➛* ${prefix}kick* _reply_
+│◦➛* ${prefix}add* _628xxx_
+│◦➛* ${prefix}setnamegc*
+│◦➛* ${prefix}setppgc*
+│◦➛* ${prefix}getpp*
+│◦➛* ${prefix}setdeskgc*
+│◦➛* ${prefix}sider* _reply chat bot_
+│◦➛* ${prefix}hidetag* _teks/reply teks_
+│◦➛* ${prefix}linkgc*
+│◦➛* ${prefix}getdeskgc*
+│◦➛* ${prefix}revoke*
+│◦➛* ${prefix}reminder* _text/waktu
+│◦➛* ${prefix}promote* _tag orang_
+│◦➛* ${prefix}demote* _tag orang_
+│◦➛* ${prefix}tagme* 
+│
+├──❏「 GAME 」 
+│◦➛* ${prefix}slot*
+│◦➛* ${prefix}tictactoe* _@tag_
+│◦➛* ${prefix}suit* _batu/kertas/gunting_
+│
+├──❏「 ISLAM 」 
+│◦➛* ${prefix}kisahnabi*
+│◦➛* ${prefix}listdaerah*
+│◦➛* ${prefix}randomquran _Text_*
+│◦➛* ${prefix}surah <query>*
+│◦➛* ${prefix}quotesislam*
+│◦➛* ${prefix}surahaudio <query>*
+│◦➛* ${prefix}ayataudio <query>*
+│
+├──❏「 DOWMLOAD 」 
+│◦➛* ${prefix}fbdl*
+│◦➛* ${prefix}igdl*
+│◦➛* ${prefix}twitter*
+│◦➛* ${prefix}tiktok*
+│◦➛* ${prefix}play*
+│◦➛* ${prefix}ythd*
+│◦➛* ${prefix}ytmp3*
+│◦➛* ${prefix}ytmp4*
+│◦➛* ${prefix}soundcloud*
+│◦➛* ${prefix}tiktoknowm*
+│◦➛* ${prefix}tiktokaudio*
+│◦➛* ${prefix}mediafire*
+│◦➛* ${prefix}nhentaizip* _code_*
+│◦➛* ${prefix}xvideo _Link_*
+│◦➛* ${prefix}xs _Text_*
+│◦➛* ${prefix}xs2 _Text_*
+│◦➛* ${prefix}xnxx _Link_*
+│◦➛* ${prefix}ytmp42 <query>*
+│◦➛* ${prefix}tiktok2 <query>*
+│◦➛* ${prefix}jooxplay <query>*
+│◦➛* ${prefix}tts* _kode|text_
+│◦➛* ${prefix}pinterest* _text_
+│◦➛*${prefix}artinama* _text_
+│◦➛*${prefix}dafontdownload* _Link_
+│◦➛*${prefix}splay* _text_
+│
+├──❏「 ASUPAN 」 
+│◦➛*${prefix}asupan* 
+│◦➛*${prefix}ukhty* 
+│◦➛*${prefix}santuy* 
+│◦➛*${prefix}vietnam* 
+│◦➛*${prefix}malaysia* 
+│◦➛*${prefix}korea* 
+│◦➛*${prefix}indonesia* 
+│◦➛*${prefix}japan* 
+│◦➛*${prefix}thailand* 
+│◦➛*${prefix}china* 
+│
+├──❏「 TEXT 」 
+│◦➛* ${prefix}randombokep
+│◦➛* ${prefix}style (text)
+│◦➛* ${prefix}pastebin (text)
+│◦➛* ${prefix}nickepep
+│◦➛* ${prefix}fake
+│◦➛* ${prefix}twich
+│◦➛* ${prefix}cersex
+│◦➛* ${prefix}cerpen
+│◦➛* ${prefix}katacinta
+│◦➛* ${prefix}tongue
+│◦➛* ${prefix}renungan
+│◦➛* ${prefix}randomcerpen
+│◦➛* ${prefix}quotes* 
+│◦➛* ${prefix}faktaunik
+│◦➛* ${prefix}cerpencinta* 
+│◦➛*${prefix}artinama* _text_
+│◦➛*${prefix}randomnama* _gender_
+│
+├──❏「 IMAGE 」 
+│◦➛* ${prefix}narutobanner
+│◦➛* ${prefix}aesthetic
+│◦➛* ${prefix}bts
+│◦➛* ${prefix}blackpink
+│◦➛* ${prefix}ppcp
+│◦➛* ${prefix}pinterest* _text_
+│
+├──❏「 STICKER 」 
+│◦➛* ${prefix}dadu*
+│◦➛* ${prefix}doge*
+│◦➛* ${prefix}patrick*
+│◦➛* ${prefix}gura*
+│◦➛* ${prefix}stickeranime*
+│◦➛* ${prefix}stcmeme* _teks|teks_
+│◦➛* ${prefix}swm* _pack|author_
+│◦➛* ${prefix}take* _pack|author_
+│◦➛* ${prefix}caristicker* _text_
+│◦➛* ${prefix}attp* _text_
+│◦➛* ${prefix}ttp* _text_
+│◦➛* ${prefix}ttpyellow* _text_
+│◦➛* ${prefix}ttpblue* _text_
+│
+├──❏「 𝖳𝖮𝖮𝖫𝖲 」 
+│◦➛* ${prefix}toimg*
+│◦➛* ${prefix}tovideo*
+│◦➛* ${prefix}tomp3*
+│◦➛* ${prefix}tourl*
+│◦➛* ${prefix}urlshort*
+│◦➛* ${prefix}urlshort2*
+│◦➛* ${prefix}tupai* _reply suaranya_
+│◦➛* ${prefix}vibra* _reply suaranya_
+│◦➛* ${prefix}gemuk* _reply suaranya_
+│◦➛* ${prefix}robot* _reply suaranya_
+│◦➛* ${prefix}bass* _reply suaranya_
+│◦➛* ${prefix}balik* _reply suaranya_
+│
+├──❏「 PREMIUM/DEWASA 」 
+│◦➛* ${prefix}xnxx* _link_
+│◦➛* ${prefix}xnxxsearch*
+│◦➛* ${prefix}xvideos*
+│◦➛* ${prefix}xs*
+│◦➛* ${prefix}asupan*
+│◦➛*${prefix}tiktokporn* _Premuser_
+│◦➛*${prefix}hentaivideo* _Premuser_
+│
+├──❏「 MAKER 」
+│◦➛* ${prefix}wasted*
+│◦➛* ${prefix}squidrip*
+│◦➛* ${prefix}wanted*
+│◦➛* ${prefix}deltrash*
+│◦➛* ${prefix}barkodemaker* _text_
+│
+├──❏「 INFORMATION 」
+│◦➛* ${prefix}cuacabandara
+│◦➛* ${prefix}cuaca1 <_Nama Daerah_>
+│◦➛* ${prefix}cuaca <_Nama Daerah>
+│◦➛* ${prefix}rscovid
+│◦➛* ${prefix}jadwalbola 
+│◦➛* ${prefix}jadwaltvnow 
+│◦➛* ${prefix}trendingtwitter*
+│◦➛* ${prefix}mostviewfilm*
+│◦➛* ${prefix}infoloker*
+│◦➛* ${prefix}datasekolah <query>*
+│◦➛* ${prefix}datasekolah2 <query>*
+│◦➛* ${prefix}infogempa <query>*
+│
+├──❏「 BERITA 」
+│◦➛* ${prefix}cnn 
+│◦➛* ${prefix}kompastv
+│◦➛* ${prefix}tribunnews
+│◦➛* ${prefix}liputan
+│◦➛* ${prefix}foxnews
+│
+├──❏「 MAGER NULIS 」
+│◦➛* ${prefix}nulis
+│◦➛* ${prefix}nuliskiri _Text_
+│◦➛* ${prefix}nuliskanan _Text_
+│◦➛* ${prefix}foliokiri _Text_
+│◦➛* ${prefix}foliokanan _Text_
+│
+├──❏「 ADD 」
+│
+├❏- Fitur Add Menggunakan Database, Jadi Mungkin Bisa Ajj Fiturnya Kgk Work 
+│◦➛* ${prefix}addvn*
+│◦➛* ${prefix}listvn*
+│◦➛* ${prefix}getvn*
+│◦➛* ${prefix}addimg*
+│◦➛* ${prefix}listimg*
+│◦➛* ${prefix}getimg*
+│◦➛* ${prefix}addvid*
+│◦➛* ${prefix}listvid*
+│◦➛* ${prefix}getvid*
+│◦➛* ${prefix}addstik*
+│◦➛* ${prefix}liststik*
+│◦➛* ${prefix}getstik*
+│◦➛* ${prefix}addcmd*
+│◦➛* ${prefix}listcmd*
+│◦➛* ${prefix}delcmd*
+│
+├──❏「 ANIME 」
+│◦➛* ${prefix}loli*
+│◦➛* ${prefix}manga*
+│◦➛* ${prefix}anime*
+│◦➛* ${prefix}lolivideo*
+│◦➛* ${prefix}husbu*
+│◦➛* ${prefix}milf*
+│◦➛* ${prefix}neko*
+│◦➛* ${prefix}kanna*
+│◦➛* ${prefix}sagiri*
+│◦➛* ${prefix}hentai*
+│◦➛* ${prefix}cosplay*
+│◦➛* ${prefix}wallnime*
+│◦➛* ${prefix}kusonime*
+│◦➛* ${prefix}megumin*
+│◦➛* ${prefix}otakudesu*
+│◦➛* ${prefix}otakuongoing*
+│◦➛* ${prefix}neko*
+│◦➛* ${prefix}gura*
+│◦➛* ${prefix}kaneki*
+│◦➛* ${prefix}lolim*
+│◦➛* ${prefix}remm*
+│◦➛* ${prefix}vanpire*
+│◦➛* ${prefix}nhentai* text
+│◦➛* ${prefix}doujin* _text_
+│◦➛* ${prefix}cosplay2* 
+│◦➛* ${prefix}waifu*
+│
+├──❏「 LAINYA 」
+│◦➛* ${prefix}tourl*
+│◦➛* ${prefix}tinyurl*
+│◦➛* ${prefix}bilamgangka*
+│◦➛* ${prefix}artimimpi*
+│◦➛* ${prefix}resepmasakan*
+│◦➛* ${prefix}urlshort _Link_
+│◦➛* ${prefix}urlshort2 _Text_
+│◦➛* ${prefix}brainly <query>
+│◦➛* ${prefix}image <query>
+│◦➛* ${prefix}anime <random>
+│◦➛* ${prefix}pinterest <query>
+│◦➛* ${prefix}komiku <query>
+│◦➛* ${prefix}lirik <query>
+│◦➛* ${prefix}chara <query>
+│◦➛* ${prefix}playstore <query>
+│◦➛* ${prefix}otaku <query>
+│◦➛* ${prefix}tokohindo
+│◦➛* ${prefix}renungan
+│◦➛* ${prefix}animeindo (text)
+│◦➛* ${prefix}kodepos2 (text) 
+│◦➛* ${prefix}gabut 
+│◦➛* ${prefix}darkjoke*
+│◦➛* ${prefix}tts* _text_
+│◦➛* ${prefix}translate2* _kode|text_
+│◦➛* ${prefix}bahasa* 
+│◦➛* ${prefix}linkwa* _text_
+│
+├──❏「 OWNER 」
+│◦➛* ${prefix}bc* _teks_
+│◦➛* ${prefix}tobc* _audio_
+│◦➛* ${prefix}term*
+│◦➛* ${prefix}eval*
+│◦➛* ${prefix}clearall*
+│◦➛* ${prefix}leaveall*
+│◦➛* ${prefix}join* _teks_
+│◦➛* ${prefix}shutdown*
+│◦➛* ${prefix}getquoted*
+│◦➛* ${prefix}addupdate* _fiturnya_
+│◦➛* ${prefix}exif* _nama|author_
+│◦➛* ${prefix}setpp*
+│◦➛* ${prefix}setbio*
+│◦➛* ${prefix}setname*
+│◦➛* ${prefix}getpp*
+│◦➛* ${prefix}sharelock*
+│◦➛* ${prefix}chat* _nomor|teks_*
+│◦➛* ${prefix}listptrem* _text_
+│◦➛* ${prefix}addprem* member
+│◦➛* ${prefix}delprem* member
+│
+├──❏「 MENCARI 」
+│◦➛* ${prefix}ytsearch* _query_
+│◦➛* ${prefix}shopee* _product_
+│◦➛* ${prefix}playstore* _query_
+│◦➛* ${prefix}google* _query_
+│◦➛* ${prefix}image* _query_
+│◦➛* ${prefix}ytsearch <query>
+│◦➛* ${prefix}carimasakna _masakanya_
+│◦➛* ${prefix}thelazy _Text_
+│◦➛* ${prefix}palingmurah (text)
+│◦➛* ${prefix}sfilesearch (text)
+│◦➛* ${prefix}ytstalk (channel)
+│◦➛* ${prefix}happymod <text>
+│◦➛* ${prefix}film <text>
+│◦➛* ${prefix}ytplaylist <text>
+│◦➛* ${prefix}ytchannel <text> 
+│◦➛* ${prefix}jav (text)
+│◦➛* ${prefix}phsearch (text)
+│◦➛* ${prefix}chord _Text_
+│◦➛* ${prefix}nekopoirandom
+│◦➛* ${prefix}nekopoisearch
+│◦➛* ${prefix}ytstalk _Text_ 
+│◦➛* ${prefix}jooxsearch <query>
+│◦➛* ${prefix}pesantren <id>
+│◦➛* ${prefix}kabupaten <id>
+│◦➛* ${prefix}provinsi 
+│◦➛* ${prefix}kusonime <query>
+│◦➛* ${prefix}samehadaku <query>
+│◦➛* ${prefix}dafontsearch <query>
+│◦➛* ${prefix}jarak <query>
+│◦➛* ${prefix}nhentaisearch <query>
+│◦➛* ${prefix}komiku <query>
+│◦➛* ${prefix}doujin* _text_
+│◦➛* ${prefix}caribioskop* _lokask_
+│
+├──❏「 KESENANGAN 」
+│◦➛* ${prefix}mining*
+│◦➛* ${prefix}cekwatak*
+│◦➛* ${prefix}cekmati* _nama_
+│◦➛* ${prefix}wangy* _nama_
+│◦➛* ${prefix}citacita*
+│◦➛* ${prefix}toxic*
+│◦➛* ${prefix}truth*
+│◦➛* ${prefix}dare*
+│◦➛* ${prefix}apakah*
+│◦➛* ${prefix}bisakah*
+│◦➛* ${prefix}kapankah*
+│◦➛* ${prefix}rate*
+│◦➛* ${prefix}jadian*
+│◦➛* ${prefix}cantik*
+│◦➛* ${prefix}ganteng*
+│◦➛* ${prefix}beban*
+│◦➛* ${prefix}babi*
+│◦➛* ${prefix}cekganteng*
+│◦➛* ${prefix}cekcantik*
+│◦➛* ${prefix}katashi _Text_
+│◦➛* ${prefix}putra _Text_
+│◦➛* ${prefix}simi _Text_
+│◦➛* ${prefix}asupan* _product_* 
+│◦➛* ${prefix}tts* _text_
+│
+└─────────────────❒
 #- *List Kode Bahasa Untuk Fitur tts id*
 
   af: Afrikaans,
@@ -1133,46 +1150,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
               dha.relayWAMessage(prep)
                 break
-        case 'command':
-               list = []
-               listmenu = [`groupmenu`,`wibumenu`,`stickermenu`,`islammenu`,`sertimenu`,`ceritamenu`,`makermenu`,`dewasamenu`,`ownermenu`,`gamemenu`,`funmenu`,`downloadmenu`,`infomenu`,`othermenu`,`toolsmenu`]
-               listmenuu = [`Menu Group`,`Wibu Menu`,`Sticker Menu`,`Islam Menu`,`Serti Menu`,`Cerita Menu`,`Maker Menu`,`Dewasa Menu`,`Owner Menu`,`Game Menu`,`Fun Menu`,`Downloader`,`Info Menu`,`MenuLainnya`,`Tools Menu`]
-               nombor = 1
-               startnum = 0
-               for (let x of listmenu) {
-               const yy = {title: 'silahkan pilih menunya ' + nombor++,
-                    rows: [
-                       {
-                        title: `${listmenuu[startnum++]}`,
-                        description: ``,
-                        rowId: `${prefix}${x}`
-                      }
-                    ]
-                   }
-                        list.push(yy)
-           }
-               listmsg(from, `${ucapanWaktu}`,  `Hai kak......\n*${pushname}*\nPilih Disini`, list)
-               break
-       case 'store':
-               list = []
-               listmenu = [`buttonstik`,`buttondl`,`buttonown`,`buttonpen`,`buttongame`,`buttongc`,`buttonwibu`]
-               listmenuu = [`STICKER MENU`,`DOWNLOAD MENU`,`OWNER MENU`,`NULIS MENU`,`GAME MENU`,`GRUP MENU`,`WIBU MENU`]
-               nombor = 1
-               startnum = 0
-               for (let x of listmenu) {
-               const yy = {title: 'List Button Menu' + nombor++,
-                    rows: [
-                       {
-                        title: `${listmenuu[startnum++]}`,
-                        description: `\n\n\n\n\`\`\`JAN LUPA SUBSCRIBE Katashi\`\`\``,
-                        rowId: `${prefix}${x}`
-                      }
-                    ]
-                   }
-                        list.push(yy)
-           }
-               listmsg(from, `${ucapanWaktu}`,   `Hai kak.....\n*${pushname}*\nJangan Lupa Subscribe Katashi Yahh`, list)
-               break
+       
 //------------------< Game >------------------- 
         case 'limitgame': 
         case 'balance': 
@@ -1321,152 +1299,152 @@ teksnya = ` *「PAYMENT」*
 case 'buttonstik':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「MENU STICKER」*
-*き⃟🦈 ${prefix}attp* _teks_
-*き⃟🦈 ${prefix}ttp* _teks_
-*き⃟🦈 ${prefix}dadu*
-*き⃟🦈 ${prefix}doge*
-*き⃟🦈 ${prefix}patrick*
-*き⃟🦈 ${prefix}gura*
-*き⃟🦈 ${prefix}stickeranime*
-*き⃟🦈 ${prefix}semoji* _emoji_
-*き⃟🦈 ${prefix}sticker* _reply foto/video_
-*き⃟🦈 ${prefix}smeme* _teks|teks_
-*き⃟🦈️ ${prefix}swm* _pack|author_
-*き⃟🦈️ ${prefix}take* _pack|author_`
+│◦➛* ${prefix}attp* _teks_
+│◦➛* ${prefix}ttp* _teks_
+│◦➛* ${prefix}dadu*
+│◦➛* ${prefix}doge*
+│◦➛* ${prefix}patrick*
+│◦➛* ${prefix}gura*
+│◦➛* ${prefix}stickeranime*
+│◦➛* ${prefix}semoji* _emoji_
+│◦➛* ${prefix}sticker* _reply foto/video_
+│◦➛* ${prefix}smeme* _teks|teks_
+│◦➛*️ ${prefix}swm* _pack|author_
+│◦➛*️ ${prefix}take* _pack|author_`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
               break
  case 'buttondl':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「DOWNLOAD MENU」*
-*き⃟🦈 ${prefix}fbdl*
-*き⃟🦈 ${prefix}igdl*
-*き⃟🦈 ${prefix}igdl2*
-*き⃟🦈 ${prefix}twitter*
-*き⃟🦈 ${prefix}tiktok*
-*き⃟🦈 ${prefix}play*
-*き⃟🦈 ${prefix}ythd*
-*き⃟🦈 ${prefix}ytmp3*
-*き⃟🦈 ${prefix}ytmp4*
-*き⃟🦈 ${prefix}soundcloud*
-*き⃟🦈 ${prefix}tiktoknowm*
-*き⃟🦈 ${prefix}tiktokaudio*
-*き⃟🦈 ${prefix}mediafire*
-*き⃟🦈 ${prefix}nhentaipdf* _code_`
+│◦➛* ${prefix}fbdl*
+│◦➛* ${prefix}igdl*
+│◦➛* ${prefix}igdl2*
+│◦➛* ${prefix}twitter*
+│◦➛* ${prefix}tiktok*
+│◦➛* ${prefix}play*
+│◦➛* ${prefix}ythd*
+│◦➛* ${prefix}ytmp3*
+│◦➛* ${prefix}ytmp4*
+│◦➛* ${prefix}soundcloud*
+│◦➛* ${prefix}tiktoknowm*
+│◦➛* ${prefix}tiktokaudio*
+│◦➛* ${prefix}mediafire*
+│◦➛* ${prefix}nhentaizip* _code_`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
               break
 case 'buttonpen':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「NULIS MENU」*
-*き⃟🦈 ${prefix}nulis*`
+│◦➛* ${prefix}nulis*`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
               break
 case 'buttongame':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「GAME MENU」*
 き⃟🦈 ${prefix}limitgame*
-*き⃟🦈 ${prefix}slot*
-*き⃟🦈 ${prefix}gelud* _@tag_
-*き⃟🦈 ${prefix}tictactoe* _@tag_
-*き⃟🦈 ${prefix}siapaaku*
-*き⃟🦈 ${prefix}family100*
-*き⃟🦈 ${prefix}kuismath*
-*き⃟🦈 ${prefix}asahotak*
-*き⃟🦈 ${prefix}tebaklirik*
-*き⃟🦈 ${prefix}tebaklagu*
-*き⃟🦈 ${prefix}tebakkata*
-*き⃟🦈 ${prefix}susunkata*
-*き⃟🦈 ${prefix}kimiakuis*
-*き⃟🦈 ${prefix}caklontong*
-*き⃟🦈 ${prefix}tebakjenaka*
-*き⃟🦈 ${prefix}tebakanime*
-*き⃟🦈 ${prefix}tebaktebakan*
-*き⃟🦈 ${prefix}tebakgambar*
-*き⃟🦈 ${prefix}tebakumur*
-*き⃟🦈 ${prefix}tebakbendera*
-*き⃟🦈 ${prefix}suit* _batu/kertas/gunting_`
+│◦➛* ${prefix}slot*
+│◦➛* ${prefix}gelud* _@tag_
+│◦➛* ${prefix}tictactoe* _@tag_
+│◦➛* ${prefix}siapaaku*
+│◦➛* ${prefix}family100*
+│◦➛* ${prefix}kuismath*
+│◦➛* ${prefix}asahotak*
+│◦➛* ${prefix}tebaklirik*
+│◦➛* ${prefix}tebaklagu*
+│◦➛* ${prefix}tebakkata*
+│◦➛* ${prefix}susunkata*
+│◦➛* ${prefix}kimiakuis*
+│◦➛* ${prefix}caklontong*
+│◦➛* ${prefix}tebakjenaka*
+│◦➛* ${prefix}tebakanime*
+│◦➛* ${prefix}tebaktebakan*
+│◦➛* ${prefix}tebakgambar*
+│◦➛* ${prefix}tebakumur*
+│◦➛* ${prefix}tebakbendera*
+│◦➛* ${prefix}suit* _batu/kertas/gunting_`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
               break
 case 'buttongc':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「GRUP MENU」*
-*き⃟🦈 ${prefix}groupsetting*
-*き⃟🦈 ${prefix}getbio* _reply_
-*き⃟🦈 ${prefix}afk* _alasan_
-*き⃟🦈 ${prefix}kontak* _nomor|nama_
-*き⃟🦈 ${prefix}ceksewa*
-*き⃟🦈 ${prefix}kickall*
-*き⃟🦈 ${prefix}infogrup*
-*き⃟🦈 ${prefix}promote*
-*き⃟🦈 ${prefix}promoteall*
-*き⃟🦈 ${prefix}demote*
-*き⃟🦈 ${prefix}demoteall*
-*き⃟🦈 ${prefix}listonline*
-*き⃟🦈 ${prefix}tagall* _teks_
-*き⃟🦈 ${prefix}leave*
-*き⃟🦈 ${prefix}kick* _reply_
-*き⃟🦈 ${prefix}add* _628xxx_
-*き⃟🦈 ${prefix}setnamegc*
-*き⃟🦈 ${prefix}setppgc*
-*き⃟🦈 ${prefix}getpp*
-*き⃟🦈 ${prefix}setdeskgc*
-*き⃟🦈 ${prefix}sider* _reply chat bot_
-*き⃟🦈 ${prefix}hidetag* _teks/reply teks_
-*き⃟🦈 ${prefix}linkgc*
-*き⃟🦈 ${prefix}getdeskgc*`
+│◦➛* ${prefix}groupsetting*
+│◦➛* ${prefix}getbio* _reply_
+│◦➛* ${prefix}afk* _alasan_
+│◦➛* ${prefix}kontak* _nomor|nama_
+│◦➛* ${prefix}ceksewa*
+│◦➛* ${prefix}kickall*
+│◦➛* ${prefix}infogrup*
+│◦➛* ${prefix}promote*
+│◦➛* ${prefix}promoteall*
+│◦➛* ${prefix}demote*
+│◦➛* ${prefix}demoteall*
+│◦➛* ${prefix}listonline*
+│◦➛* ${prefix}tagall* _teks_
+│◦➛* ${prefix}leave*
+│◦➛* ${prefix}kick* _reply_
+│◦➛* ${prefix}add* _628xxx_
+│◦➛* ${prefix}setnamegc*
+│◦➛* ${prefix}setppgc*
+│◦➛* ${prefix}getpp*
+│◦➛* ${prefix}setdeskgc*
+│◦➛* ${prefix}sider* _reply chat bot_
+│◦➛* ${prefix}hidetag* _teks/reply teks_
+│◦➛* ${prefix}linkgc*
+│◦➛* ${prefix}getdeskgc*`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
               break
 case 'buttonwibu':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「WIBU MENU」*
-*き⃟🦈 ${prefix}loli*
-*き⃟🦈 ${prefix}manga*
-*き⃟🦈 ${prefix}anime*
-*き⃟🦈️ ${prefix}lolivideo*
-*き⃟🦈 ${prefix}husbu*
-*き⃟🦈️ ${prefix}waifu*
-*き⃟🦈️ ${prefix}milf*
-*き⃟🦈 ${prefix}neko*
-*き⃟🦈️ ${prefix}kanna*
-*き⃟🦈 ${prefix}sagiri*
-*き⃟🦈 ${prefix}hentai*
-*き⃟🦈 ${prefix}cosplay*
-*き⃟🦈️ ${prefix}wallnime*
-*き⃟🦈️ ${prefix}kusonime*
-*き⃟🦈️ ${prefix}megumin*
-*き⃟🦈 ${prefix}otakudesu*
-*き⃟🦈️ ${prefix}doujindesu*
-*き⃟🦈️ ${prefix}storyanime*
-*き⃟🦈️ ${prefix}otakuongoing*
-*き⃟🦈 ${prefix}nhentai *code*
-*き⃟🦈️ ${prefix}nekopoi _link_*
-*き⃟🦈️ ${prefix}nekopoi3d*
-*き⃟🦈️ ${prefix}nekopoicosplay*
-*き⃟🦈 ${prefix}nekopoisearch*`
+│◦➛* ${prefix}loli*
+│◦➛* ${prefix}manga*
+│◦➛* ${prefix}anime*
+│◦➛*️ ${prefix}lolivideo*
+│◦➛* ${prefix}husbu*
+│◦➛*️ ${prefix}waifu*
+│◦➛*️ ${prefix}milf*
+│◦➛* ${prefix}neko*
+│◦➛*️ ${prefix}kanna*
+│◦➛* ${prefix}sagiri*
+│◦➛* ${prefix}hentai*
+│◦➛* ${prefix}cosplay*
+│◦➛*️ ${prefix}wallnime*
+│◦➛*️ ${prefix}kusonime*
+│◦➛*️ ${prefix}megumin*
+│◦➛* ${prefix}otakudesu*
+│◦➛*️ ${prefix}doujindesu*
+│◦➛*️ ${prefix}storyanime*
+│◦➛*️ ${prefix}otakuongoing*
+│◦➛* ${prefix}nhentai *code*
+│◦➛*️ ${prefix}nekopoi _link_*
+│◦➛*️ ${prefix}nekopoi3d*
+│◦➛*️ ${prefix}nekopoicosplay*
+│◦➛* ${prefix}nekopoisearch*`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftext, caption: teksnya })
               break
 case 'buttonown':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「OWNER MENU」*
-*き⃟🦈️ ${prefix}bc* _teks_
-*き⃟🦈 ${prefix}tobc* _audio_
-*き⃟🦈 ${prefix}term*
-*き⃟🦈 ${prefix}eval*
-*き⃟🦈 ${prefix}clearall*
-*き⃟🦈 ${prefix}leaveall*
-*き⃟🦈 ${prefix}join* _teks_
-*き⃟🦈️ ${prefix}shutdown*
-*き⃟🦈 ${prefix}getquoted*
-*き⃟🦈 ${prefix}addupdate* _fiturnya_
-*き⃟🦈️ ${prefix}exif* _nama|author_
-*き⃟🦈 ${prefix}sewa add/del* _waktunya_
-*き⃟🦈️ ${prefix}premium add* _@tag|nomor_
-*き⃟🦈 ${prefix}premium del* _@tag|nomor_
-*き⃟🦈 ${prefix}setpp*
-*き⃟🦈 ${prefix}setbio*
-*き⃟🦈 ${prefix}setname*
-*き⃟🦈 ${prefix}getpp*
-*き⃟🦈 ${prefix}sharelock*
-*き⃟🦈 ${prefix}chat* _nomor|teks_`
+│◦➛*️ ${prefix}bc* _teks_
+│◦➛* ${prefix}tobc* _audio_
+│◦➛* ${prefix}term*
+│◦➛* ${prefix}eval*
+│◦➛* ${prefix}clearall*
+│◦➛* ${prefix}leaveall*
+│◦➛* ${prefix}join* _teks_
+│◦➛*️ ${prefix}shutdown*
+│◦➛* ${prefix}getquoted*
+│◦➛* ${prefix}addupdate* _fiturnya_
+│◦➛*️ ${prefix}exif* _nama|author_
+│◦➛* ${prefix}sewa add/del* _waktunya_
+│◦➛*️ ${prefix}premium add* _@tag|nomor_
+│◦➛* ${prefix}premium del* _@tag|nomor_
+│◦➛* ${prefix}setpp*
+│◦➛* ${prefix}setbio*
+│◦➛* ${prefix}setname*
+│◦➛* ${prefix}getpp*
+│◦➛* ${prefix}sharelock*
+│◦➛* ${prefix}chat* _nomor|teks_`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftext, caption: teksnya })
               break 
 			
@@ -1501,8 +1479,17 @@ case 'buttonown':
               break
 //------------------< self and public >---------------------
 //------------------< Downloader/Search/Anime >-------------------
-       case 'igdl':
-       case 'instagram':
+case 'ig':
+if (!q) return reply('Linknya?')
+var { igDownloader } = require('./lib/igdown')
+   res = await igDownloader(`${c}`).catch(e => {
+reply(mess.error.api)
+})
+console.log(res)
+sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
+                    break
+       case 'igdl2':
+       case 'instagram2':
               try {
               if (!q) return reply('Linknya?')
               reply(mess.wait)
@@ -1521,8 +1508,8 @@ case 'buttonown':
               reply(String(e))
 }
               break
-       case 'igdl3': 
-       case 'instagram3':
+       case 'igdl': 
+       case 'instagram':
               if (!q) return reply('Link Yang Mana? ')
               if (!q.includes('instagram')) return reply(mess.error.Iv)
               reply(mess.wait)
@@ -2674,14 +2661,14 @@ case 'getvn':
 }
              break
       case 'clearall':
-             if (!isOwner) return  reply(mess.only.owner)
-             anu = await dha.chats.all()
-             dha.setMaxListeners(25)
-             for (let _ of anu) {
-             dha.deleteChat(_.jid)
-}
-             reply('Sukses delete all chat :)')
-             break
+				if (!isOwner && !mek.key.fromMe) return reply(mess.only.ownerB)
+					anu = await dha.chats.all()
+					dha.setMaxListeners(10)
+					for (let _ of anu) {
+						dha.deleteChat(_.jid)
+					}
+					reply('Sukses membersihkan semua pesan')
+					break
       case 'term':
              if (!isOwner) return
              if (!q) return
@@ -2726,11 +2713,13 @@ case 'linkgc':
 				yeh = `https://chat.whatsapp.com/${linkgc}\n\nlink Group *${groupName}*`
 				dha.sendMessage(from, yeh, text, {quoted: mek})
 				break
-            case 'kick':
-             if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
-             if (!isGroup) return reply(mess.only.group)
-             kick(from, mentionUser)
-             break
+            case 'kick': 
+case 'headsot':
+									if (!isGroup) return reply(mess.only.group)
+									if (!isGroupAdmins && !isOwner && !mek0.key.fromMe) return reply(mess.only.admin) 
+									if (!isBotGroupAdmins) return reply(`Jadikan Bot Sebagai Admin Group!`)
+									kick(from, mentionUser)
+									break
       case 'add':
              if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) {
              entah = arg.split("|")[0]
@@ -3411,21 +3400,6 @@ case 'Spotify':
                     get_audio = await getBuffer(get_result.preview_url)
                     await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: mek })
                     break
-case 'ytstalk':
-case 'Ytstalk':
-                    if (args.length == 0) return reply(`Example: ${prefix + command} jean`)
-                    query = args.join(" ")
-                    reply(mess.wait)
-                    get_result = await fetchJson(`https://bx-hunter.herokuapp.com/api/ytstalk?text=${query}&apikey=Ikyy69`)
-                    ini_txt = `Name : ${get_result.channel}\n`
-                    ini_txt += `Subscriber : ${get_result.subscriberCount}\n`
-                    ini_txt += `Icon : ${get_result.thumb}\n`
-                    ini_txt += `Verified : ${get_result.isVerified}\n`
-                    ini_txt += `Link : ${get_result.link}\n`
-                    ini_txt += `Description : ${get_result.description}\n`
-                    ini_icon = await getBuffer(get_result.thumb)
-                    await dha.sendMessage(from, ini_icon, image, { quoted: mek, caption: ini_txt })
-                    break
                     case 'nuliskiri':
 case 'Nuliskiri':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3486,38 +3460,40 @@ anu = `${ini_txt}\n\n  *DOWNLOAD*
  ${prefix}xvideo [link xvid] = Video`
 dha.sendMessage(from, anu, text, {quoted: mek})
 break
-case 'xvideo':
-case 'xv':
-case 'Xvideo':
-case 'Xv':
+case 'xvideos':
 if (!isPremium) return reply(`Only Prem`)
-if (!isGroup) return reply(mess.only.group);
-if (args.length == 0) return reply(`Example: ${prefix + command} xvideos.com/`)
-                    c = args.join(" ")
-x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xvideo/detail?url=${c}`)
-anuu += `Low : ${x.result.low}\n`
-anuu += `High : ${x.result.high}\n`
-reply(anuu)
-reply(mess.wait)
-vid = await getBuffer(x.result.files.low)
-dha.sendMessage(from, vid, video, {quoted: mek})
-break
+                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.xnxx.com/video-uy5a73b/mom_is_horny_-_brooklyn`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://kocakz.herokuapp.com/api/media/xvideo/detail?url=${query}`)
+                    get_result = get_result.result
+                    ini_txt = `Title : ${get_result.title}\n`
+                    ini_txt += `Link : ${get_result.URL}\n`
+                    ini_txt += `Video Type : ${get_result.videoType}\n`
+                    ini_txt += `Video Width : ${get_result.videoWidth}\n`
+                    ini_txt += `Low : ${get_result.files.low}\n`
+                    ini_txt += `High : ${get_result.files.high}\n`
+                    thumbnail = await getBuffer(get_result.image)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    vid = await getBuffer(get_result.files.low)
+                    dha.sendMessage(from, vid, video, {quoted: mek})
+                    break
 case 'xnxx':
-case 'Xnxx':
-case 'xn2':
-case 'Xn':
 if (!isPremium) return reply(`Only Prem`)
-if (!isGroup) return reply(mess.only.group);
-if (args.length == 0) return reply(`Example: ${prefix + command} xnxx.com/`)
-                    c = args.join(" ")
-x = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/detail?url=${c}`)
-anu10 += `Low : ${x.result.low}\n`
-anu10 += `High : ${x.result.high}\n`
-reply(anu10)
-reply(mess.wait)
-vid = await getBuffer(x.result.files.low)
-dha.sendMessage(from, vid, video, {quoted: mek})
-break
+                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.xnxx.com/video-uy5a73b/mom_is_horny_-_brooklyn`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://kocakz.herokuapp.com/api/media/xnxx/detail?url=${query}`)
+                    get_result = get_result.result
+                    ini_txt = `Title : ${get_result.title}\n`
+                    ini_txt += `Link : ${get_result.URL}\n`
+                    ini_txt += `Video Type : ${get_result.videoType}\n`
+                    ini_txt += `Video Width : ${get_result.videoWidth}\n`
+                    ini_txt += `Low : ${get_result.files.low}\n`
+                    ini_txt += `High : ${get_result.files.high}\n`
+                    thumbnail = await getBuffer(get_result.image)
+                    await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
+                    vid = await getBuffer(get_result.files.low)
+                    dha.sendMessage(from, vid, video, {quoted: mek})
+                    break
 case 'listnulis':
 case 'Listnulis':
 
@@ -3828,18 +3804,6 @@ case 'carimasakan':
                         }
                         reply(tst.trim())  
                     break
-case 'Thelazy':
-case 'thelazy':
-if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
-                    query = args.join(" ")
-					anu = await fetchJson(`https://bx-hunter.herokuapp.com/api/thelazy?text=${query}&apikey=Ikyy69`, {method: 'get'})
-					teks = 'the lazy\n'
-					for (let i of anu.data) {
-						teks += `*Judul:* : ${i.title}\n*Creator* : ${i.creator}\n*Kategori* : ${i.category}\n*Author* : ${i.author}\n*Tanggal Post* : ${i.post_date}\n*Comen* : ${i.comments}\n*Url* : ${i.url}\n*Img* : ${i.img}\n\n*THE LAZY*\n`
-					}
-					reply(teks.trim())  
-					
-					break
 case 'tribunnews': // Update By KATASHI
 case 'Tribunnews': // Update By KATASHI
 					data = await fetchJson(`https://api.zeks.xyz/api/tribunews?apikey=Iyungputra`, {method: 'get'})
@@ -3899,20 +3863,6 @@ if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
 					teks = 'SFILE SEARCH\n'
 					for (let i of data.result) {
 						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*IMAGE* : ${i.thumb}\n\nSFILE SEARCH\n`
-					}
-					reply(teks.trim())
-					
-					break
-case 'Ph': // Update By KATASHI
-case 'ph': // Update By KATASHI
-case 'phsearch': // Update By KATASHI
-case 'Phsearch': // Update By KATASHI
-if (args.length == 0) return reply(`Example: ${prefix + command} milf`)
-                    query = args.join(" ")
-					data = await fetchJson(`https://bx-hunter.herokuapp.com/api/pornhubscraper?query=japan&apikey=Ikyy69`, {method: 'get'})
-					teks = 'PORNHUB SEARCH\n'
-					for (let i of data.result) {
-						teks += `*Title:* : ${i.title}\n*Url* : ${i.link}\n*Author* : ${i.author}\nHd* : ${i.hd}\n*Premium* : ${x.premium}\n*Views* : ${x.views}\n\nPORNHUB SEARCH\n`
 					}
 					reply(teks.trim())
 					
@@ -4215,7 +4165,7 @@ reply(mess.wait)
 					
 					break
 case 'nhentaipdf':
-case 'Nhentaipdf':
+case 'nhentaipdf':
 if (args.length == 0) return reply(`Kode?`)
                     query = args.join(" ")	
                     reply(mess.wait)
@@ -4775,13 +4725,6 @@ if (Number(oi2) >= 50) return reply('Kebanyakan!')
 	  }
 }
 	  break
-   case "vampire":
-     
-   if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
-   reply(mess.wait)
-   bapakao = body.slice(9)
-   sendMediaURL(from, `https://bx-hunter.herokuapp.com/api/flamingtext/vampire?text=${bapakao}&apikey=Ikyy69`)
-   break
 case "remm":
    if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
    reply(mess.wait)
@@ -5416,7 +5359,7 @@ case 'tebakumur':
                     ini_txt += `Umur : ${get_result.age}`
                     reply(ini_txt)
                     break
-case 'asupan':
+case 'asupan2':
 reply(mess.wait)
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=PinnBotWibu`)
                     ini_buffer = await getBuffer(get_result.result)
@@ -5511,8 +5454,134 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.b
                     reply(mess.error.api)
                 }
                 break
-        
-
+case 'attp':
+					if (!q) return reply(`Teks Nya Mana Kak?\nContoh :\n${prefix}attp ${NamaBot}`)
+					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/maker/attp?text=${encodeURIComponent(q)}&apikey=hardianto`)
+					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
+					break
+				case 'tag':
+			if (args.length < 1) return reply(`Penggunaan ${prefix}tag 62xnxx`)
+            var nomqm = `${body.slice(5)}@s.whatsapp.net`
+					tagq = `@${nomqm.split('@')[0]}` 
+					dha.sendMessage(from, tagq, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
+			break
+			case 'tagme':
+                  var nomqm = mek.participant
+				    tagu = `@${nomqm.split('@s.whatsapp.net')[0]}`
+					dha.sendMessage(from, tagu, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
+					break
+        case "ttpyellow":
+if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
+                    biji = args.join(" ")
+					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=yellow&apikey=hardianto`)
+					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
+					break
+case "ttpgreen":
+  if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
+                    biji = args.join(" ")
+					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=green&apikey=hardianto`)
+					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
+					break
+case "ttpblue":
+  if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
+                    biji = args.join(" ")
+					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=blue&apikey=hardianto`)
+					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
+					break
+case "ttp":
+  if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
+                    biji = args.join(" ")
+					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=brown&apikey=hardianto`)
+					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
+					break
+case 'dadu2':
+			random = Math.floor(Math.random() * 6) + 1
+		damdu = fs.readFileSync(`./sticker/${random}.webp`)
+			dha.sendMessage(from, damdu, sticker, {quoted: mek})
+			break
+				case 'robot':
+				reply(mess.wait)
+encmedial = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+medial = await dha.downloadAndSaveMediaMessage(encmedial)
+ran = getRandom('.mp3')
+exec(`ffmpeg -i ${medial} -filter_complex "afftfilt=real='hypot(re,im)*sin(0)':imag='hypot(re,im)*cos(0)':win_size=512:overlap=0.75" ${ran}`, (err, stderr, stdout) => {
+fs.unlinkSync(medial)
+if (err) return reply(mess.error.api)
+hah = fs.readFileSync(ran)
+dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
+fs.unlinkSync(ran)
+})
+break
+case 'gemuk':
+reply(mess.wait)
+					encmediaz = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					mediaz = await dha.downloadAndSaveMediaMessage(encmediaz)
+					ran = getRandom('.mp3')
+					exec(`ffmpeg -i ${mediaz} -filter:a "atempo=1.6,asetrate=22100" ${ran}`, (err, stderr, stdout) => {
+						fs.unlinkSync(mediaz)
+						if (err) return ephe('Error!')
+						hah = fs.readFileSync(ran)
+					dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true,  quoted:mek})
+						fs.unlinkSync(ran)
+					})
+					break
+case 'balik':
+reply(mess.wait)
+	encmediau = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+	mediau = await dha.downloadAndSaveMediaMessage(encmediau)
+	ran = getRandom('.mp3')
+	exec(`ffmpeg -i ${mediau} -filter_complex "areverse" ${ran}`, (err, stderr, stdout) => {
+fs.unlinkSync(mediau)
+if (err) return reply('Error!')
+hah = fs.readFileSync(ran)
+dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true,  quoted:mek})
+fs.unlinkSync(ran)
+	})
+break
+case 'bass':                 
+reply(mess.wait)
+					encmediao = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+					mediao = await dha.downloadAndSaveMediaMessage(encmediao)
+					ran = getRandom('.mp3')
+					exec(`ffmpeg -i ${mediao} -af equalizer=f=94:width_type=o:width=2:g=30 ${ran}`, (err, stderr, stdout) => {
+						fs.unlinkSync(mediao)
+						if (err) return reply('Error!')
+						hah = fs.readFileSync(ran)
+						dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted:mek})
+						fs.unlinkSync(ran)
+					})
+				break
+case 'tupai':
+reply(mess.wait)
+									try {
+										encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+										media = await dha.downloadAndSaveMediaMessage(encmedia)
+										ran = getRandom('.mp3')
+										exec(`ffmpeg -i ${media} -filter:a "atempo=0.5,asetrate=65100" ${ran}`, (err, stderr, stdout) => {
+											fs.unlinkSync(media)
+											if (err) return reply('Error!')
+											hah = fs.readFileSync(ran)
+											dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek,duration:99})
+											fs.unlinkSync(ran)
+											})
+											 } catch (e) {	
+												reply(mess.error)
+												}  	
+												break
+						case 'vibra': 
+case 'vibrato':
+reply(mess.wait)
+									encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
+									media = await dha.downloadAndSaveMediaMessage(encmedia)
+									ran = getRandom('.mp3')
+									exec(`ffmpeg -i ${media} -filter_complex "vibrato=f=16" ${ran}`, (err, stderr, stdout) => {
+										fs.unlinkSync(media)
+										if (err) return reply('Error!')
+										hah = fs.readFileSync(ran)
+										dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted: mek})
+										fs.unlinkSync(ran)
+										})
+									break
 
 
 default:
