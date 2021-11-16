@@ -2713,13 +2713,12 @@ case 'linkgc':
 				yeh = `https://chat.whatsapp.com/${linkgc}\n\nlink Group *${groupName}*`
 				dha.sendMessage(from, yeh, text, {quoted: mek})
 				break
-            case 'kick': 
-case 'headsot':
-									if (!isGroup) return reply(mess.only.group)
-									if (!isGroupAdmins && !isOwner && !mek0.key.fromMe) return reply(mess.only.admin) 
-									if (!isBotGroupAdmins) return reply(`Jadikan Bot Sebagai Admin Group!`)
-									kick(from, mentionUser)
-									break
+            case 'kick':
+             if (!isGroupAdmins) return reply(mess.only.admin)
+             if (!isGroup) return reply(mess.only.group)
+             if (!isBotGroupAdmins) return reply(`Jadikan Bot Sebagai Admin Group!`)
+             kick(from, mentionUser)
+             break
       case 'add':
              if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) {
              entah = arg.split("|")[0]
