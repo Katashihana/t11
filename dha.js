@@ -60,10 +60,23 @@ const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
+const { msgFilter } = require('./lib/antispam')
 const level = require("./lib/level");
 const atm = require("./lib/atm");
 const reminder = require("./lib/reminder")
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
+const { pShadow,
+  pRomantic,
+  pSmoke,
+  pBurnPapper,
+  pNaruto,
+  pLoveMsg,
+  pMsgGrass,
+  pGlitch,
+  pDoubleHeart,
+  pCoffeCup,
+  pLoveText,
+  pButterfly } = require('./lib/photooxy')
 
 autorespon = false
 var kuis = false
@@ -258,6 +271,36 @@ module.exports = dha = async (dha, mek) => {
         const isAntiLink = isGroup ? antilink.includes(from) : true
         const isWelkom = isGroup ? welkom.includes(from) : true
         const isPremium= prem.includes(sender)
+        
+        ///TEST
+         dha.on('message-delete', async (m) => {
+        if (m.key.remoteJid == 'status@broadcast') return
+        if (!m.key.fromMe && m.key.fromMe) return
+        m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message
+       const jam = moment.tz('Asia/Jakarta').format('HH:mm:ss')
+       let d = new Date
+       let locale = 'id'
+       let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
+       let weton = ['Pahing', 'Pon','Wage','Kliwon','Legi'][Math.floor(((d * 1) + gmt) / 84600000) % 5]
+       let week = d.toLocaleDateString(locale, { weekday: 'long' })
+       let calender = d.toLocaleDateString(locale, {
+       day: 'numeric',
+       month: 'long',
+       year: 'numeric'
+       })
+       const type = Object.keys(m.message)[0];
+       dha.sendMessage(
+       m.key.remoteJid,
+       `\`\`\`「 Anti Delete 」\`\`\`
+       •> Nama : @${m.participant.split("@")[0]}
+       •> Waktu : ${jam} ${week} ${calender}
+       •> Type : ${type}`,
+       MessageType.text,
+       { quoted: m.message, contextInfo: { mentionedJid: [m.participant] } }
+       );
+
+       dha.copyNForward(m.key.remoteJid, m.message);
+       });
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -627,7 +670,14 @@ function banChat() {
 		    fs.writeFileSync('./database/user/afk.json', JSON.stringify(_afk))
 		}
 	    }
-	
+	if (isCmd && msgFilter.isFiltered(from) && !isGroup) {
+						console.log(color('[CMD]','magenta'), color(moment(mek.messageTimestamp * 1000).format('DD/MM/YYYY | HH:mm:ss'), 'white'), color(`${command}`,'magenta'), 'from', color(`${sender.split("@")[0]}`,'green'))
+						return reply('Jangan Spam Lord')
+						} 
+					if (isCmd && msgFilter.isFiltered(from) && isGroup) {
+						console.log(color('[CMD]','magenta'), color(moment(Ofc.messageTimestamp * 1000).format('DD/MM/YYYY | HH:mm:ss'), 'white'), color(`${command}`,'magenta'), 'from', color(`${sender.split("@")[0]}`,'green'))
+						return reply('Jangan Spam Lord')
+					}
 	    // Auto Read
         dha.chatRead(from, "read")
         //auto vn 
@@ -694,8 +744,8 @@ headerType: 4
 dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 }
 
-        case 'menu':
-        case 'help':
+        case 'menu2':
+        case 'help2':
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
 ╭─❒ 「 Bot Info 」 ❒
 │◦➛NAMA : *Katashi-Botz*
@@ -1137,6 +1187,107 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
+
+               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
+
+               buttonsMessage = {
+               contentText: `${menu}`,
+               footerText: '\`\`\`MAU BELI SC INI HUBUNGIN Katashi WA 6289626029135\`\`\`', imageMessage: imageMsg,
+               buttons: buttons,
+               headerType: 4
+}
+
+               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
+              dha.relayWAMessage(prep)
+                break
+
+        case 'menu':
+        case 'help':
+        tsunami = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`, {method: 'get'})
+        tsunami = tsunami
+        Tangal = `Tanggal: *${tsunami.waktu}*`
+        Lintang = `Potensi: *${tsunami.potensi}*`
+        Bujur = `Koordinat: *${tsunami.koordinat}*`
+        Magnitudo = `Magnitudo: *${tsunami.magnitude}*`
+        Wilayah = `Wilayah: *${tsunami.lokasi}*`
+        Kedalaman = `Kedalaman: *${tsunami.kedalaman}*`
+        quot = await fetchJson(`https://zahirr-web.herokuapp.com/api/randomquote/muslim?apikey=zahirgans`, {method: 'get'})
+        quot = quot.result
+        
+        quotes = `quotes: *${quot.text_id}*`
+        nama = await fetchJson(`http://zekais-api.herokuapp.com/artinama?nama=${pushname}&apikey=zekais`, {method: 'get'})
+        namaa = `Arti Nama: *${nama.result}*`
+        
+        kopid2 = await fetchJson(`https://api.dapuhy.ga/api/others/corona?negara=indonesia&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+        kopid3 = kopid2
+        id2 = `Lokasi: *INDONESIA*`
+        Kasus = `Positif: *${kopid3.kasus}*`
+        sembuh2 = `Sembuh: *${kopid3.sembuh}*`
+        meninggal2 = `Meninggal: *${kopid3.meninggal}*`
+        
+        
+        kopid = await fetchJson(`https://viko-api.herokuapp.com/api/info/covidworld?apikey=katashi`, {method: 'get'})
+        kopid = kopid.result
+        id = `Lokasi: *GLOBAL*`
+        positif = `Positif: *${kopid.totalCases}*`
+        sembuh = `Sembuh: *${kopid.recovered}*`
+        meninggal = `Meninggal: *${kopid.deaths}*`
+        dirawat = `Terakhir Update: *${kopid.lastUpdate}*`
+        
+        menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
+╭─❒ 「 Bot Info 」 ❒
+│◦➛NAMA : *Katashi-Botz*
+│◦➛API : @6289626029135
+│◦➛OWNER : *©Katashi*
+│◦➛AKTIF : *${runtime(process.uptime())}*
+│◦➛TOTAL HIT : *${totalhit} Hit*
+│◦➛HIT TODAY : *${hit_today.length} Hit*
+│◦➛PREIFIX : *『${prefix}』*
+│◦➛BATERAI : *${baterai}%*
+└❏ - Katashi Bot
+
+╭─❒ 「 User Info 」 
+│◦➛Status : ${isOwner ? 'Owner' : 'User'}
+│◦➛Premium : ${isPremium ? 'Yes' : 'No'}
+│◦➛Nama : ${pushname}
+│◦➛Api : *@${sender.split('@')[0]}*
+└❏ - Katashi Bot
+
+┌❏ INDONESIA TIME
+│◦➛Wib: *${moment().utcOffset('+0700').format('HH:mm')}* WIB 
+│◦➛Wita: *${moment().utcOffset('+0800').format('HH:mm')}* WITA 
+│◦➛Wt: *${moment().utcOffset('+0900').format('HH:mm')}* WIT
+└❏ - Katashi Bot
+
+┌❏ INFO GEMPA
+│◦➛${Tangal}
+│◦➛${Lintang},
+│◦➛${Magnitudo}
+│◦➛${Kedalaman}
+│◦➛${Wilayah}
+└❏ - Katashi Bot
+
+┌❏ INFO CORONA
+│◦➛${id}
+│◦➛${positif},
+│◦➛${sembuh}
+│◦➛${meninggal}
+│◦➛${dirawat}
+└❏ - Katashi Bot
+
+┌❏ INFO CORONA INDONESIA
+│◦➛${id2}
+│◦➛${Kasus},
+│◦➛${sembuh2}
+│◦➛${meninggal2}
+└❏ - Katashi Bot
+
+${namaa}
+
+${quotes}
+
+©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
+               buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
 
@@ -5581,6 +5732,111 @@ reply(mess.wait)
 										fs.unlinkSync(ran)
 										})
 									break
+									case 'setnamabot':{
+									if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
+									if (args.length < 1) return reply(`Kirim perintah ${command} nama\n\nContoh : ${command} Katashi`)
+									dha.updateProfileName(q)
+									.then((res) => reply('Sukses Lord'))
+									.catch((err) => reply('Eror Lord'))
+									 }
+									break
+						case 'setbiobot':{
+									 if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
+									if (args.length < 1) return reply(`Kirim perintah ${command} nama\n\nContoh : ${command} Katashi`)
+									dha.setStatus(q)
+									.then((res) => reply('Sukses Lord'))
+									.catch((err) => reply('Eror Lord'))
+									}
+									break
+									case 'naruto':
+if (!q) return reply('teksnya mana?')
+pNaruto(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'shadow':
+if (!q) return reply('teksnya mana?')
+pShadow(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'romantic':
+if (!q) return reply('teksnya mana?')
+pRomantic(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'smoke':
+if (!q) return reply('teksnya mana?')
+pSmoke(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'burnpaper':
+if (!q) return reply('teksnya mana?')
+pBurnPapper(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'lovemsg':
+if (!q) return reply('teksnya mana?')
+pLoveMsg(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'grass':
+if (!q) return reply('teksnya mana?')
+pMsgGrass(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'doubleheart':
+if (!q) return reply('teksnya mana?')
+pDoubleHeart(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'coffecup':
+if (!q) return reply('teksnya mana?')
+pCoffeCup(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'lovetext':
+if (!q) return reply('teksnya mana?')
+pLoveText(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break
+case 'butterfly':
+if (!q) return reply('teksnya mana?')
+pButterfly(`${q}`)
+         .then(res => {
+    	console.log(res) 
+sendMediaURL(from, res.url)
+		})
+		break		
+									
 
 
 default:
