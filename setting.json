@@ -1,14 +1,14 @@
 {
-     "ownerNumber": "6289626029135@s.whatsapp.net",
-     "sessionName": "LORD ©Katashi",
-     "ownerName": "Katashi",
-     "banChats": false,
-     "gamewaktu": 60,
-     "owner": "6289626029135",
-     "botName": "KatAshi BOTZ",
-     "lolkey": "PinnBotWibu",
-     "vhtearkey": "-",
-     "zekskey": "Iyungputra",
-     "xteamkey": "-",
-     "gcount": 20
+  "ownerNumber": "6289626029135@s.whatsapp.net",
+  "sessionName": "LORD ©Katashi",
+  "ownerName": "Katashi",
+  "banChats": true,
+  "gamewaktu": 60,
+  "owner": "6289626029135",
+  "botName": "KatAshi BOTZ",
+  "lolkey": "PinnBotWibu",
+  "vhtearkey": "-",
+  "zekskey": "Iyungputra",
+  "xteamkey": "-",
+  "limitt": 15
 }

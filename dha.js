@@ -40,6 +40,7 @@ const Mfake = fs.readFileSync ('./media/ganteng.jpg')
 const Mthumb = fs.readFileSync('./media/ganteng.jpg')
 const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
 const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
+const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
 		
 // stickwm
 const Exif = require('./lib/exif');
@@ -53,14 +54,12 @@ const { mess } = require('./message/mess')
 const { Toxic } = require('./lib/Toxic.js')
 const { cmdadd } = require('./lib/totalcmd.js')
 const { uptotele, uploadFile, RESTfulAPI, uploadImages } = require('./lib/uploadimage')
-const { isGame, gameAdd, givegame, cekGLimit } = require("./lib/limit");
 const { onGoing, dadu, asupan } = require("./lib/otakudesu.js")
 const { mediafireDl } = require('./lib/mediafire.js')
 const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
 const afk = require("./lib/afk");
-const { msgFilter } = require('./lib/antispam')
 const level = require("./lib/level");
 const atm = require("./lib/atm");
 const reminder = require("./lib/reminder")
@@ -96,6 +95,7 @@ let setting = JSON.parse(fs.readFileSync('./setting.json'))
 
 owner = setting.owner
 gamewaktu = setting.gamewaktu
+limitt = setting.limitt
 petik = '```'
 fake = 'CREATOR BOT\©Katashi'//GANTI NAMA KAMU BEP
 ban =[]
@@ -114,6 +114,7 @@ let _update = JSON.parse(fs.readFileSync('./database/bot/update.json'))
 let _scommand = JSON.parse(fs.readFileSync('./database/bot/scommand.json'))
 const _reminder = JSON.parse(fs.readFileSync("./database/reminder.json"));
 const commandsDB = JSON.parse(fs.readFileSync('./database/commands.json'))
+const _limit = JSON.parse(fs.readFileSync('./database/limit.json'))
 
 const getPremiumExpired = (sender) => {
 
@@ -152,6 +153,20 @@ const getPremiumExpired = (sender) => {
 		    return array
 		}
 
+//Limit1
+const limitAdd = (sender) => {
+		let position = false
+		Object.keys(_limit).forEach((i) => {
+		if (_limit[i].id == sender) {
+		position = i 
+		}
+	}
+)
+		if (position !== false) {
+		_limit[position].limit += 1
+		fs.writeFileSync('./database/limit.json', JSON.stringify(_limit))
+		}
+	} 
 
 // Sticker Cmd
 const addCmd = (id, command) => {
@@ -361,7 +376,8 @@ module.exports = dha = async (dha, mek) => {
            await dha.groupRemove(to, [i])
         } else {
            await dha.sendMessage(id, "Not Premited!", "conversation")
-           break
+           await limitAdd(sender)
+              break
         }
     }
 }
@@ -609,6 +625,52 @@ const promoteAdmin = async function(to, target=[]){
         const ftext = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: { "extendedTextMessage": {"text": `*Hai ${pushname}👋*\n  ${moment().utcOffset('+0700').format('HH:mm:ss')} ${moment.tz('Asia/Jakarta').format('DD/MM/YYYY')}`,"title": `Hmm`,'jpegThumbnail': fs.readFileSync('./media/ganteng.jpg')}}}
         const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Katashi-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
 
+///Limit2
+const checkLimit = (sender) => {
+			let found = false
+			for (let lmt of _limit) {
+			if (lmt.id === sender) {
+			let limitCounts = limitt - lmt.limit
+			if (limitCounts <= 0) return dha.sendMessage(from,`Limit request anda sudah habis\n`, text, { quoted: mek})
+			dha.sendMessage(from, `limit anda : ${limitCounts}`, text, { quoted : mek})
+			found = true 
+			}
+		}
+			if (found === false) {
+			let obj = { id: sender, limit: 0 }
+			_limit.push(obj)
+			fs.writeFileSync('./database/limit.json', JSON.stringify(_limit))
+			dha.sendMessage(from, `limit anda : ${limitCounts}`, text, { quoted : mek})
+			}
+		} 
+			
+			//funtion limited
+const isLimit = (sender) =>{ 
+			if (isOwner && isPrem) {return false;}
+			let position = false
+			for (let i of _limit) {
+			if (i.id === sender) {
+			let limits = i.limit
+			if (limits >= limitt ) {
+			position = true
+			reply('*Limit Anda Sudah Habis*')
+			return true 
+			} else {
+			_limit
+			position = true
+			return false 
+			}
+		}
+	}
+			if (position === false) {
+const obj = { id: sender, limit: 0 }
+			_limit.push(obj)
+			fs.writeFileSync('./database/limit.json',JSON.stringify(_limit))
+			return false 
+			}
+		}
+
+
       // Anti link
         if (isGroup && isAntiLink && !isOwner && !isGroupAdmins && isBotGroupAdmins){
             if (budy.match(/(https:\/\/chat.whatsapp.com)/gi)) {
@@ -670,14 +732,7 @@ function banChat() {
 		    fs.writeFileSync('./database/user/afk.json', JSON.stringify(_afk))
 		}
 	    }
-	if (isCmd && msgFilter.isFiltered(from) && !isGroup) {
-						console.log(color('[CMD]','magenta'), color(moment(mek.messageTimestamp * 1000).format('DD/MM/YYYY | HH:mm:ss'), 'white'), color(`${command}`,'magenta'), 'from', color(`${sender.split("@")[0]}`,'green'))
-						return reply('Jangan Spam Lord')
-						} 
-					if (isCmd && msgFilter.isFiltered(from) && isGroup) {
-						console.log(color('[CMD]','magenta'), color(moment(Ofc.messageTimestamp * 1000).format('DD/MM/YYYY | HH:mm:ss'), 'white'), color(`${command}`,'magenta'), 'from', color(`${sender.split("@")[0]}`,'green'))
-						return reply('Jangan Spam Lord')
-					}
+	
 	    // Auto Read
         dha.chatRead(from, "read")
         //auto vn 
@@ -712,7 +767,8 @@ const createSerial = (size) => {
 
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{})
                dha.relayWAMessage(prep)
-               break 
+               await limitAdd(sender)
+              break 
         case 'owner':
         case 'creator':
                sendKontak(from, `${owner}`, `${ownerName}`, 'Sibukk!!')
@@ -730,7 +786,8 @@ const createSerial = (size) => {
 
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{})
                dha.relayWAMessage(prep)
-               break      
+               await limitAdd(sender)
+              break      
                const sendButImage = async(id, text1, desc1, gam1, but = [], options = {}) => {
 kma = gam1
 mhan = await dha.prepareMessage(from, kma, image)
@@ -1199,10 +1256,12 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
               dha.relayWAMessage(prep)
-                break
+                await limitAdd(sender)
+              break
 
         case 'menu':
         case 'help':
+        if (isLimit(sender)) return reply(`limit kamu berkurang`)
         tsunami = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`, {method: 'get'})
         tsunami = tsunami
         Tangal = `Tanggal: *${tsunami.waktu}*`
@@ -1218,7 +1277,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
         nama = await fetchJson(`http://zekais-api.herokuapp.com/artinama?nama=${pushname}&apikey=zekais`, {method: 'get'})
         namaa = `Arti Nama: *${nama.result}*`
         
-        kopid2 = await fetchJson(`https://api.dapuhy.ga/api/others/corona?negara=indonesia&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+        kopid2 = await fetchJson(`https://api.dapuhy.ga/api/others/corona?negara=indonesia&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
         kopid3 = kopid2
         id2 = `Lokasi: *INDONESIA*`
         Kasus = `Positif: *${kopid3.kasus}*`
@@ -1300,14 +1359,17 @@ ${quotes}
 
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
               dha.relayWAMessage(prep)
-                break
+              
+                await limitAdd(sender)
+              break
        
 //------------------< Game >------------------- 
         case 'limitgame': 
         case 'balance': 
                const balance = atm.checkATMuser(sender, _uang)
                textImg(`Limit Game : ${cekGLimit(sender, gcount, glimit)}/${gcount}\nBalance : Rp.${balance}`)
-               break
+               await limitAdd(sender)
+              break
          case 'gelud':
                if (!isGroup) return reply(mess.only.group)
                if (mek.message.extendedTextMessage.contextInfo.mentionedJid > 1) return reply('Hanya bisa dengan 1 orang')
@@ -1327,7 +1389,8 @@ ${quotes}
 
                dha.sendMessage(from, starGame, text, {quoted: mek, contextInfo: { mentionedJid: [sender, args[0].replace("@", "") + "@s.whatsapp.net"],}})
                gameAdd(sender, glimit)
-               break
+               await limitAdd(sender)
+              break
         case 'delsesigelud':
                if (!isGroup) return reply(mess.only.group)
                if (fs.existsSync('./media/' + from + '.json')) {
@@ -1336,7 +1399,8 @@ ${quotes}
                } else {
                reply('Tidak ada sesi yang berlangsung')
 }
-               break
+               await limitAdd(sender)
+              break
         case 'delsesittt':
         case 'resetgame':
                if (!isGroup) return reply(mess.only.group)
@@ -1344,7 +1408,8 @@ ${quotes}
                naa = ky_ttt.filter(toek => !toek.id.includes(from)) 
                ky_ttt = naa 
                reply('Sukses Mereset Game')
-               break
+               await limitAdd(sender)
+              break
         case 'tictactoe':
         case 'ttt':
               if (!isGroup) return reply(mess.only.group)
@@ -1365,7 +1430,8 @@ ${quotes}
 Ketik Y/N untuk menerima atau menolak permainan
 
 Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contextInfo: {mentionedJid: [player2]}})
-              gameAdd(sender, glimit)
+              await limitAdd(sender)
+              await limitAdd(sender)
               break
        case 'slot':
               const sotoy = ['🍊 : 🍒 : 🍐','🍒 : ?? : 🍊','?? : 🍒 : 🍐','🍊 : 🍋 : 🔔','🔔 : 🍒 : 🍐','🔔 : 🍒 : 🍊','🍊 : 🍋 : 🔔','🍐 : 🍒 : 🍋','🍐 : 🍐 : 🍐','🍊 : 🍒 : 🍒','🔔 : 🔔 : 🍇','🍌 : 🍒 : 🔔','🍐 : 🔔 : 🔔','🍊 : 🍋 : 🍒','🍋 : 🍋 : 🍌','🔔 : 🔔 : 🍇','🔔 : 🍐 : 🍇','🔔 : 🔔 : 🔔','🍒 : 🍒 : 🍒','🍌 : 🍌 : 🍌','🍇 : ?? : 🍇']
@@ -1385,6 +1451,8 @@ Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contex
               } else {
               reply(`[  🎰 | *SLOT* ]\n---------------------\n${somtoy}\n${somtoyy} <======\n${somtoyyy}\n---------------------\n[  *YOU LOSE*  ]`)
 }
+await limitAdd(sender)
+              await limitAdd(sender)
               break
        case 'suit': //nyolong dari zenz
               if (!q) return reply(`Kirim perintah ${prefix}suit gunting / batu / kertas`)
@@ -1419,6 +1487,8 @@ Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contex
               reply(`Kamu memilih Kertas dan bot memilih Gunting\nKamu kalah`)
 }
 }
+
+              await limitAdd(sender)
               break
 //------------------< Sewa >-------------------
 
@@ -1434,6 +1504,7 @@ FITUR:ANTILINK,WELCOME,ADD,KICK,DEMOTE,DAN MASIH BANYAK LAGI
 
 HARGA PERMANEN:~15k~ PROMO!!! *5k* MINAT? HUBUNGI OWNER`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: mek, caption: teksnya })
+              await limitAdd(sender)
               break             
 //------------------< bayar menu >-------------------  
 case 'bayar':
@@ -1445,159 +1516,18 @@ teksnya = ` *「PAYMENT」*
 • QRISS DI ATAS 
 ━━━━━━━━━━━━━━━━━━━━`
         dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
+              await limitAdd(sender)
               break
  
-case 'buttonstik':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「MENU STICKER」*
-│◦➛* ${prefix}attp* _teks_
-│◦➛* ${prefix}ttp* _teks_
-│◦➛* ${prefix}dadu*
-│◦➛* ${prefix}doge*
-│◦➛* ${prefix}patrick*
-│◦➛* ${prefix}gura*
-│◦➛* ${prefix}stickeranime*
-│◦➛* ${prefix}semoji* _emoji_
-│◦➛* ${prefix}sticker* _reply foto/video_
-│◦➛* ${prefix}smeme* _teks|teks_
-│◦➛*️ ${prefix}swm* _pack|author_
-│◦➛*️ ${prefix}take* _pack|author_`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
-              break
- case 'buttondl':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「DOWNLOAD MENU」*
-│◦➛* ${prefix}fbdl*
-│◦➛* ${prefix}igdl*
-│◦➛* ${prefix}igdl2*
-│◦➛* ${prefix}twitter*
-│◦➛* ${prefix}tiktok*
-│◦➛* ${prefix}play*
-│◦➛* ${prefix}ythd*
-│◦➛* ${prefix}ytmp3*
-│◦➛* ${prefix}ytmp4*
-│◦➛* ${prefix}soundcloud*
-│◦➛* ${prefix}tiktoknowm*
-│◦➛* ${prefix}tiktokaudio*
-│◦➛* ${prefix}mediafire*
-│◦➛* ${prefix}nhentaizip* _code_`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
-              break
+
 case 'buttonpen':
               gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
               teksnya = `*「NULIS MENU」*
 │◦➛* ${prefix}nulis*`
               dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
+              await limitAdd(sender)
               break
-case 'buttongame':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「GAME MENU」*
-き⃟🦈 ${prefix}limitgame*
-│◦➛* ${prefix}slot*
-│◦➛* ${prefix}gelud* _@tag_
-│◦➛* ${prefix}tictactoe* _@tag_
-│◦➛* ${prefix}siapaaku*
-│◦➛* ${prefix}family100*
-│◦➛* ${prefix}kuismath*
-│◦➛* ${prefix}asahotak*
-│◦➛* ${prefix}tebaklirik*
-│◦➛* ${prefix}tebaklagu*
-│◦➛* ${prefix}tebakkata*
-│◦➛* ${prefix}susunkata*
-│◦➛* ${prefix}kimiakuis*
-│◦➛* ${prefix}caklontong*
-│◦➛* ${prefix}tebakjenaka*
-│◦➛* ${prefix}tebakanime*
-│◦➛* ${prefix}tebaktebakan*
-│◦➛* ${prefix}tebakgambar*
-│◦➛* ${prefix}tebakumur*
-│◦➛* ${prefix}tebakbendera*
-│◦➛* ${prefix}suit* _batu/kertas/gunting_`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
-              break
-case 'buttongc':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「GRUP MENU」*
-│◦➛* ${prefix}groupsetting*
-│◦➛* ${prefix}getbio* _reply_
-│◦➛* ${prefix}afk* _alasan_
-│◦➛* ${prefix}kontak* _nomor|nama_
-│◦➛* ${prefix}ceksewa*
-│◦➛* ${prefix}kickall*
-│◦➛* ${prefix}infogrup*
-│◦➛* ${prefix}promote*
-│◦➛* ${prefix}promoteall*
-│◦➛* ${prefix}demote*
-│◦➛* ${prefix}demoteall*
-│◦➛* ${prefix}listonline*
-│◦➛* ${prefix}tagall* _teks_
-│◦➛* ${prefix}leave*
-│◦➛* ${prefix}kick* _reply_
-│◦➛* ${prefix}add* _628xxx_
-│◦➛* ${prefix}setnamegc*
-│◦➛* ${prefix}setppgc*
-│◦➛* ${prefix}getpp*
-│◦➛* ${prefix}setdeskgc*
-│◦➛* ${prefix}sider* _reply chat bot_
-│◦➛* ${prefix}hidetag* _teks/reply teks_
-│◦➛* ${prefix}linkgc*
-│◦➛* ${prefix}getdeskgc*`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftoko, caption: teksnya })
-              break
-case 'buttonwibu':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「WIBU MENU」*
-│◦➛* ${prefix}loli*
-│◦➛* ${prefix}manga*
-│◦➛* ${prefix}anime*
-│◦➛*️ ${prefix}lolivideo*
-│◦➛* ${prefix}husbu*
-│◦➛*️ ${prefix}waifu*
-│◦➛*️ ${prefix}milf*
-│◦➛* ${prefix}neko*
-│◦➛*️ ${prefix}kanna*
-│◦➛* ${prefix}sagiri*
-│◦➛* ${prefix}hentai*
-│◦➛* ${prefix}cosplay*
-│◦➛*️ ${prefix}wallnime*
-│◦➛*️ ${prefix}kusonime*
-│◦➛*️ ${prefix}megumin*
-│◦➛* ${prefix}otakudesu*
-│◦➛*️ ${prefix}doujindesu*
-│◦➛*️ ${prefix}storyanime*
-│◦➛*️ ${prefix}otakuongoing*
-│◦➛* ${prefix}nhentai *code*
-│◦➛*️ ${prefix}nekopoi _link_*
-│◦➛*️ ${prefix}nekopoi3d*
-│◦➛*️ ${prefix}nekopoicosplay*
-│◦➛* ${prefix}nekopoisearch*`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftext, caption: teksnya })
-              break
-case 'buttonown':
-              gopeynya = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
-              teksnya = `*「OWNER MENU」*
-│◦➛*️ ${prefix}bc* _teks_
-│◦➛* ${prefix}tobc* _audio_
-│◦➛* ${prefix}term*
-│◦➛* ${prefix}eval*
-│◦➛* ${prefix}clearall*
-│◦➛* ${prefix}leaveall*
-│◦➛* ${prefix}join* _teks_
-│◦➛*️ ${prefix}shutdown*
-│◦➛* ${prefix}getquoted*
-│◦➛* ${prefix}addupdate* _fiturnya_
-│◦➛*️ ${prefix}exif* _nama|author_
-│◦➛* ${prefix}sewa add/del* _waktunya_
-│◦➛*️ ${prefix}premium add* _@tag|nomor_
-│◦➛* ${prefix}premium del* _@tag|nomor_
-│◦➛* ${prefix}setpp*
-│◦➛* ${prefix}setbio*
-│◦➛* ${prefix}setname*
-│◦➛* ${prefix}getpp*
-│◦➛* ${prefix}sharelock*
-│◦➛* ${prefix}chat* _nomor|teks_`
-              dha.sendMessage(from, await getBuffer(gopeynya), image, {quoted: ftext, caption: teksnya })
-              break 
+
 			
                                                                                                                         
 //------------------< Sticker Cmd >-------------------
@@ -1611,6 +1541,7 @@ case 'buttonown':
               } else {
               reply('tag stickenya')
 }
+              await limitAdd(sender)
               break
        case 'delcmd':
               if (!isQuotedSticker) return reply(`Penggunaan : ${command} tagsticker`)
@@ -1618,6 +1549,7 @@ case 'buttonown':
             _scommand.splice(getCommandPosition(kodenya), 1)
               fs.writeFileSync('./database/bot/scommand.json', JSON.stringify(_scommand))
               textImg("Done!")
+              await limitAdd(sender)
               break
        case 'listcmd':
               let teksnyee = `\`\`\`「 LIST STICKER CMD 」\`\`\``
@@ -1627,6 +1559,7 @@ case 'buttonown':
               teksnyee += `\n\n➸ *ID :* ${i.id}\n➸ *Cmd* : ${i.chats}`
 }
               mentions(teksnyee, cemde, true)
+              await limitAdd(sender)
               break
 //------------------< self and public >---------------------
 //------------------< Downloader/Search/Anime >-------------------
@@ -1638,7 +1571,9 @@ reply(mess.error.api)
 })
 console.log(res)
 sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
-                    break
+                    await limitAdd(sender)
+              break
+await limitAdd(sender)
        case 'igdl2':
        case 'instagram2':
               try {
@@ -1658,7 +1593,10 @@ sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
               console.log(e)
               reply(String(e))
 }
+await limitAdd(sender)
+              await limitAdd(sender)
               break
+
        case 'igdl': 
        case 'instagram':
               if (!q) return reply('Link Yang Mana? ')
@@ -1667,6 +1605,8 @@ sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
               anu = await igDownloader(`${q}`)
              .then((data) => { sendMediaURL(from, data.result.link, data.result.desc, mek) })
              .catch((err) => { reply(String(err)) })
+             await limitAdd(sender)
+              await limitAdd(sender)
               break
        case 'scplay': 
        case 'soundcloud':
@@ -1676,6 +1616,8 @@ sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
               anu = await fetchJson(`https://zenzapi.xyz/api/soundcloud?url=${q}&apikey=Katashi`)
              .then((data) => { sendMediaURL(from, data.result, mek) })
              .catch((err) => { reply(String(err)) })
+             await limitAdd(sender)
+              await limitAdd(sender)
               break
        case 'image':
        case 'gimage':
@@ -1692,7 +1634,9 @@ sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
               sendFileFromUrl(random, image, {quoted: mek, caption: `*Hasil Pencarian Dari :* ${teks}`})
 }
 }
-             break
+await limitAdd(sender)
+             await limitAdd(sender)
+              break
       case 'ytmp3':
             if (args.length < 1) return reply('Link Nya Mana?')
             if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
@@ -1715,7 +1659,9 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
             sendFileFromUrl(res[0].thumb, image, {caption: result, quoted: mek}).then((lalu) => {
             sendFileFromUrl(res[0].link, document, {quoted: mek, mimetype: 'audio/mp3', filename: res[0].output})
 })
-            break
+await limitAdd(sender)
+            await limitAdd(sender)
+              break
      case 'ytmp4':
             if (!isGroup) return reply(mess.only.group);
             if (args.length < 1) return reply('Link Nya Mana?')
@@ -1739,7 +1685,9 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
             sendFileFromUrl(res[0].thumb, image, {caption: result, quoted: mek}).then((lalu) => {
             sendFileFromUrl(res[0].link, video, {quoted: mek, mimetype: 'video/mp4', filename: res[0].output})
 })
-            break
+await limitAdd(sender)
+            await limitAdd(sender)
+              break
         case 'mediafire':
                if (!isGroup) return reply(mess.only.group);
                if (args.length < 1) return reply('Link Nya Mana? ')
@@ -1759,45 +1707,8 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
 _*Tunggu Proses Upload Media......*_`
              reply(result)
              sendFileFromUrl(res[0].link, document, {mimetype: res[0].mime, filename: res[0].nama, quoted: mek})
-             break
-       case 'tiktok': 
-       case 'ttdl':
-             if (!q) return reply('Linknya?')
-             if (!q.includes('tiktok')) return reply(mess.error.Iv)
-             reply(mess.wait)
-             anu = await TiktokDownloader(`${q}`)
-            .then((data) => { sendMediaURL(from, data.result.watermark) })
-            .catch((err) => { reply(String(err)) })
-             break
-      case 'ttnowm': 
-      case 'tiktoknowm':
-             if (!q) return reply('Linknya?')
-             if (!q.includes('tiktok')) return reply(mess.error.Iv)
-             reply(mess.wait)
-             anu = await TiktokDownloader(`${q}`)
-            .then((data) => { sendMediaURL(from, data.result.nowatermark) })
-            .catch((err) => { reply(String(err)) })
-             break
-case 'tiktok':
-              if (!isRegister) return reply(`You are not verified\n\nReply this chat and send bot password\n\nHint : \nPassword contains 4 digit number\nCheck password at: https://dha-chan02.github.io`)
-              if (!q) return reply('Linknya?')
-              if (!q.includes('tiktok')) return reply(mess.error.Iv)
-              buttons = [{buttonId: `${prefix}tiktoknowm ${q}`,buttonText:{displayText: `🎥 Video`},type:1},{buttonId:`${prefix}ttaudio ${q}`,buttonText:{displayText:'🎵 Mp3'},type:1}]
-              imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/ganteng.jpg`)})).imageMessage
-              buttonsMessage = {footerText:'Jangan Lupa Subscribe Yt Katashi-Botz\n Helpme tu 1k subscriber', imageMessage: imageMsg,
-              contentText:`Silahkan pilihan media yg mau di download kak:v`,buttons,headerType:4}
-              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
-              dha.relayWAMessage(prep)
+             await limitAdd(sender)
               break
-      case 'ttaudio': 
-      case 'tiktokmusic': 
-      case 'tiktokaudio':
-             if (args.length == 0) return reply(`Example: ${prefix + command} https://vt.tiktok.com/ZSwWCk5o/`)
-             ini_link = args[0]
-             x = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/ttdownloader?url=${ini_link}&apikey=T3SleesqYU6gyfM`)
-             au = await getBuffer(x.result.audio)
-             dha.sendMessage(from, au, audio, { mimetype: Mimetype.mp4Audio, quoted: mek })
-             break
       case 'twitter':
              if (!isUrl(args[0]) && !args[0].includes('twitter.com')) return reply(mess.Iv)
              if (!q) return reply('Linknya?')
@@ -1807,7 +1718,8 @@ case 'tiktok':
              ren = `${g.download[2].url}`
              sendMediaURL(from,ren,'Done')
 })
-             break
+             await limitAdd(sender)
+              break
     case 'otakuongoing':
                o = await onGoing()
                console.log(o)
@@ -1817,7 +1729,8 @@ case 'tiktok':
 }
                buff = await getBuffer(o[0].thumb)
                dha.sendMessage(from, buff, image, {quoted: mek, caption: ot})
-               break
+               await limitAdd(sender)
+              break
        case 'loli':
        case 'husbu':
        case 'milf':
@@ -1833,6 +1746,7 @@ case 'tiktok':
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
               fs.unlinkSync(`./${sender}.jpeg`)
+              await limitAdd(sender)
               break
         case 'playy':
 case 'lagu':
@@ -1884,7 +1798,8 @@ reply('_[ ! ] Error Saat Memasuki Web Y2mate_')
 })
 sendFileFromUrl(res[0].link, document, {quoted: mek, mimetype: 'audio/mp3', filename: res[0].output})
 }
-break
+await limitAdd(sender)
+              break
 case 'play2':   
 				  if (args.length < 1) return reply('*Masukan judul nya?*')
                 reply('Loading.... ')
@@ -1900,7 +1815,8 @@ Source : ${anu.result.source}
 				///////buffer = await getBuffer(anu.result.thumbnail)
 				buffer1 = await getBuffer(anu.result.url_video)
 				dha.sendMessage(from, buffer1, video, {mimetype: 'video/mp4', filename: `${anu.result.video}.mp4`, quoted:freply, caption: 'Nih Gan'})
-					break  
+					await limitAdd(sender)
+              break  
 				case 'play':
               if (!q) return reply('Linknya?')
               buttons = [{buttonId: `${prefix}play2 ${q}`,buttonText:{displayText: `🎥 Video`},type:1},{buttonId:`${prefix}playy ${q}`,buttonText:{displayText:'🎵 Mp3'},type:1}]
@@ -1909,6 +1825,7 @@ Source : ${anu.result.source}
               contentText:`Silahkan Pilih Media Yg Akan Di Download kak`,buttons,headerType:4}
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
+              await limitAdd(sender)
               break
         case 'shopee':
                try {
@@ -1937,6 +1854,7 @@ teks += `\`\`\`き⃟🦈 Nama : ${get_data[i].name}\`\`\`
               } catch {
               reply(`Maaf produk ${query} tidak ditemukan`)
 }
+              await limitAdd(sender)
               break
        case 'playstore':
               try {
@@ -1963,6 +1881,7 @@ teks += `\`\`\`き⃟🦈 Title : ${get_result[i].title}\`\`\`
               } catch {
               reply(`Maaf aplikasi ${query} tidak ditemukan`)
 }
+              await limitAdd(sender)
               break
        case 'yts':
        case 'ytsearch':
@@ -1989,7 +1908,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                console.log(e)
                reply(`${e}`)
 }
-               break
+               await limitAdd(sender)
+              break
        case 'tourl':
                if ((isMedia && !mek.message.videoMessage || isQuotedImage || isQuotedVideo ) && args.length == 0) {
                reply(mess.wait)
@@ -2000,7 +1920,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                } else {
                reply('kirim/reply gambar/video')
 }
-               break
+               await limitAdd(sender)
+              break
        case 'imgtourl':
        case 'img2url':
                reply(mess.wait) 
@@ -2016,7 +1937,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               .catch(err => {
                throw err
 })
-               break
+               await limitAdd(sender)
+              break
         case 'nulis':
         case 'tulis':
                if (args.length < 1) return reply('Yang mau di tulis apaan?')
@@ -2029,103 +1951,17 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                dha.sendMessage(from, buff, image, {quoted: mek, caption: mess.success}).catch(e => {
                return reply('_[ ! ] Error Gagal Dalam Mendownload Dan Mengirim File_')
 })
-               break
-//------------------< Level >-------------------
-       case 'leaderboard': //Cek Leaderboard
-       case 'leaderboards':
-              if (!isGroup) return reply(mess.only.group)
-              if (!isLevelingOn) return await reply('Fitur leveling belum diaktifkan!') 
-              const resp = _level
-            _level.sort((a, b) => (a.xp < b.xp) ? 1 : -1)
-              let leaderboard =  '-----[ *LEADERBOARD* ]----\n\n'
-              try {
-              for (let i = 0; i < 10; i++) {
-              var roles = 'Warrior III'
-              if (resp[i].level <= 5) {
-              roles = 'Warrior II'
-              } else if (resp[i].level <= 10) {
-              roles = 'Warrior I'
-              } else if (resp[i].level <= 15) {
-              roles = 'Elite III'
-              } else if (resp[i].level <= 20) {
-              roles = 'Elite II'
-              } else if (resp[i].level <= 25) {
-              roles = 'Elite I'
-              } else if (resp[i].level <= 30) {
-              roles = 'Master III'
-              } else if (resp[i].level <= 35) {
-              roles = 'Master II'
-              } else if (resp[i].level <= 40) {
-              roles = 'Master I'
-              } else if (resp[i].level <= 45) {
-              roles = 'GrandMaster III'
-              } else if (resp[i].level <= 50) {
-              roles = 'GrandMaster II'
-              } else if (resp[i].level <= 55) {
-              roles = 'GrandMaster I'
-              } else if (resp[i].level <= 60) {
-              roles = 'Epic III'
-              } else if (resp[i].level <= 65) {
-              roles = 'Epic II'
-              } else if (resp[i].level <= 70) {
-              roles = 'Epic I'
-              } else if (resp[i].level <= 75) {
-              roles = 'Legend III'
-              } else if (resp[i].level <= 80) {
-              roles = 'Legend II'
-              } else if (resp[i].level <= 85) {
-              roles = 'Legend I'
-              } else if (resp[i].level <= 90) {
-              roles = 'Mythic'
-              } else if (resp[i].level <= 95) {
-              roles = 'Mythical Glory'
-              } else if (resp[i].level >= 100) {
-              roles = 'Immortal'
-} 
-
-              leaderboard += `➸ ${i + 1}. wa.me/${_level[i].id.replace('@s.whatsapp.net', '')}\n➸ *Xp :* ${_level[i].xp}\n➸ *Level :* ${_level[i].level}\n➸ *Role :* ${roles}\n\n`
-}
-              reply(leaderboard)
-              } catch (err) {
-              console.error(err)
-              reply('_Perlu setidaknya 10 user yang memiliki level di database!_')
-}
+               await limitAdd(sender)
               break
+//------------------< Level >-------------------
+       
 //------------------< Stalk >-------------------
      
-       case 'iguser':
-              try {
-              if (args.length == 0) return reply(`Kirim perintah *${prefix}iguser [ username ]*\nContoh : ${prefix}iguser jessnolimit`)
-              query = args.join(" ")
-              reply(mess.wait)
-              get_result = await fetchJson(`https://api.zeks.xyz/api/iguser?apikey=${setting.zekskey}&q=${query}`)
-              get_result = get_result.result
-              teks = `*「 INSTAGRAM USER 」*\n\n*Hasil Pencarian : ${query}*\n\n`
-              for(let i = 0; i < get_result.length; i++) {
-              teks += `*Username* : ${get_result[i].username}\n*Full name*: ${get_result[i].full_name}\n*Akun private* : ${get_result[i].private_user}\n*Verified*: ${get_result[i].verified_user}\n*Link*: https://instagram.com/${get_result[i].username}\n\n`
-}
-              ini_buffer = await getBuffer(get_result[0].profile_pic)
-              dha.sendMessage(from, ini_buffer, image, { quoted: mek, caption: teks })
-              } catch {
-              reply(`Maaf username ${query} tidak ditemukan`)
-}
-              break
+
               
 //------------------< Sticker/Tools >-------------------
 
-       case 'dadu': // by CHIKAA CHANTEKKXXZZ
-              reply(mess.wait)
-              dadu()
-             .then(async (body) => {
-              dadugerak = body.split('\n')
-              dadugerakx = dadugerak[Math.floor(Math.random() * dadugerak.length)]
-              sendWebp(from, dadugerakx)
-})
-             .catch(async (err) => {
-              console.error(err)
-              reply('Error!')
-})
-              break              
+              
       case 'doge':
               reply(mess.wait)
               fetch('https://raw.githubusercontent.com/rashidsiregar28/data/main/anjing')
@@ -2136,6 +1972,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               sendWebp(from, pjr)
 }
 )
+              await limitAdd(sender)
               break
        case 'patrick':
               reply(mess.wait)
@@ -2147,6 +1984,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               sendWebp(from, pjr)
 }
 )
+              await limitAdd(sender)
               break
        case 'gura':
        case 'gawrgura':
@@ -2159,6 +1997,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               sendWebp(from, pjr)
 }
 )
+              await limitAdd(sender)
               break
        case 'animestick':
        case 'stickeranime':
@@ -2171,6 +2010,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               sendWebp(from, pjrr)
 }
 )
+              await limitAdd(sender)
               break
        case 'gifstiker':
 				case 's':
@@ -2228,7 +2068,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
             } else {
                 reply(`Kirim gambar dengan caption ${prefix}sticker\nDurasi Sticker Video 1-9 Detik`)
             }
-            break    
+            await limitAdd(sender)
+              break    
        case 'take':
        case 'colong':
               if (!isQuotedSticker) return reply('Stiker aja om')
@@ -2239,6 +2080,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               dua = typeof anu[1] !== 'undefined' ? anu[1] : `UwU`
               require('./lib/fetch.js').createExif(satu, dua)
               require('./lib/fetch.js').modStick(media, dha, mek, from)
+              await limitAdd(sender)
               break
        case 'delwm':
               if (!isQuotedSticker) return reply('Stiker aja om')
@@ -2249,6 +2091,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               dua = typeof anu[1] !== 'undefined' ? anu[1] : ``
               require('./lib/fetch.js').createExif(satu, dua)
               require('./lib/fetch.js').modStick(media, dha, mek, from)
+              await limitAdd(sender)
               break
        case 'stikerwm':
        case 'stickerwm':
@@ -2309,6 +2152,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               } else {
               reply(`Kirim gambar dengan caption ${prefix}swm teks|teks atau tag gambar yang sudah dikirim`)
 }
+              await limitAdd(sender)
               break
       case 'toimg':
               if (!isQuotedSticker) return reply('reply stickernya')
@@ -2323,6 +2167,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               dha.sendMessage(from, buffer, image, {quoted: mek, caption: 'Nih'})
               fs.unlinkSync(ran)
 })
+              await limitAdd(sender)
               break
 
        case 'memeimg':
@@ -2343,7 +2188,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               } else {
               reply('Gunakan foto/stiker!')
 }
-               break
+               await limitAdd(sender)
+              break
         case 'togif':
                if ((isMedia && !mek.message.videoMessage || isQuotedSticker) && args.length == 0) {
                reply(mess.wait)
@@ -2356,7 +2202,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                } else {
                reply(mess.wrongFormat)
 }
-               break
+               await limitAdd(sender)
+              break
         case 'tovideo':
                if ((isMedia && !mek.message.videoMessage || isQuotedSticker) && args.length == 0) {
                reply(mess.wait)
@@ -2369,7 +2216,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                } else {
                reply(mess.wrongFormat)
 }
-               break
+               await limitAdd(sender)
+              break
         case 'tomp3':
                if (isQuotedVideo || isQuotedAudio){
                reply(mess.wait)
@@ -2386,7 +2234,8 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
                } else {
                reply(mess.wrongFormat)
 }
-               break      
+               await limitAdd(sender)
+              break      
 //------------------<18+ Menu>-----------------------   
        case 'randombokep':
        if (!isPremium) return reply(`Only Prem`)
@@ -2394,6 +2243,7 @@ a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
               const bo =['https://www.mediafire.com/download/8hnhjcf3pseubgy','https://www.mediafire.com/download/cty9phda3d1s62u','https://www.mediafire.com/download/8hnhjcf3pseubgy']
               const kep = bo[Math.floor(Math.random() * bo.length)]
               dha.sendMessage(from, '*PERMINTAAN:* '+bokep+'\n*DOSA TANGGUNG PRIBADI*\n*NI BRO FREE BUAT KAMU DOWNLOAD SENDIRI:* '+ kep, text, { quoted: ftoko, caption: `NI BOKEP SAYA DAPAT DARI *©Katashi* DOSA TANGGUNG SENDIRI🗿`})
+              await limitAdd(sender)
               break
                      
 //------------------<WAR MENU>---------------    
@@ -2402,7 +2252,8 @@ if (!mek.key.fromMe && !isOwner) return
 tapib1 = fs.readFileSync('./media/audio/numayei.mp3')
 dha.sendMessage(from, tapib1, document, { quoted: mek, filename:`Katashi-Botz ~ 404 ${vipi}.mp3`, mimetype: 'audio/application' })
 await reply('Bang mau nanya')
-break  
+await limitAdd(sender)
+              break  
 case 'pgp':
 if (!isOwner && !mek.key.fromMe) return
 buf = Mfake
@@ -2426,7 +2277,8 @@ hexa.relayWAMessage(res)
 await setTimeout(() => {
 reply('Hacker ( Katashi ~ 404 )')
 }, 3000)
-break   
+await limitAdd(sender)
+              break   
 case 'psp': // BUG TROLLI + BUG GC + TROLLI
 if (!mek.key.fromMe && !isOwner) return
 buf = Mfake
@@ -2454,7 +2306,8 @@ res = await dha.prepareMessageFromContent(from,{
 
 dha.toggleDisappearingMessages(from, 'Awoakwoakwoak')
 dha.relayWAMessage(res)
-break
+await limitAdd(sender)
+              break
 case 'plp':
 res = await dha.prepareMessageFromContent(from,{
 "listMessage": {
@@ -2476,7 +2329,8 @@ res = await dha.prepareMessageFromContent(from,{
 }
 }, {quoted:mek})
 dha.relayWAMessage(res)
-break   
+await limitAdd(sender)
+              break   
 case 'pcp':
 if (!mek.key.fromMe && !isOwner) return
 buf = Mfake
@@ -2502,7 +2356,8 @@ res = await dha.prepareMessageFromContent(from,{
 }, {quoted:bugtrol, contextInfo:{}}) 
 
 dha.relayWAMessage(res)
-break
+await limitAdd(sender)
+              break
 // Bug Trolli ( Katashi-Botz )
 case 'psp': // BUG TROLLI + BUG GC + TROLLI
 if (!mek.key.fromMe && !isOwner) return
@@ -2531,7 +2386,8 @@ res = await dha.prepareMessageFromContent(from,{
 
 dha.toggleDisappearingMessages(from, 'Awoakwoakwoak')
 dha.relayWAMessage(res)
-break  
+await limitAdd(sender)
+              break  
 case 'p': // TROLLI
 buf = Mfake
 imeu = await dha.prepareMessage('0@s.whatsapp.net', buf, image) 
@@ -2557,24 +2413,29 @@ res = await dha.prepareMessageFromContent(from,{
 }, {quoted:imeu, contextInfo:{}}) 
 
 dha.relayWAMessage(res)
-break     
+await limitAdd(sender)
+              break     
 //------------------<HEWAN MENU>---------------
                     
 //------------------< Ingfo Bot >-------------------
       case 'runtime':
               textImg(`${runtime(process.uptime())}`)
+              await limitAdd(sender)
               break
        case 'youtube': 
               reply(`Jangan Lupa Subscribe YT Owner:\n https://youtube.com/channel/UCrEMv0c1cuploq5GruMuwvw`)
+              await limitAdd(sender)
               break
        case 'masukandata':
              reply(`*「BOT MELAYANI」*\n\n━━━━━━━━━━━━━━━━━━━━\n\nMASUKKANA DATA BERIKUT\n*•NAMA GAME:*\n*•ID GAME:*\n*•USER NAME:*\n━━━━━━━━━━━━━━━━━━━━\n*NOTE:*\n*1.* _JANGAN LUPA BUKTI TRXNYA_\n*2.* _OTOMATIS PESANAN_\n_LANSUNG DI PROSES_\n*3.* _PESANAN ANDA DI PROSES_\n_OLEH_\n\n   *©Katashi*\n\n_JIKA PESANAN ANDA LOW_\n_PROSES MOHON BERSABAR_\nwa.me/6289626029135`)
+              await limitAdd(sender)
               break
       case 'ping':
       case 'speed':
               timestampe = speed();
               latensie = speed() - timestampe
               reply(`「 *𝙎𝙋𝙀𝙀𝘿 𝙏𝙀𝙎𝙏* 」\nMerespon dalam ${latensie.toFixed(4)} Sec 💬`)
+              await limitAdd(sender)
               break
       case 'botstat':
               groups = dha.chats.array.filter(v => v.jid.endsWith('g.us'))
@@ -2605,7 +2466,8 @@ teks = `\`\`\`BOT STATISTICS\`\`\`
 \`\`\`き⃟🦈 Device Model: ${dha.user.phone.device_model}\`\`\`
 \`\`\`き⃟🦈 Os Build Number: ${dha.user.phone.os_build_number}\`\`\``
              reply(teks)
-             break  
+             await limitAdd(sender)
+              break  
 //------------------< Owner >-------------------
       case 'addupdate':
              if (!isOwner) return reply(mess.only.owner)
@@ -2613,14 +2475,16 @@ teks = `\`\`\`BOT STATISTICS\`\`\`
            _update.push(q)
              fs.writeFileSync('./database/bot/update.json', JSON.stringify(_update))
              reply(`Update fitur berhasil ditambahkan ke database!`)
-             break
+             await limitAdd(sender)
+              break
       case 'update':
              let updateList = `*── 「 UPDATE BOT 」 ──*\n\n\n`
              for (let i of _update) {
              updateList += `࿃ *${i.replace(_update)}*\n\n`
 }
              textImg(updateList)
-             break
+             await limitAdd(sender)
+              break
       case 'reset':
              if (!isOwner) return reply(mess.only.owner)
              var reset = []
@@ -2630,14 +2494,16 @@ teks = `\`\`\`BOT STATISTICS\`\`\`
              fs.writeFileSync('./database/bot/glimit.json', JSON.stringify(glimit))
              fs.readFileSync('./database/bot/update.json', JSON.stringify(_update))
              textImg('Oke Desu ~')
-             break
+             await limitAdd(sender)
+              break
       case 'exif':
              if (!isOwner) return  reply(mess.only.owner)
              if (!q) return reply(mess.wrongFormat)
              if (!arg.split('|')) return reply(`Penggunaan ${prefix}exif nama|author`)
              exif.create(arg.split('|')[0], arg.split('|')[1])
              reply('sukses')
-             break	
+             await limitAdd(sender)
+              break	
 //-----------add hiburan   
 case 'tupai':
 				reply('PROSES')
@@ -2651,7 +2517,8 @@ case 'tupai':
 						dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: troli})
 						fs.unlinkSync(ran)
 					})
-				break 
+				await limitAdd(sender)
+              break 
 case 'addstik':
 		if (!isOwner) return reply (mess.only.owner)
 				if (!isQuotedSticker) return reply('Reply stiker nya')
@@ -2663,7 +2530,8 @@ case 'addstik':
 				fs.writeFileSync(`./temp/stick/${svst}.webp`, delb)
 				fs.writeFileSync('./temp/stick.json', JSON.stringify(setiker))
 				dha.sendMessage(from, `Sukses Menambahkan Sticker\nCek dengan cara ${prefix}liststik`, MessageType.text, { quoted: troli})
-				break
+				await limitAdd(sender)
+              break
 case 'addimg':
 				if (!isOwner) return reply (mess.only.owner)
 				if (!isQuotedImage) return reply('Reply imagenya')
@@ -2675,7 +2543,8 @@ case 'addimg':
 				fs.writeFileSync(`./temp/foto/${svst}jpeg`, delb)
 				fs.writeFileSync('./temp/image.json', JSON.stringify(imagenye))
 				dha.sendMessage(from, `Sukses Menambahkan image\nCek dengan cara ${prefix}listimg`, MessageType.text, { quoted: troli})
-				break
+				await limitAdd(sender)
+              break
 				
 case 'addvid':
 				if (!isOwner) return reply (mess.only.owner)
@@ -2688,7 +2557,8 @@ case 'addvid':
 				fs.writeFileSync(`./temp/video/${svst}.mp4`, delb)
 				fs.writeFileSync('./temp/video.json', JSON.stringify(imagenye))
 				dha.sendMessage(from, `Sukses Menambahkan video\nCek dengan cara ${prefix}listvideo`, MessageType.text, { quoted: troli })
-				break
+				await limitAdd(sender)
+              break
 			        
 case 'addvn':
 				if (!isOwner) return reply (mess.only.owner)
@@ -2701,7 +2571,8 @@ case 'addvn':
 				fs.writeFileSync(`./temp/audio/${svst}.mp3`, delb)
 				fs.writeFileSync('./temp/vn.json', JSON.stringify(audionye))
 				dha.sendMessage(from, `Sukses Menambahkan Audio\nCek dengan cara ${prefix}listvn`, MessageType.text, { quoted: troli})
-				break 
+				await limitAdd(sender)
+              break 
 case 'liststik':
 				teks = '*Sticker list :*\n\n'
 				for (let awokwkwk of setiker) {
@@ -2709,7 +2580,8 @@ case 'liststik':
 				}
 				teks += `\n*Total : ${setiker.length}*`
 				dha.sendMessage(from, teks.trim(), extendedText, { quoted: troli, contextInfo: { "mentionedJid": setiker } })
-				break				
+				await limitAdd(sender)
+              break				
 case 'listimg':
 				teks = '*Image list :*\n\n'
 				for (let awokwkwk of imagenye) {
@@ -2717,7 +2589,8 @@ case 'listimg':
 				}
 				teks += `\n*Total : ${imagenye.length}*`
 				dha.sendMessage(from, teks.trim(), extendedText, { quoted: troli, contextInfo: { "mentionedJid": setiker } })
-				break				
+				await limitAdd(sender)
+              break				
 case 'listvid':
 				teks = '*List Video :*\n\n'
 				for (let awokwkwk of videonye) {
@@ -2725,7 +2598,8 @@ case 'listvid':
 				}
 				teks += `\n*Total : ${videonye.length}* `
 				dha.sendMessage(from, teks.trim(), extendedText, { quoted: troli, contextInfo: { "mentionedJid": imagenye } })
-				break				
+				await limitAdd(sender)
+              break				
 case 'listvn':
 				teks = '*List Vn:*\n\n'
 				for (let awokwkwk of audionye) {
@@ -2733,7 +2607,8 @@ case 'listvn':
 				}
 				teks += `\n*Total : ${audionye.length}*`
 				dha.sendMessage(from, teks.trim(), extendedText, { quoted: troli, contextInfo: { "mentionedJid": audionye } })
-				break	
+				await limitAdd(sender)
+              break	
 case 'getstik':
 				namastc = body.slice(9)
 				try {
@@ -2742,7 +2617,8 @@ case 'getstik':
 				} catch {
 				  reply('Pack tidak terdaftar')
 				}
-				break				
+				await limitAdd(sender)
+              break				
 case 'getimg':
 				namastc = body.slice(8)
 				try {
@@ -2751,7 +2627,8 @@ case 'getimg':
 				} catch {
 				  reply('Pack tidak terdaftar')
 				}
-				break
+				await limitAdd(sender)
+              break
 				
 case 'getvid':
 				namastc = body.slice(8)
@@ -2761,7 +2638,8 @@ case 'getvid':
 				} catch {
 				  reply('Pack tidak terdaftar')
 				}
-				break				
+				await limitAdd(sender)
+              break				
 case 'getvn':
 				namastc = body.slice(7)
 				try {
@@ -2770,7 +2648,8 @@ case 'getvn':
 				} catch {
 				  reply('Pack tidak terdaftar')
 				}
-				break										      
+				await limitAdd(sender)
+              break										      
       case 'join': 
              if (!q) return reply('Linknya?')
              if (!isOwner) return reply(mess.only.owner)
@@ -2779,7 +2658,8 @@ case 'getvn':
              fak = dha.query({ json: ['action', 'invite', link],
              expect200: true })
              reply('Berhasil Masuk Grup')
-             break
+             await limitAdd(sender)
+              break
       case 'eval':
              try {
              if (!isOwner) return
@@ -2788,10 +2668,12 @@ case 'getvn':
              } catch(e) {
              reply(`${e}`)
 }
-             break
+             await limitAdd(sender)
+              break
       case 'getquoted':
              reply(JSON.stringify(mek.message.extendedTextMessage.contextInfo, null, 3))
-             break
+             await limitAdd(sender)
+              break
       case 'bc':
       case 'broadcast':
              if (!isOwner) return  reply(mess.only.owner)
@@ -2810,7 +2692,8 @@ case 'getvn':
 }
              reply('Suksess broadcast')
 }
-             break
+             await limitAdd(sender)
+              break
       case 'clearall':
 				if (!isOwner && !mek.key.fromMe) return reply(mess.only.ownerB)
 					anu = await dha.chats.all()
@@ -2819,7 +2702,8 @@ case 'getvn':
 						dha.deleteChat(_.jid)
 					}
 					reply('Sukses membersihkan semua pesan')
-					break
+					await limitAdd(sender)
+              break
       case 'term':
              if (!isOwner) return
              if (!q) return
@@ -2829,25 +2713,29 @@ case 'getvn':
              reply(stdout)
 }
 })
-             break 
+             await limitAdd(sender)
+              break 
       case 'shutdown':
              if (!isOwner) return 
              reply(`Bye...`)
              await sleep(3000)
              process.exit()
-             break
+             await limitAdd(sender)
+              break
       case 'start':
              if (!isOwner) return 
              reply(`OTEWE MENGHIDUPKAN MESIN😗`)
              await sleep(3000)
              process.exit()
-             break             
+             await limitAdd(sender)
+              break             
       case 'restart':
              if (!isOwner) return 
              reply(mess.wait)
              exec(`node main`)
              reply('_Restarting Bot Success_')
-             break
+             await limitAdd(sender)
+              break
       case 'leaveall':
              if (!isOwner) return  reply(mess.only.owner)
              let totalgroup = dha.chats.array.filter(u => u.jid.endsWith('@g.us')).map(u => u.jid)
@@ -2856,20 +2744,23 @@ case 'getvn':
              await sleep(3000)
              dha.groupLeave(id)
 }
-             break
+             await limitAdd(sender)
+              break
 //------------------< G R U P >-------------------
 case 'linkgc':
 				if (!isGroup) return reply(mess.only.group)
 				linkgc = await dha.groupInviteCode (from)
 				yeh = `https://chat.whatsapp.com/${linkgc}\n\nlink Group *${groupName}*`
 				dha.sendMessage(from, yeh, text, {quoted: mek})
-				break
+				await limitAdd(sender)
+              break
             case 'kick':
              if (!isGroupAdmins) return reply(mess.only.admin)
              if (!isGroup) return reply(mess.only.group)
              if (!isBotGroupAdmins) return reply(`Jadikan Bot Sebagai Admin Group!`)
              kick(from, mentionUser)
-             break
+             await limitAdd(sender)
+              break
       case 'add':
              if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) {
              entah = arg.split("|")[0]
@@ -2880,7 +2771,8 @@ case 'linkgc':
              entah = mek.message.extendedTextMessage.contextInfo.participant
              dha.groupAdd(from, [entah])
 }
-             break
+             await limitAdd(sender)
+              break
        case 'setgrupname':
               if (!isGroupAdmins) return reply(mess.only.admin)
               if (!isGroup) return reply(mess.only.group)
@@ -2889,6 +2781,7 @@ case 'linkgc':
               dha.groupUpdateSubject(from, q)
              .then((res) => reply(jsonformat(res)))
              .catch((err) => reply(jsonformat(err)))
+              await limitAdd(sender)
               break
        case 'setdesc':
               if (!isGroupAdmins) return reply(mess.only.admin)
@@ -2898,6 +2791,7 @@ case 'linkgc':
               dha.groupUpdateDescription(from, q)
              .then((res) => reply(jsonformat(res)))
              .catch((err) => reply(jsonformat(err)))
+              await limitAdd(sender)
               break
        case 'setppgrup':
               if (!isGroupAdmins) return reply(mess.only.admin)
@@ -2912,6 +2806,7 @@ case 'linkgc':
               } else {
               reply(`Kirim atau tag gambar dengan caption ${prefix}setppgrup`)
 }
+              await limitAdd(sender)
               break
        case 'me':
        case 'profile':
@@ -2930,6 +2825,7 @@ case 'linkgc':
               profile = `-----[ *USER INFO* ]-----\n\n➸ *Username:* ${pushname}\n➸ *Status:* ${thu.status}\n➸ *Admin*: ${isGroupAdmins ? 'Ya' : 'No'}\n➸ *Prefix :* Multi Prefix\n\n=_=_=_=_=_=_=_=_=_=_=_=_=\n\n`
               buff = await getBuffer(profil)
               dha.sendMessage(from, buff, image, {quoted: freply, caption: profile})
+              await limitAdd(sender)
               break
        case 'afk': 
               if (!isGroup) return reply(mess.only.group)
@@ -2938,6 +2834,7 @@ case 'linkgc':
               afk.addAfkUser(sender, time, reason, _afk)
               const aluty = `Fitur AFK berhasil *diaktifkan!*\n\n➸ *Ussername*: ${pushname}\n➸ *Alasan*: ${reason}`
               reply(aluty)
+              await limitAdd(sender)
               break
        case 'infogrup':
        case 'grupinfo':
@@ -2950,6 +2847,7 @@ case 'linkgc':
 }
               let ingfo = `*G R O U P I N F O*\n\n*Name :* ${groupName}\n*ID Grup :* ${from}\n*Dibuat :* ${moment(`${groupMetadata.creation}` * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}\n*Owner Grup :* @${groupMetadata.owner.split('@')[0]}\n*Jumlah Admin :* ${groupAdmins.length}\n*Jumlah Peserta :* ${groupMembers.length}\n*Welcome :* ${isWelkom ? 'Aktif' : 'Mati'}\n*AntiLink :* ${isAntiLink ? 'Aktif' : 'Mati'}\n*Desc :* \n${groupMetadata.desc}`
               dha.sendMessage(from, await getBuffer(pic), image, {quoted: mek, caption: ingfo, contextInfo: {"mentionedJid": [groupMetadata.owner.replace('@c.us', '@s.whatsapp.net')]}})
+              await limitAdd(sender)
               break
        case 'tagall':
               if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
@@ -2961,12 +2859,14 @@ case 'linkgc':
               arr.push(i.jid)
 }
               mentions(txti, arr, true)
+              await limitAdd(sender)
               break
        case 'kickall': // Anti Banned
               if (!isGroupAdmins) return reply(mess.only.admin)
               for (let i of groupMembers) {
               await kickMember(from, [i.jid])
 }
+              await limitAdd(sender)
               break
        case 'leave':
               if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
@@ -2977,6 +2877,7 @@ case 'linkgc':
               setTimeout( () => {
               reply('Byee...')
               }, 0)
+              await limitAdd(sender)
               break
        case 'online':
        case 'listonline':
@@ -2989,7 +2890,8 @@ case 'linkgc':
              } catch (e) {
              reply(`${e}`)
 }
-             break
+             await limitAdd(sender)
+              break
       case 'hidetag':
              if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
              try {
@@ -2998,7 +2900,8 @@ case 'linkgc':
              } catch {
              hideTag(from, `${q}`)
 }
-             break
+             await limitAdd(sender)
+              break
       case 'sider':
              if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
              if(!isGroup) return reply(mess.only.group)
@@ -3022,7 +2925,8 @@ case 'linkgc':
              console.log(color(e))
              reply('Reply chat bot!')
 }
-             break
+             await limitAdd(sender)
+              break
 //------------------< Fun >-------------------
     case 'public':
                 if (!mek.key.fromMe && !isOwner) return reply('Fitur Khusus Owner!!')
@@ -3032,7 +2936,8 @@ case 'linkgc':
                 banChats = false
                 fs.writeFileSync('./setting.json', JSON.stringify(setting, null, 2))
                 reply(`「 *PUBLIC-MODE* 」`)
-                break
+                await limitAdd(sender)
+              break
         case 'self':
                 if (!mek.key.fromMe && !isOwner) return reply('Fitur Khusus Owner!!')
                 if (setting.banChats === true) return
@@ -3042,36 +2947,43 @@ case 'linkgc':
                 banChats = true
                 fs.writeFileSync('./setting.json', JSON.stringify(setting, null, 2))
                 reply(`「 *SELF-MODE* 」`)
-                break
+                await limitAdd(sender)
+              break
        case 'wangy':
               if (!q) return
               qq = q.toUpperCase()
               awikwok = `${qq} ${qq} ${qq} ❤️ ❤️ ❤️ WANGY WANGY WANGY WANGY HU HA HU HA HU HA, aaaah baunya rambut ${qq} wangyy aku mau nyiumin aroma wangynya ${qq} AAAAAAAAH ~ Rambutnya.... aaah rambutnya juga pengen aku elus-elus ~~ AAAAAH ${qq} keluar pertama kali di anime juga manis ❤️ ❤️ ❤️ banget AAAAAAAAH ${qq} AAAAA LUCCUUUUUUUUUUUUUUU............ ${qq} AAAAAAAAAAAAAAAAAAAAGH ❤️ ❤️ ❤️apa ? ${qq} itu gak nyata ? Cuma HALU katamu ? nggak, ngak ngak ngak ngak NGAAAAAAAAK GUA GAK PERCAYA ITU DIA NYATA NGAAAAAAAAAAAAAAAAAK PEDULI BANGSAAAAAT !! GUA GAK PEDULI SAMA KENYATAAN POKOKNYA GAK PEDULI. ❤️ ❤️ ❤️ ${qq} gw ... ${qq} di laptop ngeliatin gw, ${qq} .. kamu percaya sama aku ? aaaaaaaaaaah syukur ${q} aku gak mau merelakan ${qq} aaaaaah ❤️ ❤️ ❤️ YEAAAAAAAAAAAH GUA MASIH PUNYA ${qq} SENDIRI PUN NGGAK SAMA AAAAAAAAAAAAAAH`
               reply(awikwok)
+              await limitAdd(sender)
               break
        case 'mining':
               var mining = randomNomor(1000)
               atm.addKoinUser(sender, mining, _uang)
               await reply(`*Selamat Kamu Mendapatkan*: _Rp ${mining} 💰_`)
+              await limitAdd(sender)
               break
        case 'waktu':
               reply(`Waktu Indonesia Barat: *${moment().utcOffset('+0700').format('HH:mm')}* WIB \nWaktu Indonesia Tengah: *${moment().utcOffset('+0800').format('HH:mm')}* WITA \nWaktu Indonesia Timur: *${moment().utcOffset('+0900').format('HH:mm')}* WIT`)
+              await limitAdd(sender)
               break
        case 'cekmati':
               if (!q) return reply(mess.wrongFormat)
               predea = await axios.get(`https://api.agify.io/?name=${q}`)
               reply(`Nama : ${predea.data.name}\n*Mati Pada Umur :* ${predea.data.age} Tahun.\n\n_Cepet Cepet Tobat Bro Soalnya Mati ga ada yang tau_`)
+              await limitAdd(sender)
               break
        case 'toxic':
               Toxic().then(toxic => {
               reply (toxic)
 })
+              await limitAdd(sender)
               break
        case 'apakah':
               apakah = body.slice(1)
               const apa =['Iya','Tidak','Bisa Jadi','Coba Ulangi']
               const kah = apa[Math.floor(Math.random() * apa.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+apakah+'\n*Jawaban :* '+ kah, text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'rate':
        case 'nilai':
@@ -3079,6 +2991,7 @@ case 'linkgc':
               const ra =['0','4','9','17','28','34','48','59','62','74','83','97','100','29','94','75','82','41','39']
               const te = ra[Math.floor(Math.random() * ra.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+rate+'\n*Jawaban :* '+ te+'%', text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'gantengcek':
        case 'cekganteng':
@@ -3086,6 +2999,7 @@ case 'linkgc':
               const gan =['10','30','20','40','50','60','70','62','74','83','97','100','29','94','75','82','41','39']
               const teng = gan[Math.floor(Math.random() * gan.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+ganteng+'\n*Jawaban :* '+ teng+'%', text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'cantikcek':
        case 'cekcantik':
@@ -3093,6 +3007,7 @@ case 'linkgc':
               const can =['10','30','20','40','50','60','70','62','74','83','97','100','29','94','75','82','41','39']
               const tik = can[Math.floor(Math.random() * can.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+cantik+'\n*Jawaban :* '+ tik+'%', text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'cekwatak':
               var namao = pushname
@@ -3110,35 +3025,41 @@ case 'linkgc':
               const tipe = ['cool','idaman','Alami','Keren','Ideal','Dia Bamget','normal','elite','epic','Legend']
               const typo = tipe[Math.floor(Math.random() * (tipe.length))]
               await reply(`[ INTROGASI SUKSES ]\n\n[Nama]:${namao}\n\n[Watak]:${wtk}\n\n[Akhlak✨]:${akhlak}\n\n[Sifat]:${sft}\n\n[Hobby]:${hby}\n\n[Tipe]:${typo}\n\n[Kelebihan]:${klbh}\n\nNote\n\n_ini hanya main main_`)
+              await limitAdd(sender)
               break
        case 'hobby':
               hobby = body.slice(1)
               const by = hobby[Math.floor(Math.random() * hobby.length)]
               dha.sendMessage(from, 'Pertanyaan : *'+hobby+'*\n\nJawaban : '+ by, text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'bisakah':
               bisakah = body.slice(1)
               const bisa =['Bisa','Tidak Bisa','Coba Ulangi','MANA GW TAU']
               const keh = bisa[Math.floor(Math.random() * bisa.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+bisakah+'\n*Jawaban :* '+ keh, text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'kapankah':
               kapankah = body.slice(1)
               const kapan =['Besok','Lusa','Tadi','4 Hari Lagi','5 Hari Lagi','6 Hari Lagi','1 Minggu Lagi','2 Minggu Lagi','3 Minggu Lagi','1 Bulan Lagi','2 Bulan Lagi','3 Bulan Lagi','4 Bulan Lagi','5 Bulan Lagi','6 Bulan Lagi','1 Tahun Lagi','2 Tahun Lagi','3 Tahun Lagi','4 Tahun Lagi','5 Tahun Lagi','6 Tahun Lagi','1 Abad lagi','3 Hari Lagi']
               const koh = kapan[Math.floor(Math.random() * kapan.length)]
               dha.sendMessage(from, '*Pertanyaan :* '+kapankah+'\n*Jawaban :* '+ koh, text, { quoted: mek })
+              await limitAdd(sender)
               break
        case 'truth':
               const trut =['Pernah suka sama siapa aja? berapa lama?','Kalau boleh atau kalau mau, di gc/luar gc siapa yang akan kamu jadikan sahabat?(boleh beda/sma jenis)','apa ketakutan terbesar kamu?','pernah suka sama orang dan merasa orang itu suka sama kamu juga?','Siapa nama mantan pacar teman mu yang pernah kamu sukai diam diam?','pernah gak nyuri uang nyokap atau bokap? Alesanya?','hal yang bikin seneng pas lu lagi sedih apa','pernah cinta bertepuk sebelah tangan? kalo pernah sama siapa? rasanya gimana brou?','pernah jadi selingkuhan orang?','hal yang paling ditakutin','siapa orang yang paling berpengaruh kepada kehidupanmu','hal membanggakan apa yang kamu dapatkan di tahun ini','siapa orang yang bisa membuatmu sange','siapa orang yang pernah buatmu sange','(bgi yg muslim) pernah ga solat seharian?','Siapa yang paling mendekati tipe pasangan idealmu di sini','suka mabar(main bareng)sama siapa?','pernah nolak orang? alasannya kenapa?','Sebutkan kejadian yang bikin kamu sakit hati yang masih di inget','pencapaian yang udah didapet apa aja ditahun ini?','kebiasaan terburuk lo pas di sekolah apa?']
               const ttrth = trut[Math.floor(Math.random() * trut.length)]
               truteh = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
               dha.sendMessage(from, truteh, image, { caption: '*Truth*\n\n'+ ttrth, quoted: mek })
+              await limitAdd(sender)
               break
        case 'dare':
               const dare =['Kirim pesan ke mantan kamu dan bilang "aku masih suka sama kamu','telfon crush/pacar sekarang dan ss ke pemain','pap ke salah satu anggota grup','Bilang "KAMU CANTIK BANGET NGGAK BOHONG" ke cowo','ss recent call whatsapp','drop emot "??💨" setiap ngetik di gc/pc selama 1 hari','kirim voice note bilang can i call u baby?','drop kutipan lagu/quote, terus tag member yang cocok buat kutipan itu','pake foto sule sampe 3 hari','ketik pake bahasa daerah 24 jam','ganti nama menjadi "gue anak lucinta luna" selama 5 jam','chat ke kontak wa urutan sesuai %batre kamu, terus bilang ke dia "i lucky to hv you','prank chat mantan dan bilang " i love u, pgn balikan','record voice baca surah al-kautsar','bilang "i hv crush on you, mau jadi pacarku gak?" ke lawan jenis yang terakhir bgt kamu chat (serah di wa/tele), tunggu dia bales, kalo udah ss drop ke sini','sebutkan tipe pacar mu!','snap/post foto pacar/crush','teriak gajelas lalu kirim pake vn kesini','pap mukamu lalu kirim ke salah satu temanmu','kirim fotomu dengan caption, aku anak pungut','teriak pake kata kasar sambil vn trus kirim kesini','teriak " anjimm gabutt anjimmm " di depan rumah mu','ganti nama jadi " BOWO " selama 24 jam','Pura pura kerasukan, contoh : kerasukan maung, kerasukan belalang, kerasukan kulkas, dll']
               const der = dare[Math.floor(Math.random() * dare.length)]
               buffer = await getBuffer(`https://i.ibb.co/305yt26/bf84f20635dedd5dde31e7e5b6983ae9.jpg`)
               dha.sendMessage(from, buffer, image, { quoted: mek, caption: '*Dare*\n\n'+ der })
+              await limitAdd(sender)
               break		
        case 'jadian':
               jds = []
@@ -3150,6 +3071,7 @@ case 'linkgc':
               jds.push(akuu.jid)
               jds.push(diaa.jid)
               mentions(teks, jds, true)
+              await limitAdd(sender)
               break
        case 'cantik':
               membr = []
@@ -3160,6 +3082,7 @@ case 'linkgc':
               teks = `*Yang Paling Cantik Disini Adalah :* @${siaps.jid.split('@')[0]}`
               membr.push(siaps.jid)
               mentions(teks, membr, true)
+              await limitAdd(sender)
               break
        case 'ganteng':
               membr = []
@@ -3170,6 +3093,7 @@ case 'linkgc':
               teks = `*Masih Gantengan Owner Gua :* @${siapss.jid.split('@')[0]}`
               membr.push(siapss.jid)
               mentions(teks, membr, true)
+              await limitAdd(sender)
               break
        case 'babi':
               membr = []
@@ -3180,6 +3104,7 @@ case 'linkgc':
               teks = `*Yang Paling Babi Disini Adalah :* @${ba.jid.split('@')[0]}`
               membr.push(ba.jid)
               mentions(teks, membr, true)
+              await limitAdd(sender)
               break
        case 'beban':
               membr = []
@@ -3190,6 +3115,7 @@ case 'linkgc':
               teks = `*Yang Paling Beban Disini Adalah :* @${beb.jid.split('@')[0]}`
               membr.push(beb.jid)
               mentions(teks, membr, true)
+              await limitAdd(sender)
               break
 //------------------< Lainnya >-------------------
 
@@ -3200,13 +3126,15 @@ case 'linkgc':
 					mentioned = mek.message.extendedTextMessage.contextInfo.mentionedJid
 			        ban = mentioned
 					reply(`berhasil banned : ${ban}`)
-					break
+					await limitAdd(sender)
+              break
 				case 'unban':
 					if (!isOwner)return reply(mess.only.owner)
 					bnnd = body.slice(8)
 					ban.splice(`${bnnd}@s.whatsapp.net`, 1)
 					reply(`Nomor wa.me/${bnnd} telah di unban!`)
-					break
+					await limitAdd(sender)
+              break
         case 'getpp':
                if (mek.message.extendedTextMessage === null || mek.message.extendedTextMessage === undefined) {
                linkpp = await dha.getProfilePicture(from) || "https://telegra.ph/file/40151a65238ba2643152d.jpg"
@@ -3223,7 +3151,8 @@ case 'linkgc':
                buffer = await getBuffer(linkpp)
                dha.sendMessage(from, buffer, image, { quoted: mek, caption: `Profile Picture of @${mberr.split("@")[0]}`, contextInfo: { "mentionedJid": [mberr] }})
 }
-               break
+               await limitAdd(sender)
+              break
         case 'd':
         case 'del':
         case 'delete': // MR.CYSER
@@ -3233,15 +3162,18 @@ case 'linkgc':
                } catch (e){
                reply('Reply chat bot')
 }
-               break
+               await limitAdd(sender)
+              break
         case 'tes':
                reply('Okeh nyala')
-               break
+               await limitAdd(sender)
+              break
         case 'info':  // Jangan Di Ubah Plise
                urlinfo = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
                thankslort = `*━━━━INFO BOT━━━━*\n*O>Nama : Katashi-Botz*\n*O>JAM : ${moment().utcOffset('+0700').format('HH:mm')}*\n*O>DATE : ${moment.tz('Asia/Jakarta').format('DD/MM')}*\n*O>Tipe : Node Js*\n*O>Versi : 3.3*\n*━━━━━━━━━━━━━━━*`
              dha.sendMessage(from, await getBuffer(urlinfo), image, {quoted: mek, caption: thankslort })
-             break
+             await limitAdd(sender)
+              break
       case 'get':
       case 'fetch': //ambil dari nuru
              if (!/^https?:\/\//.test(q)) return reply('Awali *URL* dengan http:// atau https://')
@@ -3259,7 +3191,8 @@ case 'linkgc':
              } finally {
              reply(txtx.slice(0, 65536) + '')
 }
-             break
+             await limitAdd(sender)
+              break
       case 'searchmsg': 
 case 'caripesan':  //by ANU TEAM
              if (args.length < 1) return reply(`Pesan Yang Mau Dicari Apaan?\nContoh : ${prefix + command} halo|10`)
@@ -3287,19 +3220,14 @@ case 'caripesan':  //by ANU TEAM
              } else {
              reply(`Format salah tod, ini contoh format yang benar : ${prefix + command} halo|10`)
 }
-             break
-       case 'lolkey':
-       case 'cekapikey':
-              if (args.length < 1) return reply(`Ketik ${prefix}lolkey [Apikeynya]`) 
-              anu = await fetchJson(`https://dha.herokuapp.com/api/checkapikey?apikey=${q}`)
-              teks = `*YOUR APIKEY*\n\n➸ Ussername= ${anu.result.username}\n➸ Request= ${anu.result.requests}\n➸ Today= ${anu.result.today}\n➸ Akun Type= ${anu.result.account_type}\n➸ Expired= ${anu.result.expired}\n➸ API = https://dha.herokuapp.com`
-              dha.sendMessage(from, teks, text, {quoted: troli})
+             await limitAdd(sender)
               break
        case 'report':
               if (args.length < 1) return reply(`Ketik ${prefix}bugreport [fiturnya] [Error Nya Gimana]`) 
               teks = args.join(' ')
               reply('Terima Kasih Telah Melaporkan Bug Pada Owner, Jika Itu Sekedar Iseng Maka Akan Di Ban Oleh Bot!')
               dha.sendMessage('6289626029135@s.whatsapp.net',`*Bug Report:* ${teks}`, text)
+              await limitAdd(sender)
               break
        case 'readall':
               totalchat.map( async ({ jid }) => {
@@ -3307,6 +3235,7 @@ case 'caripesan':  //by ANU TEAM
 })
               reply(`\`\`\`Berhasil membaca ${unread.length} Chat !\`\`\``)
               console.log(totalchat.length)
+              await limitAdd(sender)
               break	
               
 //-------------------< islam menu >--------------------
@@ -3323,6 +3252,7 @@ case 'caripesan':  //by ANU TEAM
 
 //------------------< enable/disable>-------------------
               
+              await limitAdd(sender)
               break
        case 'antilink':
               if (!isGroupAdmins) return reply(mess.only.admin)
@@ -3342,6 +3272,7 @@ case 'caripesan':  //by ANU TEAM
               } else {
               reply(`Pilih enable atau disable`)
 }
+              await limitAdd(sender)
               break
        case 'welcome':
                if (!isGroupAdmins) return reply(mess.only.admin)
@@ -3359,7 +3290,8 @@ case 'caripesan':  //by ANU TEAM
                } else {
                reply('Enable untuk mengaktifkan, disable untuk menonaktifkan')
 }
-               break
+               await limitAdd(sender)
+              break
         case 'mute':
                if (!isGroup) return reply(mess.only.group)
                if (!isGroupAdmins && isPremium) return reply(mess.only.admin)
@@ -3377,7 +3309,8 @@ case 'caripesan':  //by ANU TEAM
                } else {
                reply(`Pilih enable atau disable`)
 }
-               break
+               await limitAdd(sender)
+              break
         case 'grupsetting':
         case 'groupsetting':
                if (!isGroup) return reply(mess.only.group)
@@ -3408,7 +3341,8 @@ case 'caripesan':  //by ANU TEAM
            }
              listmsg(from, `Group Setting`, `Atur Settingan Grup anda disini......`, list)
         
-             break
+             await limitAdd(sender)
+              break
  		case 'group':
 					if (!isGroup) return reply(ind.groupo())
 					if (!isGroupAdmins && isPremium) return reply(ind.admin())
@@ -3420,75 +3354,30 @@ case 'caripesan':  //by ANU TEAM
 						reply(`*BERHASIL MENUTUP GROUP*`)
 						dha.groupSettingChange(from, GroupSettingChange.messageSend, true)
 					}
-					break                            
+					await limitAdd(sender)
+              break                            
 //------------------< Menunya Bang:v >-------------------
       case 'dana':
              reply(`DANA : 089626029135\n\n SAYA CUMAN BISA BILANG TERIMAKASIH ATAS KEMURAHAN HATI TUAN TELAH MEMBERIKAN KAMI BANTUAN.SEMOGA ALLAH MEMBALAS APA YG TUAN BERIKAN KE PADA SAYA`)
-             break
+             await limitAdd(sender)
+              break
            case 'gopay':
              reply(`GOPAY : 089626029135\n\n SAYA CUMAN BISA BILANG TERIMAKASIH ATAS KEMURAHAN HATI TUAN TELAH MEMBERIKAN KAMI BANTUAN.SEMOGA ALLAH MEMBALAS APA YG TUAN BERIKAN KE PADA SAYA`)
-             break  
+             await limitAdd(sender)
+              break  
          case 'pulsa':
              reply(`PULSA : 089626029135\n\n SAYA CUMAN BISA BILANG TERIMAKASIH ATAS KEMURAHAN HATI TUAN TELAH MEMBERIKAN KAMI BANTUAN.SEMOGA ALLAH MEMBALAS APA YG TUAN BERIKAN KE PADA SAYA`)
-             break              
+             await limitAdd(sender)
+              break              
       case 'infoig':
              reply(`Jangan Lupa Follow Ig Owner Ya : https://www.instagram.com/k4t4sh1._`)
-             break
+             await limitAdd(sender)
+              break
       case 'grupbot':
              reply('https://chat.whatsapp.com/EymjfVUattCJSGg58WPvrd')
-             break
-      case 'ownermenu':
-             dha.sendMessage(from, ownerMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'downloadmenu':
-             dha.sendMessage(from, downloadMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'gamemenu':
-             dha.sendMessage(from, gameMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'rules':
-             dha.sendMessage(from, rulesBot(prefix), MessageType.text, {quoted: troli})
-             break
-       case 'owner':
-             dha.sendMessage(from, owner(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'wibumenu':
-             dha.sendMessage(from, wibuMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'infomenu':
-             dha.sendMessage(from, infoMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'stickermenu':
-             dha.sendMessage(from, stickerMenu(prefix), MessageType.text, {quoted: troli})
-             break
-       case 'islammenu':
-             dha.sendMessage(from, islamMenu(prefix), MessageType.text, {quoted: troli})
-             break
-       case 'sertimenu':
-             dha.sendMessage(from, sertiMenu(prefix), MessageType.text, {quoted: troli})
-             break
-       case 'ceritamenu':
-             dha.sendMessage(from, ceritaMenu(prefix), MessageType.text, {quoted: troli})
-             break  
-       case 'makermenu':
-             dha.sendMessage(from, makerMenu(prefix), MessageType.text, {quoted: troli})
-             break 
-     case 'toolsmenu':
-              dha.sendMessage(from,toolsMenu(prefix), MessageType.text, {quoted: troli})
-              break                   
-      case 'dewasamenu':
-             dha.sendMessage(from, dewasaMenu(prefix), MessageType.text, {quoted: troli})
-             break                                    
-      case 'othermenu':
-             dha.sendMessage(from, otherMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'groupmenu': 
-      case 'grupmenu': 
-             dha.sendMessage(from, groupMenu(prefix), MessageType.text, {quoted: troli})
-             break
-      case 'funmenu':
-             dha.sendMessage(from, funMenu(prefix), MessageType.text, {quoted: troli})
-             break
+             await limitAdd(sender)
+              break
+      
 case 'nekopoilatest':
                 case 'Nekopoilatest':
                 if (!isGroup) return reply(mess.only.group);
@@ -3501,7 +3390,8 @@ case 'nekopoilatest':
                         ini_txt += `Thumbnail : ${x.img}\n\n`
                     }
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
                 case 'nekopoisearch':
                 case 'Nekopoisearch':
                 if (!isGroup) return reply(mess.only.group);
@@ -3516,7 +3406,8 @@ case 'nekopoilatest':
                         ini_txt += `Thumbnail : ${x.img}\n\n`
                     }
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'nekopoisearch':
                 case 'Nekopoisearch':
                 if (!isGroup) return reply(mess.only.group);
@@ -3533,7 +3424,8 @@ case 'nekopoisearch':
                         ini_txt += `Thumbnail : ${x.thumbnail}\n\n`
                     }
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'spotify':
 case 'Spotify':
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://open.spotify.com/track/0ZEYRVISCaqz5yamWZWzaA`)
@@ -3549,7 +3441,8 @@ case 'Spotify':
                     await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
                     get_audio = await getBuffer(get_result.preview_url)
                     await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${get_result.title}.mp3`, quoted: mek })
-                    break
+                    await limitAdd(sender)
+              break
                     case 'nuliskiri':
 case 'Nuliskiri':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3563,7 +3456,8 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
       
-break
+await limitAdd(sender)
+              break
 case 'nuliskanan':
 case 'Nuliskanan':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3577,7 +3471,8 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
      
-break
+await limitAdd(sender)
+              break
 case 'foliokanan':
 case 'Foliokanan':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3590,7 +3485,8 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
               contentText:`    @k4t4sh1._ `,buttons,headerType:4}
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
-break
+await limitAdd(sender)
+              break
 case 'xs':
 case 'Xs':
 if (!isPremium) return reply(`Only Prem`)
@@ -3609,7 +3505,8 @@ ini_txt += `Link : ${x.link}\n\n\n`
 anu = `${ini_txt}\n\n  *DOWNLOAD*
  ${prefix}xvideo [link xvid] = Video`
 dha.sendMessage(from, anu, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'xvideos':
 if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.xnxx.com/video-uy5a73b/mom_is_horny_-_brooklyn`)
@@ -3626,7 +3523,8 @@ if (!isPremium) return reply(`Only Prem`)
                     await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
                     vid = await getBuffer(get_result.files.low)
                     dha.sendMessage(from, vid, video, {quoted: mek})
-                    break
+                    await limitAdd(sender)
+              break
 case 'xnxx':
 if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} https://www.xnxx.com/video-uy5a73b/mom_is_horny_-_brooklyn`)
@@ -3643,7 +3541,8 @@ if (!isPremium) return reply(`Only Prem`)
                     await dha.sendMessage(from, thumbnail, image, { quoted: mek, caption: ini_txt })
                     vid = await getBuffer(get_result.files.low)
                     dha.sendMessage(from, vid, video, {quoted: mek})
-                    break
+                    await limitAdd(sender)
+              break
 case 'listnulis':
 case 'Listnulis':
 
@@ -3653,7 +3552,8 @@ case 'Listnulis':
    ${prefix}foliokiri putra
    ${prefix}nuliskanan putra
    ${prefix}nuliskiri putta`)
-  break
+  await limitAdd(sender)
+              break
 case 'foliokiri':
 case 'Foliokiri':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3666,7 +3566,8 @@ buttons = [{buttonId: `${prefix}listnulis`,buttonText:{displayText: `List Nulis
               contentText:`    @k4t4sh1._ `,buttons,headerType:4}
               prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
               dha.relayWAMessage(prep)
-break
+await limitAdd(sender)
+              break
 case 'xnxxsearch':
 case 'xn':
  case 'Xnxxsearch':
@@ -3686,7 +3587,8 @@ ini_txt += `Link : ${x.link}\n\n\n`
 anu = `${ini_txt}\n\n  *DOWNLOAD*
  ${prefix}xnxx [link xvid] = Video`
 dha.sendMessage(from, anu, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
         case 'meadmin':
         case 'Meadmin':
 if (!isGroup) return reply('Khusus Group')
@@ -3695,13 +3597,13 @@ if (isGroupAdmins) return reply('Lu Dah Admin Om')
 if (!isBotGroupAdmins) return reply(mess.only.Badmin)
 dha.groupMakeAdmin(from, [sender])
 reply('Sukses')
-break
+await limitAdd(sender)
+              break
 case 'cuaca':
 case 'Cuaca':
-if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args[0]
-                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=vZ7wFVI3`)
+                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=zekais`)
                     ini_txt = `Tempat : ${get_result.Nama}\n`
                     ini_txt += `Cuaca : ${get_result.Cuaca}\n`
                     ini_txt += `Angin : ${get_result.Angin}\n`
@@ -3711,7 +3613,8 @@ if (!isPremium) return reply(`Only Prem`)
                     ini_txt += `Udara : ${get_result.Udara}\n`
                     await dha.sendMessage(from, { degreesLatitude: get_result.latitude, degreesLongitude: get_result.longitude }, location, { quoted: mek })
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'nickepep': // Update By KATASHI 
 case 'Nickepep': // Update By katashi 
 					data = await fetchJson(`https://api.zeks.xyz/api/nickepep?apikey=Iyungputra`, {method: 'get'})
@@ -3721,7 +3624,8 @@ case 'Nickepep': // Update By katashi
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'urlshort': //By katashi
 case 'url': //By katashi
 case 'Urlshort': //By katashi
@@ -3731,18 +3635,20 @@ case 'Url': //By katashi
 anu = await fetchJson(`https://api.zeks.xyz/api/urlshort?url=${query}&apikey=Iyungputra`, {method: 'get'})
 teks = `${anu.result}`
 dha.sendMessage(from, teks, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'ppcp': //By katashi
 case 'Ppcp': //By katashi
 case 'ppcouple': //By katashi
 case 'Ppcouple': //By katashi
 reply(mess.wait)
-anu = await fetchJson(`https://api.dapuhy.ga/api/randomimage/couple?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+anu = await fetchJson(`https://api.dapuhy.ga/api/randomimage/couple?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 image1 = await getBuffer(anu.result.pria)
 image2 = await getBuffer(anu.result.wanita)
 dha.sendMessage(from, image1, image, {quoted: mek })
 dha.sendMessage(from, image2, image, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'gfx': //By katashi
 case 'Gfx': //By katashi
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3750,7 +3656,8 @@ if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
 reply(mess.wait)
 anu = await getBuffer(`https://velgrynd.herokuapp.com/api/gfx?nama=${query}`, {method: 'get'})
 dha.sendMessage(from, anu, image, {quoted: mek })
-break
+await limitAdd(sender)
+              break
 case 'gfx2': //By katashi
 case 'Gfx2': //By katashi
 if (args.length < 1) return reply(`*Example :*\n${prefix}${command} +628xxx|yoo`)
@@ -3760,7 +3667,8 @@ if (args.length < 1) return reply(`*Example :*\n${prefix}${command} +628xxx|yoo`
 reply(mess.wait)
 anu = await getBuffer(`https://velgrynd.herokuapp.com/api/gfx3?text=${c1}&text2=${c2}`, {method: 'get'})
 dha.sendMessage(from, anu, image, {quoted: mek })
-break
+await limitAdd(sender)
+              break
 case 'simi':
 case 'Simi':
 case 'bot':
@@ -3773,17 +3681,19 @@ if (args.length == 0) return reply(`kamu ganteng`)
                     c = args.join(" ")
 x = await fetchJson(`https://api.simsimi.net/v2/?text=${c}&lc=id`)
 dha.sendMessage(from, `${x.success}`, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'urlshort2': //By katashi
 case 'url2': //By katashi
 case 'Urlshort2': //By katashi
 case 'Url2': //By katashi
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
-anu = await fetchJson(`https://api.dapuhy.ga/api/others/cuttly?url=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+anu = await fetchJson(`https://api.dapuhy.ga/api/others/cuttly?url=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 teks = `${anu.result}`
 dha.sendMessage(from, teks, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
         case 'del':
 		        case 'd':
 		        case 'delete':             
@@ -3791,13 +3701,15 @@ case 'Del':
 		        case 'D':
 		        case 'Delete':                
 				dha.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
-				break
+				await limitAdd(sender)
+              break
 case 'listdaerah': //By itsmeval
 case 'Listdaerah':
 anu = await fetchJson(`https://api.zeks.xyz/api/jadwalsholat?apikey=Iyungputra&daerah=malang`, {method: 'get'})
 teks = `${anu.listdaerah}`
 dha.sendMessage(from, teks, text, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'randomquran':
 case 'Randomquran':
             res = await axios.get(`https://api.zeks.me/api/randomquran?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR`)
@@ -3805,7 +3717,8 @@ case 'Randomquran':
             teks = `*Surah* : ${rquran.nama}\n*Arti* : ${rquran.arti}\n*Ayat* : ${rquran.asma}\n*Keterangan* : ${rquran.keterangan}`
             reply(teks)
             dha.sendFileFromUrl(from, rquran.audio, 'quran.mp3', ``, message)
-        break
+        await limitAdd(sender)
+              break
 case 'style':
 case 'Style':
 				  if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3815,14 +3728,16 @@ case 'Style':
       let hasil = `*Hasil* :\n${res.data.result}`;
       dha.sendMessage(from, hasil, MessageType.text, { quoted: mek});
     })
-			break
+			await limitAdd(sender)
+              break
 case 'pastebin':
 case 'Pastebin':
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
 anu = await fetchJson(`https://api-anoncybfakeplayer.herokuapp.com/pastebin?text=${query}`, {method: 'get'})
                    dha.sendMessage(from, `${anu.result}`, text, {quoted: meki})
-                     break
+                     await limitAdd(sender)
+              break
 case 'ytplaylist':
 case 'Ytplaylist':
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3868,7 +3783,8 @@ case 'Ytplaylist':
 'Aku tidak tahu kunci sukses itu apa, tapi kunci menuju kegagalan adalah mencoba membuat semua orang senang.']
 					const su = kta[Math.floor(Math.random() * kta.length)]
 					dha.sendMessage(from, ''+su+'\n\n_-Ilham._', text, { quoted: mek })
-					break
+					await limitAdd(sender)
+              break
 case 'ingfo':  
 case 'Ingfo':  
 				    if (!isGroup) return reply(`GRUP ONLY`)
@@ -3886,7 +3802,8 @@ case 'Ingfo':
 					quoted: mek
 					}
 					dha.sendMessage(from, options, text, {quoted: mek})					 
-					break
+					await limitAdd(sender)
+              break
                         case 'film':
                         case 'Film':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Doraemon`)
@@ -3899,7 +3816,8 @@ case 'Ingfo':
                             teks += `*Title* : ${ttt[i].title}\n*Link*: ${ttt[i].url}\n\n`
                         }
                         reply(teks)
-                    break
+                    await limitAdd(sender)
+              break
                 case 'happymod':
                 case 'Happymod':
                     if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
@@ -3912,7 +3830,8 @@ case 'Ingfo':
                             teks += `*Title* : ${ttt[i].title}\n*Rate*: ${ttt[i].rating}\n*Link*: ${ttt[i].url}\n\n`
                         }
                         reply(teks)
-                    break
+                    await limitAdd(sender)
+              break
                 case 'ytchannel':
                 case 'Ytchannel':
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3925,7 +3844,8 @@ case 'Ingfo':
                             eks += `*Nama* : ${ttt[i].title}\n*Deskripsi*: ${ttt[i].description}\n*Verified* : ${ttt[i].verified}\n*Jumlah video*: ${ttt[i].video_count}\n*Subcriber*: ${ttt[i].subscriber_count}\n*Link*: ${ttt[i].url}\n\n`
                         }
                         reply(eks)
-                    break
+                    await limitAdd(sender)
+              break
 case 'Googlesearch':
                 case 'googlesearch':
                 case 'ggs':
@@ -3940,7 +3860,8 @@ case 'Googlesearch':
                             eks += `*Nama* : ${ttt[i].title}\n*Link*: ${ttt[i].link}\n*Deskripsi* : ${ttt[i].snippet}\n\n`
                         }
                         reply(eks)
-                    break
+                    await limitAdd(sender)
+              break
 case 'carimasakan':
                 case 'Carimasakan':
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
@@ -3953,7 +3874,8 @@ case 'carimasakan':
                             tst += `*Nama* : ${ttt[i].title}\n*Kesusahan*: ${ttt[i].difficulty}\n*Kunci* : ${ttt[i].key}\n*Waktu*: ${ttt[i].times}\n*Porsi*: ${ttt[i].serving}\n*Image*: ${ttt[i].thumb}\n\n`
                         }
                         reply(tst.trim())  
-                    break
+                    await limitAdd(sender)
+              break
 case 'tribunnews': // Update By KATASHI
 case 'Tribunnews': // Update By KATASHI
 					data = await fetchJson(`https://api.zeks.xyz/api/tribunews?apikey=Iyungputra`, {method: 'get'})
@@ -3963,7 +3885,8 @@ case 'Tribunnews': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'liputan': // Update By KATASHI
 case 'Liputan': // Update By KATASHI
 					data = await fetchJson(`https://api.zeks.xyz/api/liputan6?apikey=Iyungputra`, {method: 'get'})
@@ -3973,7 +3896,8 @@ case 'Liputan': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'spamcall':
 case 'Spamcall':
 if (!isPremium) return reply(`Only Prem`)
@@ -3990,78 +3914,85 @@ if (!isPremium) return reply(`Only Prem`)
                     await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
                     await axios.get(`https://hujanapi.herokuapp.com/api/spamcallv1?no=${nomor}&apikey=trial2k21`)
                     reply("Success")
-                    break        
+                    await limitAdd(sender)
+              break        
 case 'palingmurah': // Update By KATASHI
 case 'Palingmurah': // Update By KATASHI
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
-					data = await fetchJson(`https://api.dapuhy.ga/api/search/palingmurah?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/palingmurah?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'PALING MURAH\n'
 					for (let i of data.result) {
 						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*Keterangan* : ${i.desc}\n*Price* : ${i.price}\n\nPalingmurah\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'sfilesearch': // Update By KATASHI
 case 'Sfilesarch': // Update By KATASHI
 case 'sfsearch': // Update By KATASHI
 case 'Sfsearch': // Update By KATASHI
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
-					data = await fetchJson(`https://api.dapuhy.ga/api/search/sfile?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/sfile?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'SFILE SEARCH\n'
 					for (let i of data.result) {
 						teks += `*Title:* : ${i.title}\n*Url* : ${i.url}\n*IMAGE* : ${i.thumb}\n\nSFILE SEARCH\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'Tokohindo': // Update By KATASHI
 case 'tokohindo': // Update By KATASHI
-					data = await fetchJson(`https://api.dapuhy.ga/api/others/tokohindo?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/others/tokohindo?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'TOKOH INDO\n'
 					for (let x of data.result) {
 						teks += `*Nama:* : ${x.nama}\n*Asal* : ${x.asal}\n*Nama Asli* : ${x.nama2}\n*Asal* : ${x.asal}\n*Lahir* : ${x.lahir}\n*Gugur* : ${x.gugur}\n*Usia* : ${x.usia}\n*Lokasi Makam* : ${x.lokasimakam}\n*History* : ${x.history}\n\nTOKOH INDO\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'kompastv': // Update By KATASHI
 case 'Kompastv': // Update By KATASHI
-					data = await fetchJson(`https://api.dapuhy.ga/api/berita/kompas?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/berita/kompas?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'KOMPAS TV\n'
 					for (let x of data.result) {
 						teks += `*Title:* : ${x.title}\n*Link* : ${x.url}\n*Jenis* : ${x.jenis}\n*Upload* : ${x.upload}\n\nKOMPAS TV\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'animeindo': // Update By KATASHI
 case 'Animeindo': // Update By KATASHI
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
-					data = await fetchJson(`https://api.dapuhy.ga/api/anime/animeindo?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/anime/animeindo?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'ANIMEiNDO\n'
 					for (let x of data.result) {
 						teks += `*Title:* : ${x.title}\n*Url* : ${x.url}\n*Image* : ${x.thumb}\n*Durasi* : ${x.duration}\n*Release* : ${x.release}\n*Description* : ${x.desc}\n\nANIMEINDO\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'Jav': // Update By KATASHI
 case 'jav': // Update By KATASHI
 case 'JAV': // Update By KATASHI
 if (args.length == 0) return reply(`Example: ${prefix + command} milf`)
                     query = args.join(" ")
-					data = await fetchJson(`https://api.dapuhy.ga/api/search/javhdporn?query=${query}&apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/search/javhdporn?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'JAV PORN\n'
 					for (let x of data.result) {
 						teks += `*Title:* : ${x.title}\n*Url* : ${x.url}\n*Image* : ${x.thumb}\n*Durasi* : ${x.duration}\n*Viewers* : ${x.viewers}\n*Quality* : ${x.quality}\n\nJAV PORN\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'corona': // Update By KATASHI
 case 'Corona': // Update By KATASHI
 					anu = await fetchJson(`https://hardianto-chan.herokuapp.com/api/info/covidindo?apikey=hardianto`)
@@ -4071,7 +4002,8 @@ case 'Corona': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'genshin':
 case 'Genshin':
 					data = await fetchJson(`https://raw.githubusercontent.com/mamet8/GenshinImpact/main/genshinimpact.json`, {method: 'get'})
@@ -4081,7 +4013,8 @@ case 'Genshin':
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'Kodepos': // Update By KATASHI
 case 'kodepos': // Update By KATASHI
 if (args.length == 0) return reply(`Example: ${prefix + command} bekasi`)
@@ -4093,37 +4026,41 @@ if (args.length == 0) return reply(`Example: ${prefix + command} bekasi`)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'cnn': // Update By KATASHI
 case 'Cnn': // Update By KATASHI
-					data = await fetchJson(`https://api.dapuhy.ga/api/berita/cnn?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/berita/cnn?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'CNN NEWS\n'
 					for (let i of data.result) {
 						teks += `*Title:* : ${i.title}\n*Link:* ${i.url}*Upload:* ${i.upload}\n\nCNN NEWS\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'wirid': // Update By KATASHI
 case 'Wirid': // Update By KATASHI
-					data = await fetchJson(`https://api.dapuhy.ga/api/islam/wirid?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/islam/wirid?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'DOA WIRID\n'
 					for (let i of data.result) {
 						teks += `*Id:* : ${i.id}\n*Arab:* ${i.times}*Latin:* ${i.arabic}\n\nDOA WIRID\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'tahlil': // Update By KATASHI
 case 'Tahlil': // Update By KATASHI
-					data = await fetchJson(`https://api.dapuhy.ga/api/islam/tahlil?apikey=T3SleesqYU6gyfM`, {method: 'get'})
+					data = await fetchJson(`https://api.dapuhy.ga/api/islam/tahlil?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'DOA TAHLIL\n'
 					for (let i of data.result) {
 						teks += `*Id:* : ${i.id}\n*Title:* ${i.title}*Latin:* ${i.arabic}\n\nTAHLIL\n`
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'foxnews': // Update By KATASHI
 case 'Foxnews': // Update By KATASHI
 					data = await fetchJson(`https://api.zeks.xyz/api/foxnews?apikey=Iyungputra`, {method: 'get'})
@@ -4133,31 +4070,36 @@ case 'Foxnews': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'alay':
 case 'Alay':
 					if (args.length < 1) return reply('kasih teks lah^_^!!!')
 					data = await fetchJson(`https://api.zeks.xyz/api/alaymaker?kata=${body.slice(6)}&apikey=Iyungputra`)
 					reply(data.result)
-					break
+					await limitAdd(sender)
+              break
 case 'wangy':
               if (!q) return
               qq = q.toUpperCase()
               awikwok = `${qq} ${qq} ${qq}    WANGY WANGY WANGY WANGY HU HA HU HA HU HA, aaaah baunya rambut ${qq} wangyy aku mau nyiumin aroma wangynya ${qq} AAAAAAAAH ~ Rambutnya.... aaah rambutnya juga pengen aku elus-elus ~~ AAAAAH ${qq} keluar pertama kali di anime juga manis    banget AAAAAAAAH ${qq} AAAAA LUCCUUUUUUUUUUUUUUU............ ${qq} AAAAAAAAAAAAAAAAAAAAGH   apa ? ${qq} itu gak nyata ? Cuma HALU katamu ? nggak, ngak ngak ngak ngak NGAAAAAAAAK GUA GAK PERCAYA ITU DIA NYATA NGAAAAAAAAAAAAAAAAAK PEDULI BANGSAAAAAT !! GUA GAK PEDULI SAMA KENYATAAN POKOKNYA GAK PEDULI.    ${qq} gw ... ${qq} di laptop ngeliatin gw, ${qq} .. kamu percaya sama aku ? aaaaaaaaaaah syukur ${q} aku gak mau merelakan ${qq} aaaaaah    YEAAAAAAAAAAAH GUA MASIH PUNYA ${qq} SENDIRI PUN NGGAK SAMA AAAAAAAAAAAAAAH`
               reply(awikwok)
+              await limitAdd(sender)
               break
                 case 'bts':
 case 'Bts':
                 reply(mess.wait)
-                ya = await getBuffer(`https://api.dapuhy.ga/api/randomimage/batues?apikey=T3SleesqYU6gyfM`)
+                ya = await getBuffer(`https://api.dapuhy.ga/api/randomimage/batues?apikey=r5CjdUOuSHvrbjg`)
                 dha.sendMessage(from, ya, image, {quoted: mek})
-                break    
+                await limitAdd(sender)
+              break    
 case 'blackpink':
 case 'Blackpink':
                 reply(mess.wait)
-                yo = await getBuffer(`https://api.dapuhy.ga/api/randomimage/blekpink?apikey=T3SleesqYU6gyfM`)
+                yo = await getBuffer(`https://api.dapuhy.ga/api/randomimage/blekpink?apikey=r5CjdUOuSHvrbjg`)
                 dha.sendMessage(from, yo, image, {quoted: mek})
-                break    
+                await limitAdd(sender)
+              break    
                 case 'groupinfo':
                 case 'Groupinfo':
         if (!isGroup) return;
@@ -4167,7 +4109,8 @@ case 'Blackpink':
           quoted: mek,
           caption: `\`\`\` Group Info \`\`\`\n*${unique[0]} > Name* : ${groupName}\n*${unique[0]} > Member* : ${groupMembers.length}\n*${unique[0]} > Admin* : ${groupAdmins.length}\n*${unique[0]} > Description* : \n${groupDesc}`,
         });
-        break;
+        await limitAdd(sender)
+              break;
         case 'closetime':  
         case 'Closetime':  
         if (!isBotGroupAdmins) return reply('Bot not admin');
@@ -4188,7 +4131,8 @@ case 'Blackpink':
 				dha.groupSettingChange (from, GroupSettingChange.messageSend, true);
 				reply(close)
 				}, timer)
-				break 
+				await limitAdd(sender)
+              break 
 		     	case 'opentime':  
 		case 'Opentime':  
 		     	if (!isBotGroupAdmins) return reply('Bot not admin');
@@ -4209,31 +4153,35 @@ case 'Blackpink':
 				dha.groupSettingChange (from, GroupSettingChange.messageSend, false);
 				reply(open)
 				}, timer)
-				break  
+				await limitAdd(sender)
+              break  
 				///NEW FITUR BY KATASHI
 case 'gabut':
 case 'Gabut':
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/gabut?apikey=Alphabot`)
 					reply(data.result.activity)
-					break
+					await limitAdd(sender)
+              break
 case 'translate':
 case 'Translate':
 if (args.length == 0) return reply(`kasih teks lah^_^!!\nJangan lupa , imi translatenya dari eng ke indo`)
                     query = args.join(" ")	
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/translate?kata=${query}&apikey=Alphabot`)
 					reply(data.result)
-					break
-case 'tiktok2':
-case 'Tiktok2':
+					await limitAdd(sender)
+              break
+case 'tiktok':
+case 'Tiktok':
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
-x = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/ttdownloader?url=${query}&apikey=T3SleesqYU6gyfM`)
+x = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/ttdownloader?url=${query}&apikey=r5CjdUOuSHvrbjg`)
 reply(mess.wait)
 vid = await getBuffer(x.result.nowm)
 au = await getBuffer(x.result.audio)
 dha.sendMessage(from, vid, video, {quoted: mek})
-dha.sendMessage(from, au, audio, {quoted: mek})
-break
+dha.sendMessage(from, au, audio, {quoted: mek, mimetype: Mimetype.mp4Audio})
+await limitAdd(sender)
+              break
 case 'cuacabandara': // Update By KATASHI
 case 'Cuacabandara': // Update By KATASHI
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/infocuaca/bandara?apikey=Alphabot`, {method: 'get'})
@@ -4243,7 +4191,8 @@ case 'Cuacabandara': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case "toimg2":
       case "Toimg2":
         if (!isQuotedSticker) return reply("/  !");
@@ -4259,7 +4208,8 @@ case "toimg2":
           fakethumb(buffer, `Ni Kak ${pushname}`);
           fs.unlinkSync(ran);
         });
-        break;
+        await limitAdd(sender)
+              break;
         case "tomp42":
       case "Tomp42":
         if (
@@ -4278,7 +4228,8 @@ case "toimg2":
           reply("reply stiker");
         }
         fs.unlinkSync(owgi);
-        break;
+        await limitAdd(sender)
+              break;
 case 'searchsurah': // Update By KATASHI
 case 'surah': // Update By KATASHI
 case 'Surah': // Update By KATASHI
@@ -4293,13 +4244,15 @@ if (args.length == 0) return reply(`Link nya?`)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'storyanime':
 case 'storyanime':	
-x = await getBuffer(`https://api.dapuhy.ga/api/anime/storyanime?apikey=T3SleesqYU6gyfM`)
+x = await getBuffer(`https://api.dapuhy.ga/api/anime/storyanime?apikey=r5CjdUOuSHvrbjg`)
 reply(mess.wait)
 dha.sendMessage(from, x, video, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'rscovid': // Update By KATASHI
 case 'Rscovid': // Update By KATASHI
 case 'Rumahsakit': // Update By KATASHI
@@ -4313,7 +4266,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'nhentaipdf':
 case 'nhentaipdf':
 if (args.length == 0) return reply(`Kode?`)
@@ -4321,7 +4275,8 @@ if (args.length == 0) return reply(`Kode?`)
                     reply(mess.wait)
 x = await getBuffer(`https://hadi-api.herokuapp.com/api/nhentai?id=${query}`)
 dha.sendMessage(from, x, document, {quoted: mek, mimetype: Mimetype.pdf, filename: `${query}.pdf` })
-break
+await limitAdd(sender)
+              break
 case 'provinci': // Update By KATASHI
 case 'Provinci': // Update By KATASHI
 case 'Provinsi': // Update By KATASHI
@@ -4333,7 +4288,8 @@ case 'provinsi': // Update By KATASHI
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'kab': // Update By KATASHI
 case 'Kab': // Update By KATASHI
 case 'kabupaten': // Update By KATASHI
@@ -4347,7 +4303,8 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .provinsi`)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'pesantren': // Update By KATASHI
 case 'Pesantren': // Update By KATASHI
 if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
@@ -4359,7 +4316,8 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'spamsms':
 case 'Spamsms':
 if (!isPremium) return reply(`Only Prem`)
@@ -4377,7 +4335,8 @@ if (!isPremium) return reply(`Only Prem`)
                     await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
                     await axios.get(`https://viko-api.herokuapp.com/api/hack/sms?query=${nomor}&apikey=vinko`)
                     reply("Success")
-                    break        
+                    await limitAdd(sender)
+              break        
                     case 'jooxsearch':
 case 'Jooxsearch':
                     if (args.length == 0) return reply(`Example: ${prefix + command} starboy`)
@@ -4392,12 +4351,14 @@ case 'Jooxsearch':
                     ini_txt += `Lirik : ${i.lirik}\n`
                     gambar = await getBuffer(i.img)
                     dha.sendMessage(from, gambar, image, {quoted: mek, caption: ini_txt})
-                    break
+                    await limitAdd(sender)
+              break
 case 'randomcerpen':
 case 'Randomcerpen':	
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/random?apikey=katashi`)
 					reply(data.result)
-					break
+					await limitAdd(sender)
+              break
 case 'ytmp42':
 case 'Ytmp42':
         if (!isGroup) return reply(mess.only.group);
@@ -4414,7 +4375,8 @@ if (args.length == 0) return reply(`Link nya?`)
                     vidi = await getBuffer(i.url)
                     dha.sendMessage(from, gambar, image, {quoted: mek, caption: ini_txt})
                     dha.sendMessage(from, vidi, video, {quoted: mek})
-                    break
+                    await limitAdd(sender)
+              break
 case 'narutobanner':
 case 'Narutobanner':
         if (!isGroup) return reply(mess.only.group);
@@ -4423,7 +4385,8 @@ if (args.length == 0) return reply(`Teksnya?`)
                     reply(mess.wait)
 x = await getBuffer(`https://hadi-api.herokuapp.com/api/photoxy/manga-naruto?teks=${query}`)
 dha.sendMessage(from, x, image, {quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'nhentaisearch': // Update By KATASHI
 case 'Nhentaisearch': // Update By KATASHI
 if (!isPremium) return reply(`Only Prem`)
@@ -4438,7 +4401,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'kisahnabi':
 case 'Kisahnabi':
         if (!isGroup) return reply(mess.only.group);
@@ -4453,7 +4417,8 @@ case 'Kisahnabi':
                     ini_txt += `Singgah : ${get_result.singgah}\n`
                     ini_txt += `Kisah : \n${get_result.kisah}`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'jarak':
 case 'Jarak':
 if (!isPremium) return reply(`Only Prem`)
@@ -4482,7 +4447,8 @@ if (!isPremium) return reply(`Only Prem`)
                     ini_txt += `ââ”¤ Jalan Kaki : ${x.jalan_kaki}\n`
                     ini_txt += `   â•°â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â\n`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'dafontsearch': // Update By KATASHI
 case 'Dafontsearch': // Update By KATASHI
         if (!isGroup) return reply(mess.only.group);
@@ -4496,7 +4462,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 					case 'stcmeme':
   ct = body.slice(9)
               top = ct.split('|')[0]
@@ -4515,7 +4482,8 @@ reply(mess.wait)
               } else {
               reply('Gunakan foto/stiker!')
 }
-               break
+               await limitAdd(sender)
+              break
                case 'datasekolah': // Update By KATASHI
 case 'datasekolah': // Update By KATASHI
         if (!isGroup) return reply(mess.only.group);
@@ -4531,7 +4499,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'datasekolah2': // Update By KATASHI
 case 'datasekolah2': // Update By KATASHI
         if (!isGroup) return reply(mess.only.group);
@@ -4548,13 +4517,15 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'quotesislam':
 case 'Quotesislam':
         if (!isGroup) return reply(mess.only.group);
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/random/quotes/muslim?apikey=katashi`)
 					reply(data.result.text_id)
-					break
+					await limitAdd(sender)
+              break
 case 'apikey':
 case 'apikey':
 if (!isPremium) return reply(`Only Prem`)
@@ -4567,7 +4538,8 @@ if (!isPremium) return reply(`Only Prem`)
                     ini_txt += `Apikey : ${get_result.apikey}\n`
                     ini_txt += `Result : ${get_result.result}\n`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'infoloker': // Update By KATASHI
 case 'Infoloker': // Update By KATASHI
         if (!isGroup) return reply(mess.only.group);
@@ -4579,7 +4551,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					
-					break
+					await limitAdd(sender)
+              break
 case 'katacinta':
 case 'Katacinta':
         if (!isGroup) return reply(mess.only.group);
@@ -4587,7 +4560,8 @@ reply(mess.wait)
 					gatauda = body.slice(8)
 					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/katacinta`, {method: 'get'})
 					reply(anu.result)
-					break  
+					await limitAdd(sender)
+              break  
 					case 'cerpen':
                 case 'Cerpen':
         if (!isGroup) return reply(mess.only.group);
@@ -4599,7 +4573,8 @@ reply(mess.wait)
                     ini_txt += `Kategori : ${get_result.kategori}\n`
                     ini_txt += `Story :\n${get_result.cerpen}`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'cersex':
                 case 'Cersex':
                 if (!isPremium) return reply(`Only Prem`)
@@ -4612,7 +4587,8 @@ case 'cersex':
                     ini_txt += `Story :\n${get_result.cersex}`
                     gaa = await getBuffer(get_result.img)
                     dha.sendMessage(from, gaa, image, {quoted: mek, caption: ini_txt})
-                    break
+                    await limitAdd(sender)
+              break
 case 'jadwaltvnow':
                 case 'Jadwaltvnow':
         if (!isGroup) return reply(mess.only.group);
@@ -4624,7 +4600,8 @@ case 'jadwaltvnow':
                         ini_txt += `${x.toUpperCase()}${get_result[x]}\n\n`
                     }
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'twich':  
       case 'Twich':  
         if (!isGroup) return reply(mess.only.group);
@@ -4632,7 +4609,8 @@ case 'twich':
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/twichquote`)
                    anu1 = ` *THWICH* : ${anu.result}`
                    reply(anu1)
-                   break                 
+                   await limitAdd(sender)
+              break                 
       case 'fake':  
       case 'Fake':  
       reply(mess.wait)
@@ -4658,7 +4636,8 @@ case 'twich':
                    anu1 += ` *TYPE* : ${anu.blood_type}\n`
                    anu1 += ` *STATUS* : ${anu.status}\n`
                    reply(anu1)
-                   break
+                   await limitAdd(sender)
+              break
 case 'kusonime':  
 case 'Kusonime':  
         if (!isGroup) return reply(mess.only.group);
@@ -4668,7 +4647,8 @@ reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/kuso?q=${query}`)
                    anu1 = ` *INFO* : ${anu.sinopsis}\n`
                    reply(anu1)
-                   break
+                   await limitAdd(sender)
+              break
       case 'renungan':  
       case 'Renungan':  
         if (!isGroup) return reply(mess.only.group);
@@ -4678,7 +4658,8 @@ reply(mess.wait)
                    anu1 += ` *PESAN* : ${anu.pesan}\n`
                    anu1 += ` *DESC* : ${anu.Isi}\n`
                    reply(anu1)
-                   break
+                   await limitAdd(sender)
+              break
        case 'samehadaku':  
        case 'Samehadaku':  
         if (!isGroup) return reply(mess.only.group);
@@ -4691,7 +4672,8 @@ reply(mess.wait)
                    anu1 += ` *LINK* : ${anu.link}\n`
                    anu1 += ` *DESK* : ${anu.desc}\n`
                    dha.sendMessage(from, anu2, image, {caption: anu1, quoted: mek })
-                   break
+                   await limitAdd(sender)
+              break
 case 'tongue':  
 case 'Tongue':  
         if (!isGroup) return reply(mess.only.group);
@@ -4699,7 +4681,8 @@ reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/tongue_twister`)
                    anu1 = ` *NIHH* : ${anu.result}`
                    reply(anu1)
-                   break
+                   await limitAdd(sender)
+              break
                    case 'mostviewfilm':
 case 'Mostviewfilm':
         if (!isGroup) return reply(mess.only.group);
@@ -4711,7 +4694,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())  
 					
-					break
+					await limitAdd(sender)
+              break
 					case 'trendingtwitter':
 case 'Trendingtwitter':
         if (!isGroup) return reply(mess.only.group);
@@ -4723,7 +4707,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())  
 					
-					break
+					await limitAdd(sender)
+              break
 case 'jadwalbola':
 case 'jadwalbola':
         if (!isGroup) return reply(mess.only.group);
@@ -4735,7 +4720,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())  
 					
-					break
+					await limitAdd(sender)
+              break
 case 'vaksin':
 case 'Vaksin':
         if (!isGroup) return reply(mess.only.group);
@@ -4749,7 +4735,8 @@ case 'Vaksin':
                     ini_txt += `Vaksin 2 : \n${get_result.vaksinasi2}\n`
                     ini_txt += `Last Update : \n${get_result.lastUpdate}`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'Hitungmatauang':
 case 'hitungmatauang':
         if (!isGroup) return reply(mess.only.group);
@@ -4766,7 +4753,8 @@ case 'hitungmatauang':
                     ini_txt += `Mata Uang 1 : ${get_result.toResult}\n`
                     ini_txt += `Update Tanggal : ${get_result.updatedAt}`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case "fast":
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         fakegroup(mess.wait);
@@ -4787,7 +4775,8 @@ case "fast":
             fs.unlinkSync(ran);
           }
         );
-        break;
+        await limitAdd(sender)
+              break;
       case "slow":
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         fakegroup(mess.wait);
@@ -4808,7 +4797,8 @@ case "fast":
             fs.unlinkSync(ran);
           }
         );
-        break;
+        await limitAdd(sender)
+              break;
       case "reverse":
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
@@ -4825,7 +4815,8 @@ case "fast":
           });
           fs.unlinkSync(ran);
         });
-        break;
+        await limitAdd(sender)
+              break;
           case "tospam":
                       reply(mess.wait)
 if (!isQuotedSticker && !isQuotedAudio && !isQuotedImage && budy.length > 10) {
@@ -4874,49 +4865,57 @@ if (Number(oi2) >= 50) return reply('Kebanyakan!')
 	  dha.sendMessage(from, delb, MessageType.image, {caption: oi1})
 	  }
 }
-	  break
+	  await limitAdd(sender)
+              break
 case "remm":
    if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
    reply(mess.wait)
    bapakao = body.slice(6)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx5?apikey=hardianto&text=${bapakao}`)
-   break
+   await limitAdd(sender)
+              break
 case "lolim":
    if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
    reply(mess.wait)
    bapakao = body.slice(7)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx2?apikey=hardianto&nama=${bapakao}`)
-   break
+   await limitAdd(sender)
+              break
 case "kaneki":
    if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
    reply(mess.wait)
    bapakao = body.slice(8)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx1?apikey=hardianto&nama=${bapakao}`)
-   break
+   await limitAdd(sender)
+              break
 case "gura":
    if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
    reply(mess.wait)
    reply(mess.wait)
    bapakao = body.slice(6)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gura?apikey=hardianto&nama=${bapakao}`)
-   break
+   await limitAdd(sender)
+              break
 case "neko":
    reply(mess.wait)
    bapakao = body.slice(9)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/anime/random?sfw=neko&apikey=hardianto`)
-   break
+   await limitAdd(sender)
+              break
 case "darkjokes":
   case "darkjoke":
    bapakao = body.slice(9)
    sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/darkmeme?apikey=hardianto`)
-   break
+   await limitAdd(sender)
+              break
       case "revoke":
         if (!mek.key.fromMe && !isGroupAdmins) return reply("Only admin");
         if (!isBotGroupAdmins) return reply("Jadikan Bot Sebagai Admin Untuk Menggunakan Fitur Tersebut");
         if (!isGroup) return;
         dha.revokeInvite(from);
         reply("```Succes revoke link group```");
-        break;
+        await limitAdd(sender)
+              break;
 case 'wanted':
 case 'Wanted':
 	var imgbb = require('imgbb-uploader')
@@ -4931,7 +4930,8 @@ case 'Wanted':
 	} else {
 	  reply('Foto Nya Mana Gan ðŸ—¿')
 	}
-	break
+	await limitAdd(sender)
+              break
       
       case "deltrash":
         if (
@@ -4955,7 +4955,8 @@ case 'Wanted':
             thumbnail: Buffer.alloc(0),
           });
         }
-        break;
+        await limitAdd(sender)
+              break;
 
       case "squidrip":
         if (
@@ -4979,7 +4980,8 @@ case 'Wanted':
             thumbnail: Buffer.alloc(0),
           });
         }
-        break;
+        await limitAdd(sender)
+              break;
 case 'wasted':
 case 'Wasted':
 	var imgbb = require('imgbb-uploader')
@@ -4994,13 +4996,15 @@ case 'Wasted':
 	} else {
 	  reply('Foto Nya Mana Gan ðŸ—¿')
 	}
-	break
+	await limitAdd(sender)
+              break
 case 'lirik':
 if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
 x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query=${query}&apikey=katashi`)
 dha.sendMessage(from, `${x.result}`, text)
-break
+await limitAdd(sender)
+              break
 case 'surahaudio':
 case 'Surahaudio':
 if (args.length == 0) return reply(`Surah Ke?`)
@@ -5008,7 +5012,8 @@ if (args.length == 0) return reply(`Surah Ke?`)
 x = await getBuffer(`https://zenzapi.xyz/api/quran/audio/${query}?apikey=Katashi`)
 reply(mess.wait)
 dha.sendMessage(from, x, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'ayataudio':
 case 'Ayataudio':
         if (args.length < 1) return reply(`Ayat Ke Brp?`)
@@ -5019,7 +5024,8 @@ u = await fetchJson(`https://zenzapi.xyz/api/quran/audio/${r1}/${r2}?apikey=Kata
 reply(mess.wait)
 ookk = await getBuffer(u.result.audio)
 dha.sendMessage(from, ookk, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
-break
+await limitAdd(sender)
+              break
 case 'infogempa':
 case 'Infogempa':
                     ini_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`)
@@ -5031,7 +5037,8 @@ case 'Infogempa':
                     ini_txt += `Lokasi : ${ini_result.lokasi}\n`
                     ini_txt += `Potensi : ${ini_result.potensi}`
                     dha.sendMessage(from, ini_buffer, image, { caption: ini_txt })
-                    break
+                    await limitAdd(sender)
+              break
 case 'qrmaker':
 case 'qrmaker':
 if (args.length == 0) return reply(`textnya?`)
@@ -5039,7 +5046,8 @@ if (args.length == 0) return reply(`textnya?`)
 loh = await getBuffer(`https://docs-jojo.herokuapp.com/api/qrcode?text=${query}`)
 reply(mess.wait)
 dha.sendMessage(from, loh, image)
-break
+await limitAdd(sender)
+              break
 case 'jooxplay':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
@@ -5056,14 +5064,16 @@ case 'jooxplay':
                     await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${yoo.lagu}.mp3`, quoted: mek })
                     get_video = await getBuffer(yoo.mp4aLink)
                     await dha.sendMessage(from, get_video, video)
-                    break
+                    await limitAdd(sender)
+              break
 case 'faktaunik':
 case 'fakta':
 reply(mess.wait)
 x = await fetchJson(`https://docs-jojo.herokuapp.com/api/fakta-unik`)
 dha.sendMessage(from, `${x.result}`, text)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'barmaker':
 case 'barkodemaker':
 if (args.length == 0) return reply(`textnya?`)
@@ -5071,14 +5081,16 @@ if (args.length == 0) return reply(`textnya?`)
 lih = await getBuffer(`https://api.zeks.me/api/barcode?apikey=Iyungputra&text=${query}`)
 reply(mess.wait)
 dha.sendMessage(from, lih, image)
-break
+await limitAdd(sender)
+              break
 case 'artinama':
 if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
 x = await fetchJson(`https://api.zeks.me/api/artinama?apikey=Iyungputra&nama=${query}`)
 dha.sendMessage(from, `${x.result}`, text)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'textrepeat':
         if (args.length < 1) return reply(`teks|jumlah`)
 					makell = args.join(" ")
@@ -5087,7 +5099,8 @@ case 'textrepeat':
 x = await fetchJson(`https://yahaakatashiganz.herokuapp.com/api/repeat?text=${r1}&jumlah=${r2}&apikey=Katashi`)
 dha.sendMessage(from, `${x.result}`, text)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'pinterest':
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
@@ -5096,7 +5109,8 @@ case 'pinterest':
                     ini_buffer = await getBuffer(ini_url)
                     await dha.sendMessage(from, ini_buffer, image, { quoted: mek })
                     reply(mess.success)
-                    break
+                    await limitAdd(sender)
+              break
 case 'translate2':
 if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
 					makell = args.join(" ")
@@ -5105,7 +5119,8 @@ if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa
 x = await fetchJson(`https://kocakz.herokuapp.com/api/edu/translate?lang=${r1}&text=${r2}`)
 dha.sendMessage(from, `${x.text}`, text)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'quotes':
 case 'randomquotes':
                     quotes = await fetchJson(`https://kocakz.herokuapp.com/api/random/text/quotes`)
@@ -5114,21 +5129,24 @@ case 'randomquotes':
                     iyah = quotes.quote
                     reply(`_${iyah}_\n\n*â€• ${author}*`)
                     reply(mess.success)
-                    break
+                    await limitAdd(sender)
+              break
 case 'waifu':
 case 'radomwaifu':
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/waifu`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'cosplay2':
 case 'randomcosplay2':
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/cosplay`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'doujindesuSearch': // Update By KATASHI
 case 'doujinSearch': // Update By KATASHI
 case 'doujin': // Update By KATASHI
@@ -5144,7 +5162,8 @@ reply(mess.wait)
 					}
 					reply(teks.trim())
 					reply(mess.success)
-					break
+					await limitAdd(sender)
+              break
 case 'tts':
        if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
 					makell = args.join(" ")
@@ -5154,7 +5173,8 @@ aud = await getBuffer(`https://api.zeks.me/api/tts?apikey=Iyungputra&code=${r1}&
 reply(mess.wait)
 dha.sendMessage(from, aud, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
 reply(mess.success)
-break
+await limitAdd(sender)
+              break
 case 'caribioskop': // Update By KATASHI
 case 'caribioskop': // Update By KATASHI
         if (!isGroup) return reply(mess.only.group);
@@ -5168,7 +5188,8 @@ if (args.length == 0) return reply(`kotanya?`)
 					}
 					reply(teks.trim())
 					reply(mess.success)
-					break
+					await limitAdd(sender)
+              break
 case 'linkwa': // Update By KATASHI
 case 'linkwa': // Update By KATASHI
 reply(mess.wait)
@@ -5181,13 +5202,15 @@ if (args.length == 0) return reply(`kotanya?`)
 					}
 					reply(teks.trim())
 					reply(mess.success)
-					break
+					await limitAdd(sender)
+              break
 					case 'cerpencinta':
 case 'cerpencinta':	
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/cinta?apikey=katashi`)
 					reply(data.result)
 					reply(mess.success)
-					break
+					await limitAdd(sender)
+              break
 					       case 'caristicker':
 					case 'cs':
 					case 'cstic':
@@ -5202,6 +5225,7 @@ if (args.length == 0) return reply(`Apanyang Mau Di Cari??`)
                rjpp = yahajaha[Math.floor(Math.random() * yahajaha.length)];
 sendWebp(from, rjpp)
 reply(mess.success)
+              await limitAdd(sender)
               break
 case "reminder": // by Slavyan
         if (!q)
@@ -5403,14 +5427,16 @@ Reminder berhasil diaktifkan!
             }
           }, 1000);
         }
-        break;
+        await limitAdd(sender)
+              break;
 case 'addprem':  
 if (!isOwner) return reply(`LU SIAPA AJG`)
 					adprem = `${args[0].replace('@','')}@s.whatsapp.net`
 					prem.push(adprem)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
 					reply(`BERHASIL MENAMBAHKAN USER PREMIUM`)
-					break				
+					await limitAdd(sender)
+              break				
 		case 'dellprem':  
 					
 					if (!isOwner) return reply(mess.own)    
@@ -5418,7 +5444,8 @@ if (!isOwner) return reply(`LU SIAPA AJG`)
 					prem.splice(`${delp}@s.whatsapp.net`, 1)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
 					reply(`Berhasil Menghapus wa.me/${delp} Dari Daftar Premium`)
-					break
+					await limitAdd(sender)
+              break
 case 'listprem':
 		case 'premlist'://By M4N1K
 					teks = '*List Premium:*\n\n'
@@ -5427,7 +5454,8 @@ case 'listprem':
 					}
 					teks += `\n*Total : ${prem.length}*`
 					dha.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": prem } })
-					break
+					await limitAdd(sender)
+              break
 case 'splay':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
@@ -5441,7 +5469,8 @@ case 'splay':
                     reply(mess.wait)
                     get_audio = await getBuffer(yoo.download)
                     await dha.sendMessage(from, get_audio, audio, { mimetype: 'audio/mp4', filename: `${yoo.lagu}.mp3`, quoted: mek })
-                    break
+                    await limitAdd(sender)
+              break
 case 'dafontdownload':
 case 'ddownload':
                     if (args.length == 0) return reply(`Example: ${prefix + command} who ask satan`)
@@ -5457,7 +5486,8 @@ case 'ddownload':
                     owwwh = yoo.url
                     yaa = await getBuffer(yoo.url)
                     dha.sendMessage(from, yaa, document, {quoted: mek, mimetype: 'zip', filename: `${yoo.judul}.zip` })
-                    break
+                    await limitAdd(sender)
+              break
 case 'hentaivid':
 case 'hentaivideo':
                     if (!isPremium) return reply(`Only Prem`)
@@ -5477,7 +5507,8 @@ case 'hentaivideo':
                     reply(mess.wait)
                     horny2 = await getBuffer(yoo.video_2)
                     await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
-                    break
+                    await limitAdd(sender)
+              break
 case 'tiktokpron':
 case 'porntiktok':
 case 'ttporn':
@@ -5499,7 +5530,8 @@ case 'ttporn':
                     reply(mess.wait)
                     horny2 = await getBuffer(yoo.video)
                     await dha.sendMessage(from, horny2, video, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
-                    break
+                    await limitAdd(sender)
+              break
 case 'tebakumur':
                     if (args.length == 0) return reply(`Example: ${prefix + command} kontol`)
                     ini_name = args.join(" ")
@@ -5508,24 +5540,28 @@ case 'tebakumur':
                     ini_txt = `Nama : ${get_result.name}\n`
                     ini_txt += `Umur : ${get_result.age}`
                     reply(ini_txt)
-                    break
+                    await limitAdd(sender)
+              break
 case 'asupan2':
 reply(mess.wait)
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=PinnBotWibu`)
                     ini_buffer = await getBuffer(get_result.result)
                     await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
-                    break
+                    await limitAdd(sender)
+              break
 case 'santuy':
 reply(mess.wait)
-                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupansantuy?apikey=T3SleesqYU6gyfM`)
+                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupansantuy?apikey=r5CjdUOuSHvrbjg`)
                     await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
-                    break
+                    await limitAdd(sender)
+              break
 
 case 'ukhty':
 reply(mess.wait)
-                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupanukhty?apikey=T3SleesqYU6gyfM`)
+                    get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupanukhty?apikey=r5CjdUOuSHvrbjg`)
                     await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
-                    break
+                    await limitAdd(sender)
+              break
 case 'vietnam':
 case 'malaysia':
 case 'korea':
@@ -5537,7 +5573,8 @@ reply(mess.wait)
                     get_result = await fetchJson(`https://apikatashi.herokuapp.com/api/cewe/${command}?apikey=Alphabot`)
                     ini_buffer = await getBuffer(get_result.result.url)
                     await dha.sendMessage(from, ini_buffer, image, { quoted: mek})
-                    break
+                    await limitAdd(sender)
+              break
 case 'nhentaizip':
 case 'nhentaizip':
                     if (args.length == 0) return reply(`Example: ${prefix + command} kode nuklir`)
@@ -5551,7 +5588,8 @@ case 'nhentaizip':
                     owwwh = yoo
                     yaa = await getBuffer(yoo)
                     dha.sendMessage(from, yaa, document, {quoted: mek, mimetype: 'zip', filename: `${query}.zip` })
-                    break
+                    await limitAdd(sender)
+              break
                           case "demote":
         if (!mek.key.fromMe && !isGroupAdmins) return reply("Admin Group Only");
         if (!isGroup) return;
@@ -5561,7 +5599,8 @@ case 'nhentaizip':
         dha.sendMessage(from, teks, text, {
           quoted: mek,
         });
-        break;
+        await limitAdd(sender)
+              break;
       // Promote Members
       case "promote":
         if (!mek.key.fromMe && !isGroupAdmins) return reply("Admin Group Only");
@@ -5572,7 +5611,8 @@ case 'nhentaizip':
         dha.sendMessage(from, teks, text, {
           quoted: mek,
         });
-        break;
+        await limitAdd(sender)
+              break;
         case 'ytmp43':
 case 'ytmp43':
 if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.be/vfpUAEUWAlg`)
@@ -5590,7 +5630,8 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.b
                     reply(mess.wait)
                     horny2 = await getBuffer(yoo.download_video)
                     await dha.sendMessage(from, horny2, document, {quoted: mek, mimetype: 'video/mp4', filename: `${yoo.title}.mp4` })
-                    break
+                    await limitAdd(sender)
+              break
         case 'autorespon':
       if (!isOwner && !mek.key.fromMe) return reply(`Owner Only`)
        if (args.length < 1) return reply(`Penggunaan ${prefix}autorespon on/off`)
@@ -5603,52 +5644,61 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.b
                 } else {
                     reply(mess.error.api)
                 }
-                break
+                await limitAdd(sender)
+              break
 case 'attp':
 					if (!q) return reply(`Teks Nya Mana Kak?\nContoh :\n${prefix}attp ${NamaBot}`)
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/maker/attp?text=${encodeURIComponent(q)}&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
-					break
+					await limitAdd(sender)
+              break
 				case 'tag':
 			if (args.length < 1) return reply(`Penggunaan ${prefix}tag 62xnxx`)
             var nomqm = `${body.slice(5)}@s.whatsapp.net`
 					tagq = `@${nomqm.split('@')[0]}` 
 					dha.sendMessage(from, tagq, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
-			break
+			await limitAdd(sender)
+              break
 			case 'tagme':
                   var nomqm = mek.participant
 				    tagu = `@${nomqm.split('@s.whatsapp.net')[0]}`
 					dha.sendMessage(from, tagu, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
-					break
+					await limitAdd(sender)
+              break
         case "ttpyellow":
 if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=yellow&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
-					break
+					await limitAdd(sender)
+              break
 case "ttpgreen":
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=green&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
-					break
+					await limitAdd(sender)
+              break
 case "ttpblue":
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=blue&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
-					break
+					await limitAdd(sender)
+              break
 case "ttp":
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=brown&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
-					break
-case 'dadu2':
+					await limitAdd(sender)
+              break
+case 'dadu':
 			random = Math.floor(Math.random() * 6) + 1
 		damdu = fs.readFileSync(`./sticker/${random}.webp`)
 			dha.sendMessage(from, damdu, sticker, {quoted: mek})
-			break
+			await limitAdd(sender)
+              break
 				case 'robot':
 				reply(mess.wait)
 encmedial = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
@@ -5661,7 +5711,8 @@ hah = fs.readFileSync(ran)
 dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true, quoted: mek})
 fs.unlinkSync(ran)
 })
-break
+await limitAdd(sender)
+              break
 case 'gemuk':
 reply(mess.wait)
 					encmediaz = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
@@ -5674,7 +5725,8 @@ reply(mess.wait)
 					dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt:true,  quoted:mek})
 						fs.unlinkSync(ran)
 					})
-					break
+					await limitAdd(sender)
+              break
 case 'balik':
 reply(mess.wait)
 	encmediau = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
@@ -5687,7 +5739,8 @@ hah = fs.readFileSync(ran)
 dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true,  quoted:mek})
 fs.unlinkSync(ran)
 	})
-break
+await limitAdd(sender)
+              break
 case 'bass':                 
 reply(mess.wait)
 					encmediao = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
@@ -5700,7 +5753,8 @@ reply(mess.wait)
 						dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted:mek})
 						fs.unlinkSync(ran)
 					})
-				break
+				await limitAdd(sender)
+              break
 case 'tupai':
 reply(mess.wait)
 									try {
@@ -5717,7 +5771,8 @@ reply(mess.wait)
 											 } catch (e) {	
 												reply(mess.error)
 												}  	
-												break
+												await limitAdd(sender)
+              break
 						case 'vibra': 
 case 'vibrato':
 reply(mess.wait)
@@ -5731,7 +5786,8 @@ reply(mess.wait)
 										dha.sendMessage(from, hah, audio, {mimetype: 'audio/mp4', ptt: true, quoted: mek})
 										fs.unlinkSync(ran)
 										})
-									break
+									await limitAdd(sender)
+              break
 									case 'setnamabot':{
 									if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
 									if (args.length < 1) return reply(`Kirim perintah ${command} nama\n\nContoh : ${command} Katashi`)
@@ -5739,7 +5795,8 @@ reply(mess.wait)
 									.then((res) => reply('Sukses Lord'))
 									.catch((err) => reply('Eror Lord'))
 									 }
-									break
+									await limitAdd(sender)
+              break
 						case 'setbiobot':{
 									 if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
 									if (args.length < 1) return reply(`Kirim perintah ${command} nama\n\nContoh : ${command} Katashi`)
@@ -5747,7 +5804,8 @@ reply(mess.wait)
 									.then((res) => reply('Sukses Lord'))
 									.catch((err) => reply('Eror Lord'))
 									}
-									break
+									await limitAdd(sender)
+              break
 									case 'naruto':
 if (!q) return reply('teksnya mana?')
 pNaruto(`${q}`)
@@ -5755,7 +5813,8 @@ pNaruto(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'shadow':
 if (!q) return reply('teksnya mana?')
 pShadow(`${q}`)
@@ -5763,7 +5822,8 @@ pShadow(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'romantic':
 if (!q) return reply('teksnya mana?')
 pRomantic(`${q}`)
@@ -5771,7 +5831,8 @@ pRomantic(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'smoke':
 if (!q) return reply('teksnya mana?')
 pSmoke(`${q}`)
@@ -5779,7 +5840,8 @@ pSmoke(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'burnpaper':
 if (!q) return reply('teksnya mana?')
 pBurnPapper(`${q}`)
@@ -5787,7 +5849,8 @@ pBurnPapper(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'lovemsg':
 if (!q) return reply('teksnya mana?')
 pLoveMsg(`${q}`)
@@ -5795,7 +5858,8 @@ pLoveMsg(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'grass':
 if (!q) return reply('teksnya mana?')
 pMsgGrass(`${q}`)
@@ -5803,7 +5867,8 @@ pMsgGrass(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'doubleheart':
 if (!q) return reply('teksnya mana?')
 pDoubleHeart(`${q}`)
@@ -5811,7 +5876,8 @@ pDoubleHeart(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'coffecup':
 if (!q) return reply('teksnya mana?')
 pCoffeCup(`${q}`)
@@ -5819,7 +5885,8 @@ pCoffeCup(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'lovetext':
 if (!q) return reply('teksnya mana?')
 pLoveText(`${q}`)
@@ -5827,7 +5894,8 @@ pLoveText(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break
+		await limitAdd(sender)
+              break
 case 'butterfly':
 if (!q) return reply('teksnya mana?')
 pButterfly(`${q}`)
@@ -5835,9 +5903,38 @@ pButterfly(`${q}`)
     	console.log(res) 
 sendMediaURL(from, res.url)
 		})
-		break		
-									
-
+		await limitAdd(sender)
+              break		
+      
+      case 'jadwalsholat':
+                case 'Jadwalsholat':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
+                    daerah = args.join(" ")
+                    get_result = await fetchJson(`https://api.zeks.me/api/jadwalsholat?apikey=Iyungputra&daerah=${daerah}`)
+                    get_result = get_result.data.object
+                    ini_txt += `Subuh : ${get_result.Shubuh}\n`
+                    ini_txt += `Dzuhur : ${get_result.Dzuhur}\n`
+                    ini_txt += `Ashar : ${get_result.Ashr}\n`
+                    ini_txt += `Maghrib : ${get_result.Maghrib}\n`
+                    ini_txt += `Isya : ${get_result.Isya}`
+                    reply(ini_txt)
+                    await limitAdd(sender)
+              break
+case 'lolkey':
+if (!isOwner)return reply(mess.only.owner)
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/checkapikey?apikey=PinnBotWibu`)
+                    get_result = get_result.result
+                    ini_txt = `Username : ${get_result.username}\n`
+                    ini_txt += `Requests : ${get_result.requests}\n`
+                    ini_txt += `Today : ${get_result.today}\n`
+                    ini_txt += `Tipe Akun : ${get_result.account_type}`
+                    ini_txt += `Expired : ${get_result.expired}`
+                    reply(ini_txt)
+                    await limitAdd(sender)
+              break
+                    case 'limit':
+					checkLimit(sender)
+          
 
 default:
 if (fs.existsSync(`./media/${from}.json`)) {
