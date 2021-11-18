@@ -40,6 +40,7 @@ const Mfake = fs.readFileSync ('./media/ganteng.jpg')
 const Mthumb = fs.readFileSync('./media/ganteng.jpg')
 const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
 const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
+const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
 		
 // stickwm
@@ -63,7 +64,6 @@ const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
 const reminder = require("./lib/reminder")
-const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { pShadow,
   pRomantic,
   pSmoke,
@@ -85,6 +85,12 @@ const setGelud = require('./lib/gameGelud.js')
 const game = require("./lib/game");
 tttawal= ["0️⃣","1️⃣","2️⃣","3️⃣","4️⃣","5️⃣","6️⃣","7️⃣","8️⃣","9️⃣"]
 
+//******************** 》Game《 ********************\\
+let tebakgambar = [];
+let family100 = [];
+let mtk = [];
+let ckl = [];
+
 let setiker = JSON.parse(fs.readFileSync('./temp/stik.json'))
 let imagenye = JSON.parse(fs.readFileSync('./temp/image.json'))
 let videonye = JSON.parse(fs.readFileSync('./temp/video.json'))
@@ -92,6 +98,9 @@ let audionye = JSON.parse(fs.readFileSync('./temp/vn.json'))
 let fakeimage = fs.readFileSync("./media/ganteng.jpg")
 let errorImg = 'https://i.ibb.co/FBm52Pt/1e0fe6a08b67.jpg'
 let setting = JSON.parse(fs.readFileSync('./setting.json'))
+let {    
+    gamewaktu,
+} = require('./setting.json')
 
 owner = setting.owner
 gamewaktu = setting.gamewaktu
@@ -287,35 +296,6 @@ module.exports = dha = async (dha, mek) => {
         const isWelkom = isGroup ? welkom.includes(from) : true
         const isPremium= prem.includes(sender)
         
-        ///TEST
-         dha.on('message-delete', async (m) => {
-        if (m.key.remoteJid == 'status@broadcast') return
-        if (!m.key.fromMe && m.key.fromMe) return
-        m.message = (Object.keys(m.message)[0] === 'ephemeralMessage') ? m.message.ephemeralMessage.message : m.message
-       const jam = moment.tz('Asia/Jakarta').format('HH:mm:ss')
-       let d = new Date
-       let locale = 'id'
-       let gmt = new Date(0).getTime() - new Date('1 Januari 2021').getTime()
-       let weton = ['Pahing', 'Pon','Wage','Kliwon','Legi'][Math.floor(((d * 1) + gmt) / 84600000) % 5]
-       let week = d.toLocaleDateString(locale, { weekday: 'long' })
-       let calender = d.toLocaleDateString(locale, {
-       day: 'numeric',
-       month: 'long',
-       year: 'numeric'
-       })
-       const type = Object.keys(m.message)[0];
-       dha.sendMessage(
-       m.key.remoteJid,
-       `\`\`\`「 Anti Delete 」\`\`\`
-       •> Nama : @${m.participant.split("@")[0]}
-       •> Waktu : ${jam} ${week} ${calender}
-       •> Type : ${type}`,
-       MessageType.text,
-       { quoted: m.message, contextInfo: { mentionedJid: [m.participant] } }
-       );
-
-       dha.copyNForward(m.key.remoteJid, m.message);
-       });
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -625,6 +605,15 @@ const promoteAdmin = async function(to, target=[]){
         const ftext = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: { "extendedTextMessage": {"text": `*Hai ${pushname}👋*\n  ${moment().utcOffset('+0700').format('HH:mm:ss')} ${moment.tz('Asia/Jakarta').format('DD/MM/YYYY')}`,"title": `Hmm`,'jpegThumbnail': fs.readFileSync('./media/ganteng.jpg')}}}
         const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Katashi-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
 
+// function ANTI viewOnce
+if (isGroup && mek.mtype == 'viewOnceMessage'){
+var msg = {...mek}
+msg.message = mek.message.viewOnceMessage.message
+msg.message[Object.keys(msg.message)[0]].viewOnce = false
+reply('ViewOnce detected!')
+dha.copyNForward(from, msg)
+}
+
 ///Limit2
 const checkLimit = (sender) => {
 			let found = false
@@ -646,7 +635,7 @@ const checkLimit = (sender) => {
 			
 			//funtion limited
 const isLimit = (sender) =>{ 
-			if (isOwner && isPrem) {return false;}
+			if (isOwner && isPremium) {return false;}
 			let position = false
 			for (let i of _limit) {
 			if (i.id === sender) {
@@ -803,6 +792,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
         case 'menu2':
         case 'help2':
+        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
 ╭─❒ 「 Bot Info 」 ❒
 │◦➛NAMA : *Katashi-Botz*
@@ -1261,7 +1251,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
         case 'menu':
         case 'help':
-        if (isLimit(sender)) return reply(`limit kamu berkurang`)
+        
         tsunami = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`, {method: 'get'})
         tsunami = tsunami
         Tangal = `Tanggal: *${tsunami.waktu}*`
@@ -1359,8 +1349,6 @@ ${quotes}
 
                prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: troli})
               dha.relayWAMessage(prep)
-              
-                await limitAdd(sender)
               break
        
 //------------------< Game >------------------- 
@@ -1408,10 +1396,10 @@ ${quotes}
                naa = ky_ttt.filter(toek => !toek.id.includes(from)) 
                ky_ttt = naa 
                reply('Sukses Mereset Game')
-               await limitAdd(sender)
               break
         case 'tictactoe':
         case 'ttt':
+        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (!isGroup) return reply(mess.only.group)
               if (args.length < 1) return reply('Tag Lawan Anda! ')
               if (isTTT) return reply('Sedang Ada Permainan Di Grub Ini, Harap Tunggu')
@@ -1431,9 +1419,9 @@ Ketik Y/N untuk menerima atau menolak permainan
 
 Ket : Ketik /resetgame , Untuk Mereset Permainan Yg Ada Di Grup!`, text, {contextInfo: {mentionedJid: [player2]}})
               await limitAdd(sender)
-              await limitAdd(sender)
               break
        case 'slot':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               const sotoy = ['🍊 : 🍒 : 🍐','🍒 : ?? : 🍊','?? : 🍒 : 🍐','🍊 : 🍋 : 🔔','🔔 : 🍒 : 🍐','🔔 : 🍒 : 🍊','🍊 : 🍋 : 🔔','🍐 : 🍒 : 🍋','🍐 : 🍐 : 🍐','🍊 : 🍒 : 🍒','🔔 : 🔔 : 🍇','🍌 : 🍒 : 🔔','🍐 : 🔔 : 🔔','🍊 : 🍋 : 🍒','🍋 : 🍋 : 🍌','🔔 : 🔔 : 🍇','🔔 : 🍐 : 🍇','🔔 : 🔔 : 🔔','🍒 : 🍒 : 🍒','🍌 : 🍌 : 🍌','🍇 : ?? : 🍇']
               somtoy = sotoy[Math.floor(Math.random() * (sotoy.length))]	
               somtoyy = sotoy[Math.floor(Math.random() * (sotoy.length))]	
@@ -1455,6 +1443,7 @@ await limitAdd(sender)
               await limitAdd(sender)
               break
        case 'suit': //nyolong dari zenz
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (!q) return reply(`Kirim perintah ${prefix}suit gunting / batu / kertas`)
               const userspilih = q
               if (!userspilih.match(/batu|gunting|kertas/)) return reply(`Pilih batu, kertas, gunting`)
@@ -1533,6 +1522,7 @@ case 'buttonpen':
 //------------------< Sticker Cmd >-------------------
        case 'addcmd': 
        case 'setcmd':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (isQuotedSticker) {
               if (!q) return reply(`Penggunaan : ${command} cmdnya dan tag stickernya`)
               var kodenya = mek.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage.fileSha256.toString('base64')
@@ -1544,6 +1534,7 @@ case 'buttonpen':
               await limitAdd(sender)
               break
        case 'delcmd':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (!isQuotedSticker) return reply(`Penggunaan : ${command} tagsticker`)
               var kodenya = mek.message.extendedTextMessage.contextInfo.quotedMessage.stickerMessage.fileSha256.toString('base64')
             _scommand.splice(getCommandPosition(kodenya), 1)
@@ -1563,53 +1554,9 @@ case 'buttonpen':
               break
 //------------------< self and public >---------------------
 //------------------< Downloader/Search/Anime >-------------------
-case 'ig':
-if (!q) return reply('Linknya?')
-var { igDownloader } = require('./lib/igdown')
-   res = await igDownloader(`${c}`).catch(e => {
-reply(mess.error.api)
-})
-console.log(res)
-sendMediaURL(from,`${res.result.link}`,`${res.result.desc}`)
-                    await limitAdd(sender)
-              break
-await limitAdd(sender)
-       case 'igdl2':
-       case 'instagram2':
-              try {
-              if (!q) return reply('Linknya?')
-              reply(mess.wait)
-              res = await axios.get(`https://api.zeks.xyz/api/ig?apikey=${setting.zekskey}&url=${args[0]}`)
-              for(let i = 0; i < res.data.result.length; i++) {
-              sendMediaURL(from, res.data.result[i].url, `┏┉⌣ ┈̥-̶̯͡..̷̴✽̶┄┈┈┈┈┈┈┈┈┈┈┉┓
-┆ *INSTAGRAM MEDIA*
-└┈┈┈┈┈┈┈┈┈┈┈⌣ ┈̥-̶̯͡..̷̴✽̶⌣ ✽̶
-
-*Data Berhasil Didapatkan!*
-\`\`\`き⃟🦈 Username : ${res.data.owner}\`\`\`
-\`\`\`き⃟🦈 Caption : ${res.data.caption}\`\`\``, {thumbnail: Buffer.alloc(0)})
-}
-              } catch (e) {
-              console.log(e)
-              reply(String(e))
-}
-await limitAdd(sender)
-              await limitAdd(sender)
-              break
-
-       case 'igdl': 
-       case 'instagram':
-              if (!q) return reply('Link Yang Mana? ')
-              if (!q.includes('instagram')) return reply(mess.error.Iv)
-              reply(mess.wait)
-              anu = await igDownloader(`${q}`)
-             .then((data) => { sendMediaURL(from, data.result.link, data.result.desc, mek) })
-             .catch((err) => { reply(String(err)) })
-             await limitAdd(sender)
-              await limitAdd(sender)
-              break
        case 'scplay': 
        case 'soundcloud':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (!q) return reply('Link Yang Mana? ')
               if (!q.includes('soundcloud')) return reply(mess.error.Iv)
               reply(mess.wait)
@@ -1617,11 +1564,11 @@ await limitAdd(sender)
              .then((data) => { sendMediaURL(from, data.result, mek) })
              .catch((err) => { reply(String(err)) })
              await limitAdd(sender)
-              await limitAdd(sender)
               break
        case 'image':
        case 'gimage':
        case 'googleimage':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (args.length < 1) return reply('Apa Yang Mau Dicari?')
               reply(mess.wait)
               teks = args.join(' ')
@@ -1635,9 +1582,9 @@ await limitAdd(sender)
 }
 }
 await limitAdd(sender)
-             await limitAdd(sender)
               break
       case 'ytmp3':
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
             if (args.length < 1) return reply('Link Nya Mana?')
             if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
             teks = args.join(' ')
@@ -1660,9 +1607,9 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
             sendFileFromUrl(res[0].link, document, {quoted: mek, mimetype: 'audio/mp3', filename: res[0].output})
 })
 await limitAdd(sender)
-            await limitAdd(sender)
               break
      case 'ytmp4':
+     if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
             if (!isGroup) return reply(mess.only.group);
             if (args.length < 1) return reply('Link Nya Mana?')
             if(!isUrl(args[0]) && !args[0].includes('youtu')) return reply(mess.error.Iv)
@@ -1686,9 +1633,9 @@ _Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
             sendFileFromUrl(res[0].link, video, {quoted: mek, mimetype: 'video/mp4', filename: res[0].output})
 })
 await limitAdd(sender)
-            await limitAdd(sender)
               break
         case 'mediafire':
+        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                if (!isGroup) return reply(mess.only.group);
                if (args.length < 1) return reply('Link Nya Mana? ')
                if(!isUrl(args[0]) && !args[0].includes('mediafire')) return reply(mess.error.Iv)
@@ -1710,6 +1657,7 @@ _*Tunggu Proses Upload Media......*_`
              await limitAdd(sender)
               break
       case 'twitter':
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
              if (!isUrl(args[0]) && !args[0].includes('twitter.com')) return reply(mess.Iv)
              if (!q) return reply('Linknya?')
              ten = args[0]
@@ -1721,6 +1669,7 @@ _*Tunggu Proses Upload Media......*_`
              await limitAdd(sender)
               break
     case 'otakuongoing':
+    if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                o = await onGoing()
                console.log(o)
                ot = '*「 Ongoing Otakudesu 」*'
@@ -1736,6 +1685,7 @@ _*Tunggu Proses Upload Media......*_`
        case 'milf':
        case 'cosplay':
        case 'wallml':
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               let wipu = (await axios.get(`https://raw.githubusercontent.com/Arya-was/endak-tau/main/${command}.json`)).data
               let wipi = wipu[Math.floor(Math.random() * (wipu.length))]
               fs.writeFileSync(`./${sender}.jpeg`, await getBuffer(wipi))
@@ -1750,6 +1700,7 @@ _*Tunggu Proses Upload Media......*_`
               break
         case 'playy':
 case 'lagu':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length < 1) return reply('Apa Yang Mau Dicari?')
 teks = args.join(' ')
 reply(mess.wait)
@@ -1801,6 +1752,7 @@ sendFileFromUrl(res[0].link, document, {quoted: mek, mimetype: 'audio/mp3', file
 await limitAdd(sender)
               break
 case 'play2':   
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 				  if (args.length < 1) return reply('*Masukan judul nya?*')
                 reply('Loading.... ')
 				play = args.join(" ")
@@ -1818,6 +1770,7 @@ Source : ${anu.result.source}
 					await limitAdd(sender)
               break  
 				case 'play':
+				if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
               if (!q) return reply('Linknya?')
               buttons = [{buttonId: `${prefix}play2 ${q}`,buttonText:{displayText: `🎥 Video`},type:1},{buttonId:`${prefix}playy ${q}`,buttonText:{displayText:'🎵 Mp3'},type:1}]
               imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/ganteng.jpg`)})).imageMessage
@@ -3660,6 +3613,7 @@ await limitAdd(sender)
               break
 case 'gfx2': //By katashi
 case 'Gfx2': //By katashi
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length < 1) return reply(`*Example :*\n${prefix}${command} +628xxx|yoo`)
 					makell = args.join(" ")
 					c1 = makell.split("|")[0];
@@ -3677,6 +3631,7 @@ case 'katashi':
 case 'Katashi':
 case 'Putra':
 case 'Putra':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`kamu ganteng`)
                     c = args.join(" ")
 x = await fetchJson(`https://api.simsimi.net/v2/?text=${c}&lc=id`)
@@ -3687,6 +3642,7 @@ case 'urlshort2': //By katashi
 case 'url2': //By katashi
 case 'Urlshort2': //By katashi
 case 'Url2': //By katashi
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
 anu = await fetchJson(`https://api.dapuhy.ga/api/others/cuttly?url=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
@@ -3701,10 +3657,10 @@ case 'Del':
 		        case 'D':
 		        case 'Delete':                
 				dha.deleteMessage(from, { id: mek.message.extendedTextMessage.contextInfo.stanzaId, remoteJid: from, fromMe: true })
-				await limitAdd(sender)
               break
 case 'listdaerah': //By itsmeval
 case 'Listdaerah':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 anu = await fetchJson(`https://api.zeks.xyz/api/jadwalsholat?apikey=Iyungputra&daerah=malang`, {method: 'get'})
 teks = `${anu.listdaerah}`
 dha.sendMessage(from, teks, text, {quoted: mek})
@@ -3712,6 +3668,7 @@ await limitAdd(sender)
               break
 case 'randomquran':
 case 'Randomquran':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
             res = await axios.get(`https://api.zeks.me/api/randomquran?apikey=CpGSLymOQy9KfTKgQZr9eDSYqqR`)
             rquran = res.data.result
             teks = `*Surah* : ${rquran.nama}\n*Arti* : ${rquran.arti}\n*Ayat* : ${rquran.asma}\n*Keterangan* : ${rquran.keterangan}`
@@ -3721,6 +3678,7 @@ case 'Randomquran':
               break
 case 'style':
 case 'Style':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 				  if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
          reply(mess.wait)
@@ -3732,6 +3690,7 @@ case 'Style':
               break
 case 'pastebin':
 case 'Pastebin':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
 anu = await fetchJson(`https://api-anoncybfakeplayer.herokuapp.com/pastebin?text=${query}`, {method: 'get'})
@@ -3740,6 +3699,7 @@ anu = await fetchJson(`https://api-anoncybfakeplayer.herokuapp.com/pastebin?text
               break
 case 'ytplaylist':
 case 'Ytplaylist':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3750,8 +3710,11 @@ case 'Ytplaylist':
                             teks += `*Nama* : ${ttt[i].title}\n*Jumlah video*: ${ttt[i].video_count}\n*Channel*: ${ttt[i].uploader.username}\n*Link*: ${ttt[i].url}\n\n`
                         }
                         reply(teks)
+                        await limitAdd(sender)
+              break
                         case 'katailham':  
                         case 'Katailham':  
+                        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                      const kta =['Lebih baik mengerti sedikit daripada salah mengerti.',
 'Hampir semua pria memang mampu bertahan menghadapi kesulitan. Namun, jika Anda ingin menguji karakter sejati pria, beri dia kekuasaan.',
 'Bila tekad seseorang kuat dan teguh, Tuhan akan bergabung dalam usahanya.',
@@ -3801,11 +3764,11 @@ case 'Ingfo':
 					contextInfo: { mentionedJid: mem },
 					quoted: mek
 					}
-					dha.sendMessage(from, options, text, {quoted: mek})					 
-					await limitAdd(sender)
+					dha.sendMessage(from, options, text, {quoted: mek})			
               break
                         case 'film':
                         case 'Film':
+                        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Doraemon`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3820,6 +3783,7 @@ case 'Ingfo':
               break
                 case 'happymod':
                 case 'Happymod':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3834,6 +3798,7 @@ case 'Ingfo':
               break
                 case 'ytchannel':
                 case 'Ytchannel':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3850,6 +3815,7 @@ case 'Googlesearch':
                 case 'googlesearch':
                 case 'ggs':
                 case 'Ggs':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3864,6 +3830,7 @@ case 'Googlesearch':
               break
 case 'carimasakan':
                 case 'Carimasakan':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                         if (args.length == 0) return reply(`Example: ${prefix + command} katashi hana`)
                     query = args.join(" ")
                         reply(mess.wait)
@@ -3878,6 +3845,7 @@ case 'carimasakan':
               break
 case 'tribunnews': // Update By KATASHI
 case 'Tribunnews': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.zeks.xyz/api/tribunews?apikey=Iyungputra`, {method: 'get'})
 					teks = ' \n'
 					for (let i of data.result) {
@@ -3889,6 +3857,7 @@ case 'Tribunnews': // Update By KATASHI
               break
 case 'liputan': // Update By KATASHI
 case 'Liputan': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.zeks.xyz/api/liputan6?apikey=Iyungputra`, {method: 'get'})
 					teks = '\n'
 					for (let i of data.result) {
@@ -3900,6 +3869,7 @@ case 'Liputan': // Update By KATASHI
               break
 case 'spamcall':
 case 'Spamcall':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
@@ -3918,6 +3888,7 @@ if (!isPremium) return reply(`Only Prem`)
               break        
 case 'palingmurah': // Update By KATASHI
 case 'Palingmurah': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
 					data = await fetchJson(`https://api.dapuhy.ga/api/search/palingmurah?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
@@ -3933,6 +3904,7 @@ case 'sfilesearch': // Update By KATASHI
 case 'Sfilesarch': // Update By KATASHI
 case 'sfsearch': // Update By KATASHI
 case 'Sfsearch': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
 					data = await fetchJson(`https://api.dapuhy.ga/api/search/sfile?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
@@ -3946,6 +3918,7 @@ if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
               break
 case 'Tokohindo': // Update By KATASHI
 case 'tokohindo': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.dapuhy.ga/api/others/tokohindo?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'TOKOH INDO\n'
 					for (let x of data.result) {
@@ -3957,6 +3930,7 @@ case 'tokohindo': // Update By KATASHI
               break
 case 'kompastv': // Update By KATASHI
 case 'Kompastv': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.dapuhy.ga/api/berita/kompas?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'KOMPAS TV\n'
 					for (let x of data.result) {
@@ -3968,6 +3942,7 @@ case 'Kompastv': // Update By KATASHI
               break
 case 'animeindo': // Update By KATASHI
 case 'Animeindo': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
                     query = args.join(" ")
 					data = await fetchJson(`https://api.dapuhy.ga/api/anime/animeindo?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
@@ -3982,23 +3957,13 @@ if (args.length == 0) return reply(`Example: ${prefix + command} pubg`)
 case 'Jav': // Update By KATASHI
 case 'jav': // Update By KATASHI
 case 'JAV': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} milf`)
                     query = args.join(" ")
 					data = await fetchJson(`https://api.dapuhy.ga/api/search/javhdporn?query=${query}&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'JAV PORN\n'
 					for (let x of data.result) {
 						teks += `*Title:* : ${x.title}\n*Url* : ${x.url}\n*Image* : ${x.thumb}\n*Durasi* : ${x.duration}\n*Viewers* : ${x.viewers}\n*Quality* : ${x.quality}\n\nJAV PORN\n`
-					}
-					reply(teks.trim())
-					
-					await limitAdd(sender)
-              break
-case 'corona': // Update By KATASHI
-case 'Corona': // Update By KATASHI
-					anu = await fetchJson(`https://hardianto-chan.herokuapp.com/api/info/covidindo?apikey=hardianto`)
-					teks = 'CORONA INDO\n'
-					for (let x of anu.result) {
-						teks += `*Fid:* : ${x.attributes.FID}\n*Kode Provinsi* : ${x.attributes.Kode_Provi}\n*Provinsi* : ${x.attributes.Provinsi}\n*Sembuh* : ${x.attributes.Kasus_Semb}\n*Positive* : ${x.attributes.Kasus_Posi}\n*Meninggal* : ${x.attributes.Kasus_Meni}\n\nCORONA INDO\n`
 					}
 					reply(teks.trim())
 					
@@ -4015,21 +3980,9 @@ case 'Genshin':
 					
 					await limitAdd(sender)
               break
-case 'Kodepos': // Update By KATASHI
-case 'kodepos': // Update By KATASHI
-if (args.length == 0) return reply(`Example: ${prefix + command} bekasi`)
-                    query = args.join(" ")
-					data = await fetchJson(`https://hardianto-chan.herokuapp.com/api/info/kodepos?kota=${query}&apikey=hardianto`, {method: 'get'})
-					teks = 'INFO KODE POS\n'
-					for (let x of data.result.data) {
-						teks += `*Province:* : ${x.province}\n*Kecamatan* : ${x.subdistrict}\n*Perkotaan* : ${x.urban}\n*Kode* : ${x.postalcode}\n\nINFO KODE POS\n`
-					}
-					reply(teks.trim())
-					
-					await limitAdd(sender)
-              break
 case 'cnn': // Update By KATASHI
 case 'Cnn': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.dapuhy.ga/api/berita/cnn?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'CNN NEWS\n'
 					for (let i of data.result) {
@@ -4041,6 +3994,7 @@ case 'Cnn': // Update By KATASHI
               break
 case 'wirid': // Update By KATASHI
 case 'Wirid': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.dapuhy.ga/api/islam/wirid?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'DOA WIRID\n'
 					for (let i of data.result) {
@@ -4052,6 +4006,7 @@ case 'Wirid': // Update By KATASHI
               break
 case 'tahlil': // Update By KATASHI
 case 'Tahlil': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.dapuhy.ga/api/islam/tahlil?apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
 					teks = 'DOA TAHLIL\n'
 					for (let i of data.result) {
@@ -4063,6 +4018,7 @@ case 'Tahlil': // Update By KATASHI
               break
 case 'foxnews': // Update By KATASHI
 case 'Foxnews': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api.zeks.xyz/api/foxnews?apikey=Iyungputra`, {method: 'get'})
 					teks = ' \n'
 					for (let i of data.result) {
@@ -4074,6 +4030,7 @@ case 'Foxnews': // Update By KATASHI
               break
 case 'alay':
 case 'Alay':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					if (args.length < 1) return reply('kasih teks lah^_^!!!')
 					data = await fetchJson(`https://api.zeks.xyz/api/alaymaker?kata=${body.slice(6)}&apikey=Iyungputra`)
 					reply(data.result)
@@ -4084,10 +4041,10 @@ case 'wangy':
               qq = q.toUpperCase()
               awikwok = `${qq} ${qq} ${qq}    WANGY WANGY WANGY WANGY HU HA HU HA HU HA, aaaah baunya rambut ${qq} wangyy aku mau nyiumin aroma wangynya ${qq} AAAAAAAAH ~ Rambutnya.... aaah rambutnya juga pengen aku elus-elus ~~ AAAAAH ${qq} keluar pertama kali di anime juga manis    banget AAAAAAAAH ${qq} AAAAA LUCCUUUUUUUUUUUUUUU............ ${qq} AAAAAAAAAAAAAAAAAAAAGH   apa ? ${qq} itu gak nyata ? Cuma HALU katamu ? nggak, ngak ngak ngak ngak NGAAAAAAAAK GUA GAK PERCAYA ITU DIA NYATA NGAAAAAAAAAAAAAAAAAK PEDULI BANGSAAAAAT !! GUA GAK PEDULI SAMA KENYATAAN POKOKNYA GAK PEDULI.    ${qq} gw ... ${qq} di laptop ngeliatin gw, ${qq} .. kamu percaya sama aku ? aaaaaaaaaaah syukur ${q} aku gak mau merelakan ${qq} aaaaaah    YEAAAAAAAAAAAH GUA MASIH PUNYA ${qq} SENDIRI PUN NGGAK SAMA AAAAAAAAAAAAAAH`
               reply(awikwok)
-              await limitAdd(sender)
               break
                 case 'bts':
 case 'Bts':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                 reply(mess.wait)
                 ya = await getBuffer(`https://api.dapuhy.ga/api/randomimage/batues?apikey=r5CjdUOuSHvrbjg`)
                 dha.sendMessage(from, ya, image, {quoted: mek})
@@ -4095,6 +4052,7 @@ case 'Bts':
               break    
 case 'blackpink':
 case 'Blackpink':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                 reply(mess.wait)
                 yo = await getBuffer(`https://api.dapuhy.ga/api/randomimage/blekpink?apikey=r5CjdUOuSHvrbjg`)
                 dha.sendMessage(from, yo, image, {quoted: mek})
@@ -4109,7 +4067,6 @@ case 'Blackpink':
           quoted: mek,
           caption: `\`\`\` Group Info \`\`\`\n*${unique[0]} > Name* : ${groupName}\n*${unique[0]} > Member* : ${groupMembers.length}\n*${unique[0]} > Admin* : ${groupAdmins.length}\n*${unique[0]} > Description* : \n${groupDesc}`,
         });
-        await limitAdd(sender)
               break;
         case 'closetime':  
         case 'Closetime':  
@@ -4131,7 +4088,6 @@ case 'Blackpink':
 				dha.groupSettingChange (from, GroupSettingChange.messageSend, true);
 				reply(close)
 				}, timer)
-				await limitAdd(sender)
               break 
 		     	case 'opentime':  
 		case 'Opentime':  
@@ -4153,17 +4109,18 @@ case 'Blackpink':
 				dha.groupSettingChange (from, GroupSettingChange.messageSend, false);
 				reply(open)
 				}, timer)
-				await limitAdd(sender)
               break  
 				///NEW FITUR BY KATASHI
 case 'gabut':
 case 'Gabut':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/gabut?apikey=Alphabot`)
 					reply(data.result.activity)
 					await limitAdd(sender)
               break
 case 'translate':
 case 'Translate':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`kasih teks lah^_^!!\nJangan lupa , imi translatenya dari eng ke indo`)
                     query = args.join(" ")	
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/translate?kata=${query}&apikey=Alphabot`)
@@ -4172,6 +4129,7 @@ if (args.length == 0) return reply(`kasih teks lah^_^!!\nJangan lupa , imi trans
               break
 case 'tiktok':
 case 'Tiktok':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
 x = await fetchJson(`https://api.dapuhy.ga/api/socialmedia/ttdownloader?url=${query}&apikey=r5CjdUOuSHvrbjg`)
@@ -4184,6 +4142,7 @@ await limitAdd(sender)
               break
 case 'cuacabandara': // Update By KATASHI
 case 'Cuacabandara': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://apikatashi.herokuapp.com/api/infocuaca/bandara?apikey=Alphabot`, {method: 'get'})
 					teks = 'CUACA BANDARA\n'
 					for (let i of data.result.daftar_bandara) {
@@ -4193,47 +4152,11 @@ case 'Cuacabandara': // Update By KATASHI
 					
 					await limitAdd(sender)
               break
-case "toimg2":
-      case "Toimg2":
-        if (!isQuotedSticker) return reply("/  !");
-        reply(mess.wait);
-        encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
-          .message.extendedTextMessage.contextInfo;
-        media = await dha.downloadAndSaveMediaMessage(encmedia);
-        ran = getRandom(".png");
-        exec(`ffmpeg -i ${media} ${ran}`, (err) => {
-          fs.unlinkSync(media);
-          if (err) return reply("Yah gagal, coba ulangi ^_^");
-          buffer = fs.readFileSync(ran);
-          fakethumb(buffer, `Ni Kak ${pushname}`);
-          fs.unlinkSync(ran);
-        });
-        await limitAdd(sender)
-              break;
-        case "tomp42":
-      case "Tomp42":
-        if (
-          ((isMedia && !mek.message.videoMessage) || isQuotedSticker) &&
-          args.length == 0
-        ) {
-          ger = isQuotedSticker
-            ? JSON.parse(JSON.stringify(mek).replace("quotedM", "m")).message
-                .extendedTextMessage.contextInfo
-            : mek;
-          owgi = await dha.downloadAndSaveMediaMessage(ger);
-          webp2mp4File(owgi).then((res) => {
-            sendMediaURL(from, res.result, "Done");
-          });
-        } else {
-          reply("reply stiker");
-        }
-        fs.unlinkSync(owgi);
-        await limitAdd(sender)
-              break;
 case 'searchsurah': // Update By KATASHI
 case 'surah': // Update By KATASHI
 case 'Surah': // Update By KATASHI
 case 'Searchsurah': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
                     reply(mess.wait)
@@ -4248,6 +4171,7 @@ if (args.length == 0) return reply(`Link nya?`)
               break
 case 'storyanime':
 case 'storyanime':	
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 x = await getBuffer(`https://api.dapuhy.ga/api/anime/storyanime?apikey=r5CjdUOuSHvrbjg`)
 reply(mess.wait)
 dha.sendMessage(from, x, video, {quoted: mek})
@@ -4258,6 +4182,7 @@ case 'Rscovid': // Update By KATASHI
 case 'Rumahsakit': // Update By KATASHI
 case 'rskopit': // Update By KATASHI
 case 'Rskopit': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 					data = await fetchJson(`https://dekontaminasi.com/api/id/covid19/hospitals`, {method: 'get'})
 					teks = 'RS COVID\n'
@@ -4270,6 +4195,7 @@ reply(mess.wait)
               break
 case 'nhentaipdf':
 case 'nhentaipdf':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Kode?`)
                     query = args.join(" ")	
                     reply(mess.wait)
@@ -4281,6 +4207,7 @@ case 'provinci': // Update By KATASHI
 case 'Provinci': // Update By KATASHI
 case 'Provinsi': // Update By KATASHI
 case 'provinsi': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/provinsi.json`, {method: 'get'})
 					teks = 'PROVINSI\n'
 					for (let i of data) {
@@ -4294,6 +4221,7 @@ case 'kab': // Update By KATASHI
 case 'Kab': // Update By KATASHI
 case 'kabupaten': // Update By KATASHI
 case 'Kabupaten': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .provinsi`)
                     query = args.join(" ")	
 					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/kabupaten/${query}.json`, {method: 'get'})
@@ -4307,6 +4235,7 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .provinsi`)
               break
 case 'pesantren': // Update By KATASHI
 case 'Pesantren': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
                     query = args.join(" ")	
 					data = await fetchJson(`https://api-pesantren-indonesia.vercel.app/pesantren/${query}.json`, {method: 'get'})
@@ -4320,6 +4249,7 @@ if (args.length == 0) return reply(`Idnya?\nId bisa di lihat di .kabupaten`)
               break
 case 'spamsms':
 case 'Spamsms':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} 8303030303030`)
                     nomor = args[0]
@@ -4339,6 +4269,7 @@ if (!isPremium) return reply(`Only Prem`)
               break        
                     case 'jooxsearch':
 case 'Jooxsearch':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} starboy`)
                     query = args[0]
                     reply(mess.wait)
@@ -4355,12 +4286,14 @@ case 'Jooxsearch':
               break
 case 'randomcerpen':
 case 'Randomcerpen':	
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/random?apikey=katashi`)
 					reply(data.result)
 					await limitAdd(sender)
               break
 case 'ytmp42':
 case 'Ytmp42':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Link nya?`)
                     query = args.join(" ")	
@@ -4379,6 +4312,7 @@ if (args.length == 0) return reply(`Link nya?`)
               break
 case 'narutobanner':
 case 'Narutobanner':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -4389,6 +4323,7 @@ await limitAdd(sender)
               break
 case 'nhentaisearch': // Update By KATASHI
 case 'Nhentaisearch': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
@@ -4405,6 +4340,7 @@ reply(mess.wait)
               break
 case 'kisahnabi':
 case 'Kisahnabi':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} Muhammad`)
                     query = args.join(" ")
@@ -4421,6 +4357,7 @@ case 'Kisahnabi':
               break
 case 'jarak':
 case 'Jarak':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
                     if (args.length == 0) return reply(`Example: ${prefix + command} jakarta - yogyakarta`)
@@ -4451,6 +4388,7 @@ if (!isPremium) return reply(`Only Prem`)
               break
 case 'dafontsearch': // Update By KATASHI
 case 'Dafontsearch': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
                     query = args.join(" ")	
@@ -4465,6 +4403,7 @@ reply(mess.wait)
 					await limitAdd(sender)
               break
 					case 'stcmeme':
+					if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
   ct = body.slice(9)
               top = ct.split('|')[0]
               bottom = ct.split('|')[1]
@@ -4486,6 +4425,7 @@ reply(mess.wait)
               break
                case 'datasekolah': // Update By KATASHI
 case 'datasekolah': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length < 1) return reply(`*Example :*\n${prefix}${command} 1|100`)
 					makell = args.join(" ")
@@ -4503,6 +4443,7 @@ reply(mess.wait)
               break
 case 'datasekolah2': // Update By KATASHI
 case 'datasekolah2': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length < 1) return reply(`*Example :*\n${prefix}${command} smk-1-5`)
 					makell = args.join(" ")
@@ -4521,6 +4462,7 @@ reply(mess.wait)
               break
 case 'quotesislam':
 case 'Quotesislam':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/random/quotes/muslim?apikey=katashi`)
 					reply(data.result.text_id)
@@ -4528,6 +4470,7 @@ case 'Quotesislam':
               break
 case 'apikey':
 case 'apikey':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} apikeynya`)
                     query = args.join(" ")
@@ -4542,6 +4485,7 @@ if (!isPremium) return reply(`Only Prem`)
               break
 case 'infoloker': // Update By KATASHI
 case 'Infoloker': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 					data = await fetchJson(`https://docs-jojo.herokuapp.com/api/infoloker`, {method: 'get'})
@@ -4555,6 +4499,7 @@ reply(mess.wait)
               break
 case 'katacinta':
 case 'Katacinta':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 					gatauda = body.slice(8)
@@ -4564,6 +4509,7 @@ reply(mess.wait)
               break  
 					case 'cerpen':
                 case 'Cerpen':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cerpen`)
@@ -4577,7 +4523,7 @@ reply(mess.wait)
               break
 case 'cersex':
                 case 'Cersex':
-                if (!isPremium) return reply(`Only Prem`)
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/cersex`)
@@ -4591,6 +4537,7 @@ case 'cersex':
               break
 case 'jadwaltvnow':
                 case 'Jadwaltvnow':
+                if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
                 reply(mess.wait)
                     get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/jadwaltvnow`)
@@ -4604,6 +4551,7 @@ case 'jadwaltvnow':
               break
 case 'twich':  
       case 'Twich':  
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
       reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/twichquote`)
@@ -4613,6 +4561,7 @@ case 'twich':
               break                 
       case 'fake':  
       case 'Fake':  
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
       reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/fake_identity`)
                    anu1 = ` *NAMA* : ${anu.name}\n`
@@ -4640,6 +4589,7 @@ case 'twich':
               break
 case 'kusonime':  
 case 'Kusonime':  
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -4651,6 +4601,7 @@ reply(mess.wait)
               break
       case 'renungan':  
       case 'Renungan':  
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
       reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/renungan`)
@@ -4662,6 +4613,7 @@ reply(mess.wait)
               break
        case 'samehadaku':  
        case 'Samehadaku':  
+       if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
        reply(mess.wait)
                    if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
@@ -4676,6 +4628,7 @@ reply(mess.wait)
               break
 case 'tongue':  
 case 'Tongue':  
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
                    anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/tongue_twister`)
@@ -4685,6 +4638,7 @@ reply(mess.wait)
               break
                    case 'mostviewfilm':
 case 'Mostviewfilm':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/mostviewfilm`, {method: 'get'})
@@ -4698,6 +4652,7 @@ reply(mess.wait)
               break
 					case 'trendingtwitter':
 case 'Trendingtwitter':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/trendingtwitter`, {method: 'get'})
@@ -4711,6 +4666,7 @@ reply(mess.wait)
               break
 case 'jadwalbola':
 case 'jadwalbola':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 					anu = await fetchJson(`https://docs-jojo.herokuapp.com/api/jadwal-bola`, {method: 'get'})
@@ -4724,6 +4680,7 @@ reply(mess.wait)
               break
 case 'vaksin':
 case 'Vaksin':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
                     get_result = await fetchJson(`https://vaksincovid19-api.vercel.app/api/vaksin`)
                     reply(mess.wait)
@@ -4739,6 +4696,7 @@ case 'Vaksin':
               break
 case 'Hitungmatauang':
 case 'hitungmatauang':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
         if (args.length < 1) return reply(`*Example :*\n${prefix}${command} usd|id|12`)
 					makell = args.join(" ")
@@ -4756,6 +4714,7 @@ case 'hitungmatauang':
                     await limitAdd(sender)
               break
 case "fast":
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         fakegroup(mess.wait);
         encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
@@ -4778,6 +4737,7 @@ case "fast":
         await limitAdd(sender)
               break;
       case "slow":
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         fakegroup(mess.wait);
         encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
@@ -4800,6 +4760,7 @@ case "fast":
         await limitAdd(sender)
               break;
       case "reverse":
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isQuotedVideo) return fakegroup("Reply videonya!");
         encmedia = JSON.parse(JSON.stringify(mek).replace("quotedM", "m"))
           .message.extendedTextMessage.contextInfo;
@@ -4818,6 +4779,7 @@ case "fast":
         await limitAdd(sender)
               break;
           case "tospam":
+          if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                       reply(mess.wait)
 if (!isQuotedSticker && !isQuotedAudio && !isQuotedImage && budy.length > 10) {
 teks = body.slice(8)
@@ -4867,48 +4829,8 @@ if (Number(oi2) >= 50) return reply('Kebanyakan!')
 }
 	  await limitAdd(sender)
               break
-case "remm":
-   if (args.length < 1) return reply(from, `Penggunaan ${prefix}vampire teks`, mek)
-   reply(mess.wait)
-   bapakao = body.slice(6)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx5?apikey=hardianto&text=${bapakao}`)
-   await limitAdd(sender)
-              break
-case "lolim":
-   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
-   reply(mess.wait)
-   bapakao = body.slice(7)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx2?apikey=hardianto&nama=${bapakao}`)
-   await limitAdd(sender)
-              break
-case "kaneki":
-   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
-   reply(mess.wait)
-   bapakao = body.slice(8)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gfx1?apikey=hardianto&nama=${bapakao}`)
-   await limitAdd(sender)
-              break
-case "gura":
-   if (args.length < 1) return reply(from, `Penggunaan ${prefix + command}teks`, mek)
-   reply(mess.wait)
-   reply(mess.wait)
-   bapakao = body.slice(6)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/bot/gura?apikey=hardianto&nama=${bapakao}`)
-   await limitAdd(sender)
-              break
-case "neko":
-   reply(mess.wait)
-   bapakao = body.slice(9)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/anime/random?sfw=neko&apikey=hardianto`)
-   await limitAdd(sender)
-              break
-case "darkjokes":
-  case "darkjoke":
-   bapakao = body.slice(9)
-   sendMediaURL(from, `https://hardianto-chan.herokuapp.com/api/darkmeme?apikey=hardianto`)
-   await limitAdd(sender)
-              break
       case "revoke":
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!mek.key.fromMe && !isGroupAdmins) return reply("Only admin");
         if (!isBotGroupAdmins) return reply("Jadikan Bot Sebagai Admin Untuk Menggunakan Fitur Tersebut");
         if (!isGroup) return;
@@ -4918,6 +4840,7 @@ case "darkjokes":
               break;
 case 'wanted':
 case 'Wanted':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 	var imgbb = require('imgbb-uploader')
 	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 	  ted = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo: mek
@@ -4934,6 +4857,7 @@ case 'Wanted':
               break
       
       case "deltrash":
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (
           ((isMedia && !mek.message.videoMessage) || isQuotedImage) &&
           args.length == 0
@@ -4959,6 +4883,7 @@ case 'Wanted':
               break;
 
       case "squidrip":
+      if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (
           ((isMedia && !mek.message.videoMessage) || isQuotedImage) &&
           args.length == 0
@@ -4984,6 +4909,7 @@ case 'Wanted':
               break;
 case 'wasted':
 case 'Wasted':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 	var imgbb = require('imgbb-uploader')
 	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
 	  ted = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo: mek
@@ -4999,6 +4925,7 @@ case 'Wasted':
 	await limitAdd(sender)
               break
 case 'lirik':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
 x = await fetchJson(`https://viko-api.herokuapp.com/api/music/liriklagu?query=${query}&apikey=katashi`)
@@ -5007,6 +4934,7 @@ await limitAdd(sender)
               break
 case 'surahaudio':
 case 'Surahaudio':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Surah Ke?`)
                     query = args.join(" ")	
 x = await getBuffer(`https://zenzapi.xyz/api/quran/audio/${query}?apikey=Katashi`)
@@ -5016,6 +4944,7 @@ await limitAdd(sender)
               break
 case 'ayataudio':
 case 'Ayataudio':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (args.length < 1) return reply(`Ayat Ke Brp?`)
 					makell = args.join(" ")
 					r1 = makell.split("|")[0];
@@ -5028,6 +4957,7 @@ await limitAdd(sender)
               break
 case 'infogempa':
 case 'Infogempa':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     ini_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`)
                     ini_buffer = await getBuffer(ini_result.map)
                     ini_txt = `Waktu : ${ini_result.waktu}\n`
@@ -5041,6 +4971,7 @@ case 'Infogempa':
               break
 case 'qrmaker':
 case 'qrmaker':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`textnya?`)
                     query = args.join(" ")	
 loh = await getBuffer(`https://docs-jojo.herokuapp.com/api/qrcode?text=${query}`)
@@ -5049,6 +4980,7 @@ dha.sendMessage(from, loh, image)
 await limitAdd(sender)
               break
 case 'jooxplay':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
                     get_result = await fetchJson(`https://zenzapi.xyz/api/downloader/joox?query=${query}&apikey=Katashi`)
@@ -5068,6 +5000,7 @@ case 'jooxplay':
               break
 case 'faktaunik':
 case 'fakta':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 x = await fetchJson(`https://docs-jojo.herokuapp.com/api/fakta-unik`)
 dha.sendMessage(from, `${x.result}`, text)
@@ -5076,6 +5009,7 @@ await limitAdd(sender)
               break
 case 'barmaker':
 case 'barkodemaker':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`textnya?`)
                     query = args.join(" ")	
 lih = await getBuffer(`https://api.zeks.me/api/barcode?apikey=Iyungputra&text=${query}`)
@@ -5084,6 +5018,7 @@ dha.sendMessage(from, lih, image)
 await limitAdd(sender)
               break
 case 'artinama':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`lagunya?`)
                     query = args.join(" ")
 x = await fetchJson(`https://api.zeks.me/api/artinama?apikey=Iyungputra&nama=${query}`)
@@ -5092,6 +5027,7 @@ reply(mess.success)
 await limitAdd(sender)
               break
 case 'textrepeat':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (args.length < 1) return reply(`teks|jumlah`)
 					makell = args.join(" ")
 					r1 = makell.split("|")[0];
@@ -5102,6 +5038,7 @@ reply(mess.success)
 await limitAdd(sender)
               break
 case 'pinterest':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} loli kawaii`)
                     query = args.join(" ")
                     ini_url = await fetchJson(`https://viko-api.herokuapp.com/api/pinterest?query=${query}&apikey=katashi`)
@@ -5112,6 +5049,7 @@ case 'pinterest':
                     await limitAdd(sender)
               break
 case 'translate2':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
 					makell = args.join(" ")
 					r1 = makell.split("|")[0];
@@ -5123,6 +5061,7 @@ await limitAdd(sender)
               break
 case 'quotes':
 case 'randomquotes':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     quotes = await fetchJson(`https://kocakz.herokuapp.com/api/random/text/quotes`)
                     quotes = quotes.result
                     author = quotes.by
@@ -5133,6 +5072,7 @@ case 'randomquotes':
               break
 case 'waifu':
 case 'radomwaifu':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/waifu`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
@@ -5141,6 +5081,7 @@ await limitAdd(sender)
               break
 case 'cosplay2':
 case 'randomcosplay2':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 waipu = await getBuffer(`https://velgrynd.herokuapp.com/api/image/cosplay`)
 reply(mess.wait)
 dha.sendMessage(from, waipu, image)
@@ -5150,6 +5091,7 @@ await limitAdd(sender)
 case 'doujindesuSearch': // Update By KATASHI
 case 'doujinSearch': // Update By KATASHI
 case 'doujin': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!isPremium) return reply(`Only Prem`)
         if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Teksnya?`)
@@ -5165,6 +5107,7 @@ reply(mess.wait)
 					await limitAdd(sender)
               break
 case 'tts':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
        if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
 					makell = args.join(" ")
 					r1 = makell.split("|")[0];
@@ -5177,6 +5120,7 @@ await limitAdd(sender)
               break
 case 'caribioskop': // Update By KATASHI
 case 'caribioskop': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!isGroup) return reply(mess.only.group);
 reply(mess.wait)
 if (args.length == 0) return reply(`kotanya?`)
@@ -5192,6 +5136,7 @@ if (args.length == 0) return reply(`kotanya?`)
               break
 case 'linkwa': // Update By KATASHI
 case 'linkwa': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 if (args.length == 0) return reply(`kotanya?`)
                     query = args.join(" ")	
@@ -5206,6 +5151,7 @@ if (args.length == 0) return reply(`kotanya?`)
               break
 					case 'cerpencinta':
 case 'cerpencinta':	
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					data = await fetchJson(`https://viko-api.herokuapp.com/api/cerpen/cinta?apikey=katashi`)
 					reply(data.result)
 					reply(mess.success)
@@ -5216,6 +5162,7 @@ case 'cerpencinta':
 					case 'cstic':
 					case 'searchsticker':
 					case 'searchstiker':
+					if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					        if (!isGroup) return reply(mess.only.group);
 if (args.length == 0) return reply(`Apanyang Mau Di Cari??`)
                     query = args.join(" ")	
@@ -5228,6 +5175,7 @@ reply(mess.success)
               await limitAdd(sender)
               break
 case "reminder": // by Slavyan
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
         if (!q)
           return reply(
             `CONTOH PENGGUNANNYA:\n${prefix}reminder text/2s\n\nNOTE: \n*s* - seconds\n*m* - minutes\n*h* - hours\n*d* - days`
@@ -5435,7 +5383,6 @@ if (!isOwner) return reply(`LU SIAPA AJG`)
 					prem.push(adprem)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
 					reply(`BERHASIL MENAMBAHKAN USER PREMIUM`)
-					await limitAdd(sender)
               break				
 		case 'dellprem':  
 					
@@ -5444,7 +5391,6 @@ if (!isOwner) return reply(`LU SIAPA AJG`)
 					prem.splice(`${delp}@s.whatsapp.net`, 1)
 					fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
 					reply(`Berhasil Menghapus wa.me/${delp} Dari Daftar Premium`)
-					await limitAdd(sender)
               break
 case 'listprem':
 		case 'premlist'://By M4N1K
@@ -5454,9 +5400,9 @@ case 'listprem':
 					}
 					teks += `\n*Total : ${prem.length}*`
 					dha.sendMessage(from, teks.trim(), extendedText, { quoted: mek, contextInfo: { "mentionedJid": prem } })
-					await limitAdd(sender)
               break
 case 'splay':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
                     query = args.join(" ")
                     get_result = await fetchJson(`http://hadi-api.herokuapp.com/api/soundcloud/play?query=${query}`)
@@ -5473,6 +5419,7 @@ case 'splay':
               break
 case 'dafontdownload':
 case 'ddownload':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} who ask satan`)
                     query = args.join(" ")
                     reply(mess.wait)
@@ -5490,6 +5437,7 @@ case 'ddownload':
               break
 case 'hentaivid':
 case 'hentaivideo':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (!isPremium) return reply(`Only Prem`)
                     get_result = await fetchJson(`https://zenzapi.xyz/api/hentaivid?apikey=Katashi`)
                     yoo = get_result.result
@@ -5512,6 +5460,7 @@ case 'hentaivideo':
 case 'tiktokpron':
 case 'porntiktok':
 case 'ttporn':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (!isPremium) return reply(`Only Prem`)
                     get_result = await fetchJson(`https://zenzapi.xyz/api/tikporn?apikey=Katashi`)
                     yoo = get_result.result
@@ -5533,6 +5482,7 @@ case 'ttporn':
                     await limitAdd(sender)
               break
 case 'tebakumur':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} kontol`)
                     ini_name = args.join(" ")
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/tebakumur?apikey=PinnBotWibu&name=${ini_name}`)
@@ -5542,7 +5492,8 @@ case 'tebakumur':
                     reply(ini_txt)
                     await limitAdd(sender)
               break
-case 'asupan2':
+case 'asupan':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=PinnBotWibu`)
                     ini_buffer = await getBuffer(get_result.result)
@@ -5550,6 +5501,7 @@ reply(mess.wait)
                     await limitAdd(sender)
               break
 case 'santuy':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
                     get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupansantuy?apikey=r5CjdUOuSHvrbjg`)
                     await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
@@ -5557,6 +5509,7 @@ reply(mess.wait)
               break
 
 case 'ukhty':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
                     get_result = await getBuffer(`https://api.dapuhy.ga/api/asupan/asupanukhty?apikey=r5CjdUOuSHvrbjg`)
                     await dha.sendMessage(from, get_result, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
@@ -5569,6 +5522,7 @@ case 'indonesia':
 case 'japan':
 case 'thailand':
 case 'china':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
                     get_result = await fetchJson(`https://apikatashi.herokuapp.com/api/cewe/${command}?apikey=Alphabot`)
                     ini_buffer = await getBuffer(get_result.result.url)
@@ -5577,6 +5531,7 @@ reply(mess.wait)
               break
 case 'nhentaizip':
 case 'nhentaizip':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} kode nuklir`)
                     query = args.join(" ")
                     reply(mess.wait)
@@ -5599,7 +5554,6 @@ case 'nhentaizip':
         dha.sendMessage(from, teks, text, {
           quoted: mek,
         });
-        await limitAdd(sender)
               break;
       // Promote Members
       case "promote":
@@ -5611,10 +5565,10 @@ case 'nhentaizip':
         dha.sendMessage(from, teks, text, {
           quoted: mek,
         });
-        await limitAdd(sender)
               break;
         case 'ytmp43':
 case 'ytmp43':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.be/vfpUAEUWAlg`)
                     query = args.join(" ")
                     get_result = await fetchJson(`http://hadi-api.herokuapp.com/api/yt2/video?url=${query}`)
@@ -5644,11 +5598,11 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://youtu.b
                 } else {
                     reply(mess.error.api)
                 }
-                await limitAdd(sender)
               break
 case 'attp':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 					if (!q) return reply(`Teks Nya Mana Kak?\nContoh :\n${prefix}attp ${NamaBot}`)
-					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/maker/attp?text=${encodeURIComponent(q)}&apikey=hardianto`)
+					atetepe = await getBuffer(`https://xteam.xyz/attp?file&text=${encodeURIComponent(q)}&apikey=hardianto`)
 					dha.sendMessage(from, atetepe, sticker, { quoted: mek })
 					await limitAdd(sender)
               break
@@ -5657,15 +5611,14 @@ case 'attp':
             var nomqm = `${body.slice(5)}@s.whatsapp.net`
 					tagq = `@${nomqm.split('@')[0]}` 
 					dha.sendMessage(from, tagq, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
-			await limitAdd(sender)
               break
 			case 'tagme':
                   var nomqm = mek.participant
 				    tagu = `@${nomqm.split('@s.whatsapp.net')[0]}`
 					dha.sendMessage(from, tagu, text, { quoted: mek, contextInfo: { forwardingScore: 508, isForwarded: true, mentionedJid: [nomqm]}})
-					await limitAdd(sender)
               break
         case "ttpyellow":
+        if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=yellow&apikey=hardianto`)
@@ -5673,6 +5626,7 @@ if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
 					await limitAdd(sender)
               break
 case "ttpgreen":
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=green&apikey=hardianto`)
@@ -5680,6 +5634,7 @@ case "ttpgreen":
 					await limitAdd(sender)
               break
 case "ttpblue":
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=blue&apikey=hardianto`)
@@ -5687,6 +5642,7 @@ case "ttpblue":
 					await limitAdd(sender)
               break
 case "ttp":
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
   if (args.length == 0) return reply(`Example: ${prefix + command} Katashi`)
                     biji = args.join(" ")
 					atetepe = await getBuffer(`https://hardianto-chan.herokuapp.com/api/ttpcustom?text=${biji}&color=brown&apikey=hardianto`)
@@ -5694,12 +5650,14 @@ case "ttp":
 					await limitAdd(sender)
               break
 case 'dadu':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 			random = Math.floor(Math.random() * 6) + 1
 		damdu = fs.readFileSync(`./sticker/${random}.webp`)
 			dha.sendMessage(from, damdu, sticker, {quoted: mek})
 			await limitAdd(sender)
               break
 				case 'robot':
+				if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 				reply(mess.wait)
 encmedial = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 medial = await dha.downloadAndSaveMediaMessage(encmedial)
@@ -5714,6 +5672,7 @@ fs.unlinkSync(ran)
 await limitAdd(sender)
               break
 case 'gemuk':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 					encmediaz = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					mediaz = await dha.downloadAndSaveMediaMessage(encmediaz)
@@ -5728,6 +5687,7 @@ reply(mess.wait)
 					await limitAdd(sender)
               break
 case 'balik':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 	encmediau = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 	mediau = await dha.downloadAndSaveMediaMessage(encmediau)
@@ -5742,6 +5702,7 @@ fs.unlinkSync(ran)
 await limitAdd(sender)
               break
 case 'bass':                 
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 					encmediao = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 					mediao = await dha.downloadAndSaveMediaMessage(encmediao)
@@ -5756,6 +5717,7 @@ reply(mess.wait)
 				await limitAdd(sender)
               break
 case 'tupai':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 									try {
 										encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
@@ -5775,6 +5737,7 @@ reply(mess.wait)
               break
 						case 'vibra': 
 case 'vibrato':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
 									encmedia = JSON.parse(JSON.stringify(mek).replace('quotedM','m')).message.extendedTextMessage.contextInfo
 									media = await dha.downloadAndSaveMediaMessage(encmedia)
@@ -5795,7 +5758,6 @@ reply(mess.wait)
 									.then((res) => reply('Sukses Lord'))
 									.catch((err) => reply('Eror Lord'))
 									 }
-									await limitAdd(sender)
               break
 						case 'setbiobot':{
 									 if (!isOwner && !mek.key.fromMe) return reply(mess.only.owner)
@@ -5804,9 +5766,9 @@ reply(mess.wait)
 									.then((res) => reply('Sukses Lord'))
 									.catch((err) => reply('Eror Lord'))
 									}
-									await limitAdd(sender)
               break
 									case 'naruto':
+									if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pNaruto(`${q}`)
          .then(res => {
@@ -5816,6 +5778,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'shadow':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pShadow(`${q}`)
          .then(res => {
@@ -5825,6 +5788,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'romantic':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pRomantic(`${q}`)
          .then(res => {
@@ -5834,6 +5798,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'smoke':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pSmoke(`${q}`)
          .then(res => {
@@ -5843,6 +5808,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'burnpaper':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pBurnPapper(`${q}`)
          .then(res => {
@@ -5852,6 +5818,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'lovemsg':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pLoveMsg(`${q}`)
          .then(res => {
@@ -5861,6 +5828,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'grass':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pMsgGrass(`${q}`)
          .then(res => {
@@ -5870,6 +5838,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'doubleheart':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pDoubleHeart(`${q}`)
          .then(res => {
@@ -5879,6 +5848,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'coffecup':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pCoffeCup(`${q}`)
          .then(res => {
@@ -5888,6 +5858,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'lovetext':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pLoveText(`${q}`)
          .then(res => {
@@ -5897,6 +5868,7 @@ sendMediaURL(from, res.url)
 		await limitAdd(sender)
               break
 case 'butterfly':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 if (!q) return reply('teksnya mana?')
 pButterfly(`${q}`)
          .then(res => {
@@ -5907,19 +5879,23 @@ sendMediaURL(from, res.url)
               break		
       
       case 'jadwalsholat':
-                case 'Jadwalsholat':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args.join(" ")
-                    get_result = await fetchJson(`https://api.zeks.me/api/jadwalsholat?apikey=Iyungputra&daerah=${daerah}`)
-                    get_result = get_result.data.object
-                    ini_txt += `Subuh : ${get_result.Shubuh}\n`
-                    ini_txt += `Dzuhur : ${get_result.Dzuhur}\n`
-                    ini_txt += `Ashar : ${get_result.Ashr}\n`
-                    ini_txt += `Maghrib : ${get_result.Maghrib}\n`
-                    ini_txt += `Isya : ${get_result.Isya}`
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/sholat/${daerah}?apikey=PinnBotWibu`)
+                    get_result = get_result.result
+                    ini_txt = `Wilayah : ${get_result.wilayah}\n`
+                    ini_txt += `Tanggal : ${get_result.tanggal}\n`
+                    ini_txt += `Sahur : ${get_result.sahur}\n`
+                    ini_txt += `Imsak : ${get_result.imsak}\n`
+                    ini_txt += `Subuh : ${get_result.subuh}\n`
+                    ini_txt += `Terbit : ${get_result.terbit}\n`
+                    ini_txt += `Dhuha : ${get_result.dhuha}\n`
+                    ini_txt += `Dzuhur : ${get_result.dzuhur}\n`
+                    ini_txt += `Ashar : ${get_result.ashar}\n`
+                    ini_txt += `Maghrib : ${get_result.imsak}\n`
+                    ini_txt += `Isya : ${get_result.isya}`
                     reply(ini_txt)
-                    await limitAdd(sender)
-              break
+                    break
 case 'lolkey':
 if (!isOwner)return reply(mess.only.owner)
                     get_result = await fetchJson(`https://api.lolhuman.xyz/api/checkapikey?apikey=PinnBotWibu`)
@@ -5930,11 +5906,110 @@ if (!isOwner)return reply(mess.only.owner)
                     ini_txt += `Tipe Akun : ${get_result.account_type}`
                     ini_txt += `Expired : ${get_result.expired}`
                     reply(ini_txt)
-                    await limitAdd(sender)
               break
                     case 'limit':
 					checkLimit(sender)
-          
+					await limitAdd(sender)
+					break
+          case 'resetlimit':
+				if (!isOwner) return reply(mess.only.ownerB)
+				var obj = []
+				fs.writeFileSync('./database/limit.json', JSON.stringify(obj, null, '\t'))
+				reply(`LIMIT BERHASIL DI RESET`)
+				break
+case 'wancak':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    get_result = await fetchJson(`https://st4rz.herokuapp.com/api/1cak`)
+                    get_result = get_result.data
+                    ini_txt = `Id : ${get_result.id}\n`
+                    ini_txt += `Judul : ${get_result.judul}\n`
+                    ini_txt += `Url : ${get_result.url}\n`
+                    ini_buffer = await getBuffer(get_result.image)
+                    await dha.sendMessage(from, ini_buffer, image, { quoted: mek, caption: ini_txt})
+                    await limitAdd(sender)
+                    break
+                    case 'igdl':
+case 'igdl':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+if (args.length == 0) return reply(`Link nya?\nNext w Update igdl untuk image`)
+                    query = args.join(" ")	
+x = await fetchJson(`https://bochil.ddns.net/igdl?q=${query}`)
+reply(mess.wait)
+vid = await getBuffer(x.result.video)
+dha.sendMessage(from, vid, video, {quoted: mek})
+await limitAdd(sender)
+              break
+case 'hentai':
+case 'hentai':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+x = await fetchJson(`https://akaneko-api.herokuapp.com/api/hentai`)
+reply(mess.wait)
+im = await getBuffer(x.url)
+dha.sendMessage(from, im, image, {quoted: mek})
+await limitAdd(sender)
+              break
+case 'wame':
+					reply(`wa.me/${sender.split('@')[0]}\nAtau\napi.whatsapp.com/send?phone=${sender.split('@')[0]}`)
+			break 
+			case 'blocklist':
+					teks = 'List Block :\n'
+					for (let block of blocked) {
+						teks += `~> @${block.split('@')[0]}\n`
+					}
+					teks += `Total : ${blocked.length}`
+					dha.sendMessage(from, teks.trim(), extendedText, {quoted: mek, contextInfo: {"mentionedJid": blocked}})
+					break 
+					case 'jodoh':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+       if (args.length < 1) return reply(`id|hello\nkode bisa di lihat di \n.kodebahasa`)
+					makell = args.join(" ")
+					r1 = makell.split("|")[0];
+					r2 = makell.split("|")[1];
+					get_result = await fetchJson(`http://nzcha-apii.herokuapp.com/ramalan-jodoh?nama1=${r1}&nama2=${r2}`)
+                    owaw = get_result.data
+                    ini_txt = `Positif : ${owaw.positif}\n`
+                    ini_txt += `Negatif : ${owaw.negatif}\n`
+                    waduuu = await getBuffer(owaw.thumb)
+                    await dha.sendMessage(from, waduuu, image, { quoted: mek, caption: ini_txt})
+                    await limitAdd(sender)
+                    break
+case 'drakorlatest':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/drakorlatest?apikey=zekais`)
+                    get_result = get_result.result
+                    ini_txt = "Ongoing Drakor\n\n"
+                    for (var x of get_result) {
+                        ini_txt += `Conten : ${x.conten}\n`
+                        ini_txt += `Title : ${x.name}\n`
+                        ini_txt += `Link : ${x.url}\n`
+                        ini_txt += `Thumbnail : ${x.thumb}\n`
+                        ini_txt += `Upload : ${x.upload}\n`
+                        ini_txt += `Tag : ${x.tag}\n\n`
+                    }
+                    reply(ini_txt)
+                    await limitAdd(sender)
+                    break
+case 'removebg':
+case 'removebg':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+	var imgbb = require('imgbb-uploader')
+	if ((isMedia && !mek.message.videoMessage || isQuotedImage) && args.length == 0) {
+	  ted = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo: mek
+	  reply(mess.wait)
+	  owgi = await dha.downloadAndSaveMediaMessage(ted)
+	  tels = body.slice(7)
+	  anu = await imgbb("520bd6f6209077d1777c2a4f20c509c2", owgi)
+	  hehe = await getBuffer(`https://tyz-api.herokuapp.com/other/removebg?link=${anu.display_url}`)
+	 dha.sendMessage(from, hehe, image, {quoted:mek})
+	} else {
+	  reply('Foto Nya Mana Gan ðŸ—¿')
+	}
+	await limitAdd(sender)
+              break
+
+
+
+
 
 default:
 if (fs.existsSync(`./media/${from}.json`)) {
