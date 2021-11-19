@@ -606,14 +606,54 @@ const promoteAdmin = async function(to, target=[]){
         const ftext = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: { "extendedTextMessage": {"text": `*Hai ${pushname}👋*\n  ${moment().utcOffset('+0700').format('HH:mm:ss')} ${moment.tz('Asia/Jakarta').format('DD/MM/YYYY')}`,"title": `Hmm`,'jpegThumbnail': fs.readFileSync('./media/ganteng.jpg')}}}
         const ftoko = {key: {fromMe: false,participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "16505434800@s.whatsapp.net" } : {})},message: {"productMessage": {"product": {"productImage":{"mimetype": "image/jpeg","jpegThumbnail": fs.readFileSync(`./media/ganteng.jpg`)},"title": `HALLO...${pushname}JANGAN LUPA DI ORDER`,"description": "Katashi KANG TOLOL", "currencyCode": "IDR","priceAmount1000": "999999","retailerId": "Katashi-Botz","productImageCount": 1},"businessOwnerJid": `0@s.whatsapp.net`}}}
 
-// function ANTI viewOnce
-if (isGroup && mek.mtype == 'viewOnceMessage'){
-var msg = {...mek}
-msg.message = mek.message.viewOnceMessage.message
-msg.message[Object.keys(msg.message)[0]].viewOnce = false
-reply('ViewOnce detected!')
-dha.copyNForward(from, msg)
-}
+      const sendButImage = async (
+      id,
+      text1,
+      desc1,
+      gam1,
+      but = [],
+      options = {}
+    ) => {
+      kma = gam1;
+      mhan = await dha.prepareMessage(from, kma, image);
+      const buttonMessages = {
+        imageMessage: mhan.message.imageMessage,
+        contentText: text1,
+        footerText: desc1,
+        buttons: but,
+        headerType: 4,
+      };
+      dha.sendMessage(
+        id,
+        buttonMessages,
+        MessageType.buttonsMessage,
+        options
+      );
+    };
+    const sendButVideo = async (
+      id,
+      text1,
+      desc1,
+      vid1,
+      but = [],
+      options = {}
+    ) => {
+      kma = vid1;
+      mhan = await dha.prepareMessage(from, kma, video);
+      const buttonMessages = {
+        videoMessage: mhan.message.videoMessage,
+        contentText: text1,
+        footerText: desc1,
+        buttons: but,
+        headerType: 5,
+      };
+      dha.sendMessage(
+        id,
+        buttonMessages,
+        MessageType.buttonsMessage,
+        options
+      );
+    };
 
 ///Limit2
 const checkLimit = (sender) => {
@@ -906,6 +946,12 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛*${prefix}artinama* _text_
 │◦➛*${prefix}dafontdownload* _Link_
 │◦➛*${prefix}splay* _text_
+│◦➛* ${prefix}igdl2* _Linknya_
+│◦➛* ${prefix}igdl3* _Linknya_
+│◦➛* ${prefix}ssweb* _Linknya_
+│◦➛* ${prefix}igvideo* _Linknya_
+│◦➛* ${prefix}randomtiktok* 
+│◦➛* ${prefix}tiktoksearch* _Text_
 │
 ├──❏「 ASUPAN 」 
 │◦➛*${prefix}asupan* 
@@ -918,6 +964,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛*${prefix}japan* 
 │◦➛*${prefix}thailand* 
 │◦➛*${prefix}china* 
+│◦➛* ${prefix}asupanmenu* 
 │
 ├──❏「 TEXT 」 
 │◦➛* ${prefix}randombokep
@@ -945,6 +992,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}blackpink
 │◦➛* ${prefix}ppcp
 │◦➛* ${prefix}pinterest* _text_
+│◦➛* ${prefix}meme* -Fix bug
+│◦➛* ${prefix}darkjokes* -Fix bug
+│◦➛* ${prefix}memes* -Fix bug
+│◦➛* ${prefix}kucing* 
 │
 ├──❏「 STICKER 」 
 │◦➛* ${prefix}dadu*
@@ -990,6 +1041,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}wanted*
 │◦➛* ${prefix}deltrash*
 │◦➛* ${prefix}barkodemaker* _text_
+│◦➛* ${prefix}removebg* _tag stikernya_
 │
 ├──❏「 INFORMATION 」
 │◦➛* ${prefix}cuacabandara
@@ -1011,6 +1063,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}tribunnews
 │◦➛* ${prefix}liputan
 │◦➛* ${prefix}foxnews
+│◦➛* ${prefix}topnews*
+│◦➛* ${prefix}infohoax*
 │
 ├──❏「 MAGER NULIS 」
 │◦➛* ${prefix}nulis
@@ -1065,6 +1119,23 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}doujin* _text_
 │◦➛* ${prefix}cosplay2* 
 │◦➛* ${prefix}waifu*
+│◦➛* ${prefix}ahegao*
+│◦➛* ${prefix}bdsm*
+│◦➛* ${prefix}blowjob*
+│◦➛* ${prefix}cuckold*
+│◦➛* ${prefix}cum*
+│◦➛* ${prefix}ero*
+│◦➛* ${prefix}foot*
+│◦➛* ${prefix}ass*
+│◦➛* ${prefix}fembom*
+│◦➛* ${prefix}gangbang*
+│◦➛* ${prefix}glasses*
+│◦➛* ${prefix}jahy*
+│◦➛* ${prefix}masturbate*
+│◦➛* ${prefix}nsfwneko*
+│◦➛* ${prefix}orgy*
+│◦➛* ${prefix}panties*
+│◦➛* ${prefix}pussy*
 │
 ├──❏「 LAINYA 」
 │◦➛* ${prefix}tourl*
@@ -1149,7 +1220,10 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}nhentaisearch <query>
 │◦➛* ${prefix}komiku <query>
 │◦➛* ${prefix}doujin* _text_
-│◦➛* ${prefix}caribioskop* _lokask_
+│◦➛* ${prefix}caribioskop* _lokaskinya_
+│◦➛* ${prefix}appstore* _Apknya_
+│◦➛* ${prefix}ytsearch* _Text_ -Fix bug
+│◦➛* ${prefix}drakorlatest* 
 │
 ├──❏「 KESENANGAN 」
 │◦➛* ${prefix}mining*
@@ -1176,6 +1250,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}simi _Text_
 │◦➛* ${prefix}asupan* _product_* 
 │◦➛* ${prefix}tts* _text_
+│◦➛* ${prefix}randomtiktok* 
+│◦➛* ${prefix}tiktoksearch* _Text_
 │
 └─────────────────❒
 #- *List Kode Bahasa Untuk Fitur tts id*
@@ -1265,11 +1341,9 @@ await limitAdd(sender)
         Wilayah = `Wilayah: *${tsunami.lokasi}*`
         Kedalaman = `Kedalaman: *${tsunami.kedalaman}*`
         quot = await fetchJson(`https://zahirr-web.herokuapp.com/api/randomquote/muslim?apikey=zahirgans`, {method: 'get'})
-        quot = quot.result
+        quotes = quot.result.text_id
         
-        quotes = `quotes: *${quot.text_id}*`
-        nama = await fetchJson(`http://zekais-api.herokuapp.com/artinama?nama=${pushname}&apikey=zekais`, {method: 'get'})
-        namaa = `Arti Nama: *${nama.result}*`
+        
         
         kopid2 = await fetchJson(`https://api.dapuhy.ga/api/others/corona?negara=indonesia&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
         kopid3 = kopid2
@@ -1278,14 +1352,17 @@ await limitAdd(sender)
         sembuh2 = `Sembuh: *${kopid3.sembuh}*`
         meninggal2 = `Meninggal: *${kopid3.meninggal}*`
         
+        groups = dha.chats.array.filter(v => v.jid.endsWith('g.us'))
+              privat = dha.chats.array.filter(v => v.jid.endsWith('s.whatsapp.net'))
+              ram2 = `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB / ${Math.round(require('os').totalmem / 1024 / 1024)}MB`
+              charger = `${charging ? 'lagi dicas' : 'ga dicas'}`
+              uptime = process.uptime();
+              timestampe = speed();
+              totalChat = await dha.chats.all()
+              latensie = speed() - timestampe
+              total = math(`${groups.length}*${privat.length}`)
+
         
-        kopid = await fetchJson(`https://viko-api.herokuapp.com/api/info/covidworld?apikey=katashi`, {method: 'get'})
-        kopid = kopid.result
-        id = `Lokasi: *GLOBAL*`
-        positif = `Positif: *${kopid.totalCases}*`
-        sembuh = `Sembuh: *${kopid.recovered}*`
-        meninggal = `Meninggal: *${kopid.deaths}*`
-        dirawat = `Terakhir Update: *${kopid.lastUpdate}*`
         
         menu =`Hai Kak.....\n*${pushname}*\n\`\`\`Saya Katashi-Botz,SENANG BISA BERTEMU DENGANMU HARI INI\`\`\`
 ╭─❒ 「 Bot Info 」 ❒
@@ -1296,7 +1373,13 @@ await limitAdd(sender)
 │◦➛TOTAL HIT : *${totalhit} Hit*
 │◦➛HIT TODAY : *${hit_today.length} Hit*
 │◦➛PREIFIX : *『${prefix}』*
-│◦➛BATERAI : *${baterai}%*
+│◦➛BATERAI : *${baterai}% ${charger}*
+│◦➛RAM USAGE : *${ram2}*
+│◦➛PLATFORM : *${os.platform()}*
+│◦➛HOSTNAME : *${os.hostname()}*
+│◦➛UPTIME : *${runtime(process.uptime())}*
+│◦➛SPEED : *${latensie.toFixed(4)} _Second_*
+│◦➛CHAT : *${totalChat.length}*
 └❏ - Katashi Bot
 
 ╭─❒ 「 User Info 」 
@@ -1320,22 +1403,12 @@ await limitAdd(sender)
 │◦➛${Wilayah}
 └❏ - Katashi Bot
 
-┌❏ INFO CORONA
-│◦➛${id}
-│◦➛${positif},
-│◦➛${sembuh}
-│◦➛${meninggal}
-│◦➛${dirawat}
-└❏ - Katashi Bot
-
-┌❏ INFO CORONA INDONESIA
+┌❏ INFO CORONA 
 │◦➛${id2}
 │◦➛${Kasus},
 │◦➛${sembuh2}
 │◦➛${meninggal2}
 └❏ - Katashi Bot
-
-${namaa}
 
 ${quotes}
 
@@ -1867,34 +1940,6 @@ teks += `\`\`\`き⃟🦈 Title : ${get_result[i].title}\`\`\`
               reply(`Maaf aplikasi ${query} tidak ditemukan`)
 }
               checkLimit(sender)
-await limitAdd(sender)
-              break
-       case 'yts':
-       case 'ytsearch':
-              if (!q) return reply(mess.wrongFormat)
-              reply(mess.wait)
-              try {
-              res = await yts(q)
-              a = `┏┉⌣ ┈̥-̶̯͡..̷̴✽̶┄┈┈┈┈┈┈┈┈┈┈┉┓
-┆ *YOUTUBE SEARCH*
-└┈┈┈┈┈┈┈┈┈┈┈⌣ ┈̥-̶̯͡..̷̴✽̶⌣ ✽̶
-
-*Data Berhasil Didapatkan!*\n`
-for (let i of res.all) {
-a += `\`\`\`き⃟🦈 Title : ${i.title}\`\`\`
-\`\`\`き⃟🦈 Views : ${i.views}\`\`\`
-\`\`\`き⃟🦈 Upload : ${i.ago}\`\`\`
-\`\`\`き⃟🦈 Durasi : ${i.timestamp}\`\`\`
-\`\`\`き⃟🦈 Channel : ${i.author.name}\`\`\`
-\`\`\`き⃟🦈 Link : ${i.url}\`\`\``
-}
-               b = a.trim()
-               sendFileFromUrl(res.all[0].image, image, {quoted: mek, caption: b})
-               } catch (e) {
-               console.log(e)
-               reply(`${e}`)
-}
-               checkLimit(sender)
 await limitAdd(sender)
               break
        case 'tourl':
@@ -3673,7 +3718,7 @@ case 'Cuaca':
 if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args[0]
-                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/cuaca?daerah=${daerah}&apikey=zekais`)
+                    get_result = await fetchJson(`https://api.zekais.com/cuaca?daerah=${daerah}&apikey=zekais`)
                     ini_txt = `Tempat : ${get_result.Nama}\n`
                     ini_txt += `Cuaca : ${get_result.Cuaca}\n`
                     ini_txt += `Angin : ${get_result.Angin}\n`
@@ -4509,7 +4554,7 @@ if (!isPremium) return reply(`Only Prem`)
                     teks1 = pauls.split("-")[0].trim()
                     teks2 = pauls.split("-")[1].trim()
                     reply(mess.wait)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/jaraktempuh?apikey=PinnBotwibu&kota1=${teks1}&kota2=${teks2}`)
+                    get_result = await fetchJson(`https://api.dha.xyz/api/jaraktempuh?apikey=PinnBotwibu&kota1=${teks1}&kota2=${teks2}`)
                     x = get_result.result
                     ini_txt = `Informasi Jarak dari ${teks1} ke ${teks2} :\n\n`
                     ini_txt += `\`\`\`â—ª Asal :\`\`\` ${x.from.name}\n`
@@ -5687,7 +5732,7 @@ case 'tebakumur':
 if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
                     if (args.length == 0) return reply(`Example: ${prefix + command} kontol`)
                     ini_name = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/tebakumur?apikey=PinnBotWibu&name=${ini_name}`)
+                    get_result = await fetchJson(`https://api.dha.xyz/api/tebakumur?apikey=PinnBotWibu&name=${ini_name}`)
                     get_result = get_result.result
                     ini_txt = `Nama : ${get_result.name}\n`
                     ini_txt += `Umur : ${get_result.age}`
@@ -5698,7 +5743,7 @@ await limitAdd(sender)
 case 'asupan':
 if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 reply(mess.wait)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/asupan?apikey=PinnBotWibu`)
+                    get_result = await fetchJson(`https://api.dha.xyz/api/asupan?apikey=PinnBotWibu`)
                     ini_buffer = await getBuffer(get_result.result)
                     await dha.sendMessage(from, ini_buffer, video, { quoted: mek, mimetype: Mimetype.mp4, filename: "asupan.mp4" })
                     checkLimit(sender)
@@ -6113,7 +6158,7 @@ await limitAdd(sender)
       case 'jadwalsholat':
                     if (args.length == 0) return reply(`Example: ${prefix + command} Yogyakarta`)
                     daerah = args.join(" ")
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/sholat/${daerah}?apikey=PinnBotWibu`)
+                    get_result = await fetchJson(`https://api.dha.xyz/api/sholat/${daerah}?apikey=PinnBotWibu`)
                     get_result = get_result.result
                     ini_txt = `Wilayah : ${get_result.wilayah}\n`
                     ini_txt += `Tanggal : ${get_result.tanggal}\n`
@@ -6130,7 +6175,7 @@ await limitAdd(sender)
                     break
 case 'lolkey':
 if (!isOwner)return reply(mess.only.owner)
-                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/checkapikey?apikey=PinnBotWibu`)
+                    get_result = await fetchJson(`https://api.dha.xyz/api/checkapikey?apikey=PinnBotWibu`)
                     get_result = get_result.result
                     ini_txt = `Username : ${get_result.username}\n`
                     ini_txt += `Requests : ${get_result.requests}\n`
@@ -6140,7 +6185,6 @@ if (!isOwner)return reply(mess.only.owner)
                     reply(ini_txt)
               break
                     case 'limit':
-					checkLimit(sender)
 					checkLimit(sender)
 await limitAdd(sender)
 					break
@@ -6206,7 +6250,7 @@ await limitAdd(sender)
                     break
 case 'drakorlatest':
 if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
-                    get_result = await fetchJson(`http://zekais-api.herokuapp.com/drakorlatest?apikey=zekais`)
+                    get_result = await fetchJson(`https://api.zekais.com/drakorlatest?apikey=zekais`)
                     get_result = get_result.result
                     ini_txt = "Ongoing Drakor\n\n"
                     for (var x of get_result) {
@@ -6327,6 +6371,7 @@ case 'darkjokes':
 if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
 x = await fetchJson(`http://hadi-api.herokuapp.com/api/darkjokes`)
 reply(mess.wait)
+ini_txt = `Caption : ${x.title}\n`
 im = await getBuffer(x.result)
 dha.sendMessage(from, im, image, {quoted: mek})
 checkLimit(sender)
@@ -6340,8 +6385,252 @@ dha.sendMessage(from, x, image, {quoted: mek})
 checkLimit(sender)
 await limitAdd(sender)
               break
-
-
+case 'meme':
+case 'meme':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+x = await fetchJson(`https://api.dhamzxploit.my.id/api/random/meme`)
+reply(mess.wait)
+im = await getBuffer(x.url)
+dha.sendMessage(from, im, image, {quoted: mek, caption: ini_txt})
+checkLimit(sender)
+await limitAdd(sender)
+              break
+case 'ytsearch':
+case 'yts':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
+                    query = args.join(" ")
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api.dhamzxploit.my.id/api/ytsearch?q=${query}`)
+                    get_result = get_result.result
+                    ini_txt = ""
+                    for (var x of get_result) {
+                        ini_txt += `Title : ${x.title}\n`
+                        ini_txt += `Views : ${x.watching}\n`
+                        ini_txt += `Type : ${x.type}\n`
+                        ini_txt += `Thumbnail : ${x.thumbnail}\n`
+                        ini_txt += `Link : ${x.url}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+case 'appstore':
+case 'appstore':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    if (args.length == 0) return reply(`Example: ${prefix + command} Melukis Senja`)
+                    query = args.join(" ")
+                    reply(mess.wait)
+                    get_result = await fetchJson(`https://api-yogipw.herokuapp.com/api/search/appstore?query=${query}&num=100&page=1`)
+                    ini_txt = "AppStore Sesrch"
+                    for (var x of get_result) {
+                        ini_txt += `Title : ${x.title}\n`
+                        ini_txt += `Appid : ${x.appId}\n`
+                        ini_txt += `Genre : ${x.genres}\n`
+                        ini_txt += `Url : ${x.url}\n`
+                        ini_txt += `Description : ${x.description}\n\n`
+                    }
+                    reply(ini_txt)
+                    break
+case 'ahegao':
+case 'bdsm,':
+case 'blowjob':
+case 'cuckold':
+case 'cum':
+case 'ero':
+case 'foot':
+case 'ass':
+case 'fembom':
+case 'gangbang':
+case 'glasses,':
+case 'jahy':
+case 'masturbate':
+case 'nsfwneko':
+case 'orgy':
+case 'panties':
+case 'pussy':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+reply(mess.wait)
+                    get_result = await fetchJson(`https://api-yogipw.herokuapp.com/api/nsfw/${command}`)
+                    fs.writeFileSync(`./${sender}.jpeg`, await getBuffer(get_result.result))
+		      buttons = [{buttonId: `${prefix + command}`,buttonText:{displayText: `➡️Next`},type:1},{buttonId:`${prefix}nhentaibot`,buttonText:{displayText:'NHENTAI BOT'},type:1}]
+              imageMsg = ( await dha.prepareMessage(from, fs.readFileSync(`./${sender}.jpeg`), 'imageMessage', {thumbnail: Buffer.alloc(0)})).message.imageMessage
+              buttonsMessage = {footerText:'Jangan Lupa Donasi Ya Kak ☕', imageMessage: imageMsg,
+              contentText:`klik Next untuk ke gambar selanjut nya`,buttons,headerType:4}
+              prep = await dha.prepareMessageFromContent(from,{buttonsMessage},{quoted: mek})
+              dha.relayWAMessage(prep)
+              fs.unlinkSync(`./${sender}.jpeg`)
+              checkLimit(sender)
+await limitAdd(sender)
+              
+              break
+case 'Kodepos': // Update By KATASHI
+case 'kodepos': // Update By KATASHI
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+if (args.length == 0) return reply(`Example: ${prefix + command} bekasi`)
+                    query = args.join(" ")
+					data = await fetchJson(`https://api-yogipw.herokuapp.com/api/info/kodepos?kota=${query}`, {method: 'get'})
+					teks = 'INFO KODE POS\n'
+					for (let x of data.result.data) {
+						teks += `*Province:* : ${x.province}\n*Kecamatan* : ${x.subdistrict}\n*Perkotaan* : ${x.urban}\n*Kode* : ${x.postalcode}\n\nINFO KODE POS\n`
+					}
+					reply(teks.trim())
+					    checkLimit(sender)
+await limitAdd(sender)
+					break
+case 'alquran':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    if (args.length < 1) return reply(`Example: ${prefix + command} 18 or ${prefix + command} 18/10 or ${prefix + command} 18/1-10`)
+                    urls = `https://api.lolhuman.xyz/api/quran/${args[0]}?apikey=PinnBotWibu`
+                    quran = await fetchJson(urls)
+                    result = quran.result
+                    ayat = result.ayat
+                    ini_txt = `QS. ${result.surah} : 1-${ayat.length}\n\n`
+                    for (var x of ayat) {
+                        arab = x.arab
+                        nomor = x.ayat
+                        latin = x.latin
+                        indo = x.indonesia
+                        ini_txt += `${arab}\n${nomor}. ${latin}\n${indo}\n\n`
+                    }
+                    ini_txt = ini_txt.replace(/<u>/g, "").replace(/<\/u>/g, "")
+                    ini_txt = ini_txt.replace(/<strong>/g, "").replace(/<\/strong>/g, "")
+                    ini_txt = ini_txt.replace(/<u>/g, "").replace(/<\/u>/g, "")
+                    reply(ini_txt)
+                    checkLimit(sender)
+await limitAdd(sender)
+                    break
+case 'infohoax':
+case 'infohoax':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/infohoax`)
+                    get_result = get_result.result
+                    ini_txt = 'Info Hoax :\n'
+                    for (var x of get_result) {
+                        ini_txt += `Title : ${x.title}\n`
+                        ini_txt += `Link : ${x.link}\n`
+                        ini_txt += `Image : ${x.image}\n`
+                        ini_txt += `Tag : ${x.tag}\n\n`
+                    }
+                    reply(ini_txt)
+                    checkLimit(sender)
+await limitAdd(sender)
+                    break
+case 'nhentai':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} 344253`)
+                    henid = args[0]
+                    get_result = await fetchJson(`https://tyz-api.herokuapp.com/nsfw/nHentai?code=${henid}`)
+                    x = get_result.result
+                    get_detail = x.details
+                    ini_txt = `Title Romaji : ${x.title}\n`
+                    ini_txt += `Title Native : ${x.nativeTitle}\n`
+                    ini_txt += `Parodie : ${get_detail.parodies}\n`
+                    ini_txt += `Characters : ${get_detail.characters}\n`
+                    ini_txt += `Tags : ${get_detail.tags}\n`
+                    ini_txt += `Link : ${x.link}\n`
+                    ini_txt += `Artist : ${get_detail.artists}\n`
+                    ini_txt += `Group : ${get_detail.groups}\n`
+                    ini_txt += `Language : ${get_detail.languages}\n`
+                    ini_txt += `Categories : ${get_detail.categories}\n`
+                    ini_txt += `Uploaded : ${get_detail.uploaded}\n`
+                    ini_txt += `Pages : ${x.pages}\n`
+                    
+                    reply(ini_txt)
+                    checkLimit(sender)
+await limitAdd(sender)
+                    break
+case 'alpha':
+case 'alphakode':
+case 'alphasearch':
+case 'alphasearchkode':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+if (args.length == 0) return reply(`Example: ${prefix + command} genshin`)
+                    query = args.join(" ")
+xixi = await getBuffer(`https://tyz-api.herokuapp.com/search/alphacoders?query=${query}`)
+dha.sendMessage(from, xixi, image, {quoted: mek})
+checkLimit(sender)
+await limitAdd(sender)
+              break
+case 'ttsearch':
+case 'tiktoksearch':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+if (args.length == 0) return reply(`Example: ${prefix + command} genshin`)
+                    query = args.join(" ")
+x = await fetchJson(`https://tyz-api.herokuapp.com/search/tiktok?query=${query}`)
+x = x.result
+reply(mess.wait)
+ini_txt = `Username : ${x.username}\n`
+ini_txt = `Caption : ${x.caption}\n`
+ini_txt = `Likes : ${x.likes}\n`
+ini_txt = `Comment : ${x.comment}\n`
+ini_txt = `Share : ${x.share}\n`
+ini_txt = `Video : ${x.video}\n`
+im = await getBuffer(x.video)
+dha.sendMessage(from, im, video, {quoted: mek})
+checkLimit(sender)
+await limitAdd(sender)
+              break
+case 'randomtiktok':
+case 'randomtt':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    get_result = await fetchJson(`https://tyz-api.herokuapp.com/search/randomtiktok`)
+                    x = get_result.result.creator
+                    download = get_result.result.url_dl
+                    ini_txt = `Title Romaji : ${x.profile}\n`
+                    ini_txt += `Title Native : ${x.username}\n`
+                    ini_txt += `Parodie : ${download.desc}\n`
+                    ini_txt += `Characters : ${download.likes}\n`
+                    pidi = await getBuffer(get_result.result.url_dl)
+                    dha.sendMessage(from, pidi, video, {quoted: mek})
+checkLimit(sender)
+await limitAdd(sender)
+                    break
+					case 'topnews':
+case 'topnews':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+                    get_result = await fetchJson(`https://hujanapi.herokuapp.com/api/topnews?apikey=trial2k21`)
+                    get_result = get_result.result
+                    ini_txt = 'TOP NEWS :\n'
+                    for (var x of get_result) {
+                        ini_txt += `Title : ${x.content}\n`
+                        ini_txt += `Author : ${x.author}\n`
+                        ini_txt += `Source : ${x.source.name}\n`
+                        ini_txt += `Description : ${x.description}\n\n`
+                    }
+                    reply(ini_txt)
+                    checkLimit(sender)
+await limitAdd(sender)
+                    break
+case 'ssweb':
+if (isLimit(sender, isPremium, isOwner, limitt)) return reply(`Limit kamu sudah habis silahkan kirim ${prefix}limit untuk mengecek limit`)
+if (args.length == 0) return reply(`Example: ${prefix + command} https://mnazria.herokuapp.com/api/screenshotweb?url=www.google.com`)
+                    query = args.join(" ")
+                    get_result = await fetchJson(`https://mnazria.herokuapp.com/api/screenshotweb?url=${query}`)
+                    ini_txt = `Title Romaji : ${get_result.gambar}\n`
+                    pot = await getBuffer(get_result.gambar)
+                    dha.sendMessage(from, pot, image, {quoted: mek})
+checkLimit(sender)
+await limitAdd(sender)
+                    break
+case 'igdl3':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
+                    ini_url = args[0]
+                    ini_url = await fetchJson(`https://api.dha.xyz/api/instagram?apikey=PinnBotWibu&url=${ini_url}`)
+                    ini_url = ini_url.result
+                    ini_type = image
+                    if (ini_url.includes(".mp4")) ini_type = video
+                    ini_buffer = await getBuffer(ini_url)
+                    await dha.sendMessage(from, ini_buffer, ini_type, { quoted: mek })
+                    break
+                case 'igdl2':
+                    if (args.length == 0) return reply(`Example: ${prefix + command} https://www.instagram.com/p/CJ8XKFmJ4al/?igshid=1acpcqo44kgkn`)
+                    ini_url = args[0]
+                    ini_url = await fetchJson(`https://api.dha.xyz/api/instagram2?apikey=PinnBotWibu&url=${ini_url}`)
+                    ini_result = ini_url.result.media
+                    for (var x of ini_result) {
+                        ini_type = image
+                        if (x.includes(".mp4")) ini_type = video
+                        ini_buffer = await getBuffer(x)
+                        await dha.sendMessage(from, ini_buffer, ini_type, { quoted: mek })
+                    }
+                    break
 
 
 
