@@ -42,7 +42,7 @@ const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
 const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
-const hx = require("hxz-api");
+const hx = require('./hxz-api');
 		
 // stickwm
 const Exif = require('./lib/exif');
