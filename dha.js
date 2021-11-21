@@ -20,6 +20,7 @@ const moment = require("moment-timezone")
 const speed = require('performance-now')
 const { spawn, exec, execSync } = require("child_process")
 const ffmpeg = require('fluent-ffmpeg')
+const hx = require("hxz-api");
 const twitterGetUrl = require("twitter-url-direct")
 const googleImage = require('g-i-s')
 const brainly = require('brainly-scraper')
@@ -60,6 +61,7 @@ const { mediafireDl } = require('./lib/mediafire.js')
 const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
+const { igdl } = require("./lib/ytdl");
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
@@ -6070,9 +6072,97 @@ if (args.length == 0) return reply(`Example: ${prefix + command} https://mnazria
                     pot = await getBuffer(get_result.gambar)
                     dha.sendMessage(from, pot, image, {quoted: mek})
 break
+case "instagram":
+      case "Instagram":
+        if (!isUrl(args[0]) && !args[0].includes("instagram.com"))
+          return reply(mess.Iv);
+        if (!q) return fakegroup("Linknya?");
+        reply(mess.wait);
+        hx.igdl(args[0]).then(async (result) => {
+          for (let i of result.medias) {
+            if (i.url.includes("mp4")) {
+              let link = await getBuffer(i.url);
+              dha.sendMessage(from, link, video, {
+                quoted: mek,
+                caption: `Type : ${i.type}`,
+              });
+            } else {
+              let link = await getBuffer(i.url);
+              dha.sendMessage(from, link, image, {
+                quoted: mek,
+                caption: `Type : ${i.type}`,
+              });
+            }
+          }
+        });
+        break;
+case 'ytmp4hd':
+     case 'ythd':
+            if (args.length === 0) return reply(`Kirim perintah */ytmp4 _linkYt_*`)
+            let isLinkks2 = args[0].match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)
+            if (!isLinkks2) return reply(mess.error.Iv)
+            try {
+            reply(mess.wait)
+            ythd(args[0])
+           .then((res) => {
+            const { dl_link, thumb, title, filesizeF, filesize } = res
+            axios.get(`https://tinyurl.com/api-create.php?url=${dl_link}`)
+           .then((a) => {
+            if (Number(filesize) >= 40000) return sendMediaURL(from, thumb, 
+`┏┉⌣ ┈̥-̶̯͡..̷̴✽̶┄┈┈┈┈┈┈┈┈┈┈┉┓
+┆ *YOUTUBE MP4*
+└┈┈┈┈┈┈┈┈┈┈┈⌣ ┈̥-̶̯͡..̷̴✽̶⌣ ✽̶
 
+*Data Berhasil Didapatkan!*
+\`\`\`き⃟🦈 Title : ${title}\`\`\`
+\`\`\`き⃟🦈 Kualitas* : 720p\`\`\`
+\`\`\`き⃟🦈 Size* : ${filesizeF}\`\`\`
+\`\`\`き⃟🦈 Link* : ${a.data}\`\`\`
 
+_Untuk durasi lebih dari batas disajikan dalam Bentuk link_`)
 
+            const captionsYtmp4 = 
+`┏┉⌣ ┈̥-̶̯͡..̷̴✽̶┄┈┈┈┈┈┈┈┈┈┈┉┓
+┆ *YOUTUBE MP4*
+└┈┈┈┈┈┈┈┈┈┈┈⌣ ┈̥-̶̯͡..̷̴✽̶⌣ ✽̶
+
+*Data Berhasil Didapatkan!*
+\`\`\`き⃟🦈 Title : ${title}\`\`\`
+\`\`\`き⃟🦈 Kualitas : 720p\`\`\`
+\`\`\`き⃟🦈 Size : ${filesizeF}\`\`\`
+
+_Silahkan tunggu file media sedang dikirim mungkin butuh beberapa menit_`
+
+              sendMediaURL(from, thumb, captionsYtmp4)
+              sendMediaURL(from, dl_link,`nih kak`).catch(() => reply(mess.error.api))
+})		
+})
+              } catch (err) {
+              reply(`eror`)
+}
+              break
+              case 'quot':
+					        if (!isGroup) return reply(mess.only.group);
+              teks = await fetchJson(`https://gist.githubusercontent.com/natebass/b0a548425a73bdf8ea5c618149fe1fce/raw/f4231cd5961f026264bb6bb3a6c41671b044f1f4/quotes.json`)
+              reply(mess.wait)
+              await sleep(1000)
+               rjppp = teks[Math.floor(Math.random() * teks.length)];
+               wo = rjppp.quote
+               reply(mess.success)
+               await sleep(1000)
+dha.sendMessage(from, wo, text, {quoted: mek})
+              break
+case 'bocil':
+					        if (!isGroup) return reply(mess.only.group);
+              teks = await fetchJson(`https://raw.githubusercontent.com/binjaicity/warga62/master/bocil.json`)
+              reply(mess.wait)
+              await sleep(1000)
+               rjppp = teks[Math.floor(Math.random() * teks.length)];
+               wokwik = rjppp.url
+               reply(mess.success)
+               await sleep(1000)
+sendMediaURL(from, wokwik)
+              break
 
 
 
