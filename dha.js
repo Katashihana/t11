@@ -42,7 +42,7 @@ const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
 const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
-const hx = require('./hxz-api');
+const hx = require('./lib/downloadig2.js');
 		
 // stickwm
 const Exif = require('./lib/exif');
@@ -61,7 +61,6 @@ const { mediafireDl } = require('./lib/mediafire.js')
 const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
-const { igdl } = require("./lib/ytdl");
 const afk = require("./lib/afk");
 const level = require("./lib/level");
 const atm = require("./lib/atm");
@@ -948,6 +947,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}igvideo* _Linknya_
 │◦➛* ${prefix}randomtiktok* 
 │◦➛* ${prefix}tiktoksearch* _Text_
+│◦➛* ${prefix}instagram* _Linkny_
+│◦➛* ${prefix}ytmp4dh* _Linkny_
 │
 ├──❏「 ASUPAN 」 
 │◦➛*${prefix}asupan* 
@@ -992,6 +993,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}darkjokes* -Fix bug
 │◦➛* ${prefix}memes* -Fix bug
 │◦➛* ${prefix}kucing* 
+│◦➛* ${prefix}quotimg* 
 │
 ├──❏「 STICKER 」 
 │◦➛* ${prefix}dadu*
@@ -1160,6 +1162,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}translate2* _kode|text_
 │◦➛* ${prefix}bahasa* 
 │◦➛* ${prefix}linkwa* _text_
+│◦➛* ${prefix}quot*
 │
 ├──❏「 OWNER 」
 │◦➛* ${prefix}bc* _teks_
@@ -1406,7 +1409,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 
 ${quotes}
 
-©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
+©??𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
@@ -5829,6 +5832,10 @@ po1 = dha.prepareMessageFromContent(from, {
           "title": "ASUPAN3",
           "rowId": `${prefix}ukhty`
         },
+        { 
+          "title": "ASUPAN4",
+          "rowId": `${prefix}bocil`
+        },
         {
           "title": "CECAN",
           "rowId": `${prefix}vietnam`
@@ -6163,6 +6170,20 @@ case 'bocil':
                await sleep(1000)
 sendMediaURL(from, wokwik)
               break
+              case 'quotesimage':
+              case 'quotesimg':
+              case 'quotimg':
+					        if (!isGroup) return reply(mess.only.group);
+              teks = await fetchJson(`https://raw.githubusercontent.com/Katashihana/RANDOM-BY-KATASHI/master/quotesimage.json`)
+              reply(mess.wait)
+              await sleep(1000)
+               rjppp = teks[Math.floor(Math.random() * teks.length)];
+               wokwik = rjppp.data
+               reply(mess.success)
+               await sleep(1000)
+sendMediaURL(from, wokwik)
+              break
+
 
 
 
