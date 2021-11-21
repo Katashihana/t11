@@ -20,7 +20,6 @@ const moment = require("moment-timezone")
 const speed = require('performance-now')
 const { spawn, exec, execSync } = require("child_process")
 const ffmpeg = require('fluent-ffmpeg')
-const hx = require("./node_modules/hxz-api");
 const twitterGetUrl = require("twitter-url-direct")
 const googleImage = require('g-i-s')
 const brainly = require('brainly-scraper')
@@ -43,6 +42,7 @@ const timeWib = moment.tz('Asia/Jakarta').format('DD/MM')
 const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
+const hx = require("hxz-api");
 		
 // stickwm
 const Exif = require('./lib/exif');
