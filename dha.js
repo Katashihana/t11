@@ -43,6 +43,7 @@ const { addCommands, checkCommands, deleteCommands } = require('./lib/autoresp')
 const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
 const hx = require('./lib/downloadig2.js');
+const ig = require("./lib/index.js");
 		
 // stickwm
 const Exif = require('./lib/exif');
@@ -565,6 +566,48 @@ const promoteAdmin = async function(to, target=[]){
             role = 'Immortal'
         } 
         
+        const santet = [
+            'Muntah Paku',
+            'Meninggoy',
+            'Berak Paku',
+            'Muntah Rambut',
+            'Ketempelan MONYET!!!',
+            'Berak di Celana Terus',
+            'Menjadi Gila',
+            'Menjadi manusiawi',
+            'jomblo selamanya',
+            'ga bisa berak',
+            'ketiban pesawat',
+            'jadi anak mulung',
+            'ga jadi pacar zeus',
+            'jadi jelek'
+        ]
+
+        const kutuk = [
+            'Sapi',
+            'Batu',
+            'Babi',
+            'Anak soleh dan soleha',
+            'pohon pisang',
+            'janda',
+            'bangsat',
+            'buaya',
+            'Jangkrik',
+            'Kambbiingg',
+            'Bajing',
+            'kang seblak',
+            'kang gorengan',
+            'kang siomay',
+            'badut ancol',
+            'Tai',
+            'Kebo',
+            'Badak biar Asli',
+            'tai kotok',
+            'Bwebwek',
+            'Orang Suksesss...... tapi boong',
+            'Beban Keluarga' //tambahin  aja
+        ]
+        
 		pporang = 'httpsl://telegra.ph/file/58f6d9179e497062a84b0.jpg'
 		      
 		const ofrply = await getBuffer(pporang)
@@ -994,6 +1037,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}memes* -Fix bug
 │◦➛* ${prefix}kucing* 
 │◦➛* ${prefix}quotimg* 
+│◦➛* ${prefix}randomporn* 
 │
 ├──❏「 STICKER 」 
 │◦➛* ${prefix}dadu*
@@ -1163,6 +1207,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}bahasa* 
 │◦➛* ${prefix}linkwa* _text_
 │◦➛* ${prefix}quot*
+│◦➛* ${prefix}igstalk* _usernamenya_
 │
 ├──❏「 OWNER 」
 │◦➛* ${prefix}bc* _teks_
@@ -1251,6 +1296,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛* ${prefix}tts* _text_
 │◦➛* ${prefix}randomtiktok* 
 │◦➛* ${prefix}tiktoksearch* _Text_
+│◦➛* ${prefix}santet* 
+│◦➛* ${prefix}kutuk* 
 │
 └─────────────────❒
 #- *List Kode Bahasa Untuk Fitur tts id*
@@ -1311,7 +1358,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
   contoh /tts id Putra Ganteng -#
 
 ©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
-               buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
+               buttons = [{buttonId: `${prefix}menu`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}grupbot`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
 
@@ -1410,7 +1457,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 ${quotes}
 
 ©??𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
-               buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}rules`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
+               buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}grupbot`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
 
@@ -2971,6 +3018,9 @@ case 'linkgc':
               reply(`Waktu Indonesia Barat: *${moment().utcOffset('+0700').format('HH:mm')}* WIB \nWaktu Indonesia Tengah: *${moment().utcOffset('+0800').format('HH:mm')}* WITA \nWaktu Indonesia Timur: *${moment().utcOffset('+0900').format('HH:mm')}* WIT`)
               
               break
+              case 'rules':
+             dha.sendMessage(from, rulesBot(prefix), MessageType.text, {quoted: troli})
+             break
        case 'cekmati':
        if (!isGroup) return reply(mess.only.group);
               if (!q) return reply(mess.wrongFormat)
@@ -3377,7 +3427,7 @@ if (!isGroup) return reply(mess.only.group);
              
               break
       case 'grupbot':
-             reply('https://chat.whatsapp.com/EymjfVUattCJSGg58WPvrd')
+             reply('Diwajibkan join group bot\nhttps://chat.whatsapp.com/GDV8T3Mke6i253sl94GCmj')
              
               break
       
@@ -5704,7 +5754,7 @@ if (!isOwner)return reply(mess.only.owner)
               break
 case 'lolkey2':
 if (!isOwner)return reply(mess.only.owner)
-                    get_result = await fetchJson(`https://api.dha.xyz/api/checkapikey?apikey=YTRAMLANID`)
+                    get_result = await fetchJson(`https://api.lolhuman.xyz/api/checkapikey?apikey=YTRAMLANID`)
                     get_result = get_result.result
                     ini_txt = `Username : ${get_result.username}\n`
                     ini_txt += `Requests : ${get_result.requests}\n`
@@ -6183,6 +6233,58 @@ sendMediaURL(from, wokwik)
                await sleep(1000)
 sendMediaURL(from, wokwik)
               break
+case 'santet':
+                    if (!isGroup) return reply(mess.only.group);
+                    if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('Tag member yang mau disantet\n\nContoh : /santet @tag | kalo berak kaga di siram')
+                    if (args.length === 1) return reply(from, 'Masukkan alasan kenapa menyantet dia!!\n\nContoh : /santet @tag | kalo berak kaga di siram', id)
+                    const terima1 = santet[Math.floor(Math.random() * (santet.length))]
+                    const target = arg.split('|')[0]
+                    const alasan = arg.split('|')[1]
+              teks = `Santet terkirim ke ${target}, Dengan alasan${alasan}\n\nJenis Santet Yang di Terima Korban adalah *${terima1}*`
+              mentions(teks, true)
+              break
+
+                case 'kutuk':
+                    if (!isGroup) return reply(mess.only.group);
+                    if (mek.message.extendedTextMessage === undefined || mek.message.extendedTextMessage === null) return reply('Tag member yang mau disantet\n\nContoh : /santet @tag | kalo berak kaga di siram')
+                    if (args.length === 1) return dha.reply(from, 'Masukkan alasan kenapa menyantet dia!!\n\nContoh : /kutuk @tag | kalo berak kaga di siram', id)
+                    const terima2 = kutuk[Math.floor(Math.random() * (kutuk.length))]
+                    const target2 = arg.split('|')[0]
+                    const alasan2 = arg.split('|')[1]
+                    teks = `Santet terkirim ke ${target2}, Dengan alasan${alasan2}\n\nJenis Santet Yang di Terima Korban adalah *${terima1}*`
+              mentions(teks, true)
+                    break
+case "igstalk":
+      case "Igstalk":
+        if (!q) return fakegroup("Usernamenya?");
+        reply(mess.wait)
+        ig.fetchUser(`${args.join(" ")}`).then((Y) => {
+          console.log(`${args.join(" ")}`);
+          ten =`${Y.profile_pic_url_hd}`;
+          teks = `*ID* : ${Y.profile_id}\n*Username* : ${args.join(
+            ""
+          )}\n*Full Name* : ${Y.full_name}\n*Bio* : ${
+            Y.biography
+          }\n*Followers* : ${Y.followers}\n*Following* : ${
+            Y.following
+          }\n*Private* : ${Y.is_private}\n*Verified* : ${
+            Y.is_verified
+          }\n\n*Link* : https://instagram.com/${args.join("")}`;
+          sendMediaURL(from, ten, teks);
+        });
+        break;
+        case 'randomporn':
+              case 'randomporn':
+              case 'randomporn':
+					        if (!isGroup) return reply(mess.only.group);
+              teks = await fetchJson(`https://raw.githubusercontent.com/Katashihana/RANDOM-BY-KATASHI/master/random.json`)
+              reply(mess.wait)
+              await sleep(1000)
+               rjppp = teks[Math.floor(Math.random() * teks.length)];
+               wokwik = rjppp.data.url
+               reply(mess.success)
+               await sleep(1000)
+sendMediaURL(from, wokwik)
 
 
 
