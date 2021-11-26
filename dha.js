@@ -6224,7 +6224,22 @@ case "igstalk":
                reply(mess.success)
                await sleep(1000)
 sendMediaURL(from, wokwik);;
+case 'wiki': 
+case 'wikipedia':
+  if (isBanned) return reply(mess.ban)
+if (args.length < 1) return reply(' Yang Mau Di Cari Apa? ')
+reply(mess.wait)
+teks = args.join(' ')
+res = await wikiSearch(teks).catch(e => {
+return reply('_Error Hasil Tidak Ditemukan_') 
+}) 
+result = `*JUDUL :* ${res[0].judul}
 
+*WIKI :* ${res[0].wiki}`
+sendMediaURL(res[0].thumb, image, {quoted: mek, caption: result}).catch(e => {
+reply(result)
+})
+break
 
 
 
