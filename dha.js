@@ -44,6 +44,7 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 const { help, bahasa, donasi, limitcount, bottt, listsurah } = require('./lib/help')
 const hx = require('./lib/downloadig2.js');
 const ig = require("./lib/index.js");
+const todapi = require("./lib/testapi.js");
 		
 // stickwm
 const Exif = require('./lib/exif');
@@ -59,6 +60,7 @@ const { cmdadd } = require('./lib/totalcmd.js')
 const { uptotele, uploadFile, RESTfulAPI, uploadImages } = require('./lib/uploadimage')
 const { onGoing, dadu, asupan } = require("./lib/otakudesu.js")
 const { mediafireDl } = require('./lib/mediafire.js')
+const { wikiSearch } = require('./lib/wiki.js')
 const { webp2gifFile, igDownloader, TiktokDownloader } = require("./lib/gif.js")
 const { y2mateA, y2mateV } = require('./lib/y2mate')
 const { ythd } = require('./lib/ytdl')
@@ -109,12 +111,12 @@ gamewaktu = setting.gamewaktu
 limitt = setting.limitt
 petik = '```'
 fake = 'CREATOR BOT\©Katashi'//GANTI NAMA KAMU BEP
-ban =[]
 
 // Database
 let register = JSON.parse(fs.readFileSync('./database/user/register.json'))
 let welkom = JSON.parse(fs.readFileSync('./database/group/welcome.json'))
 let _afk = JSON.parse(fs.readFileSync('./database/user/afk.json'));
+const ban = JSON.parse(fs.readFileSync('./database/banned.json'))
 let _leveling = JSON.parse(fs.readFileSync('./database/group/leveling.json'))
 let _level = JSON.parse(fs.readFileSync('./database/user/level.json'))
 let _uang = JSON.parse(fs.readFileSync('./database/user/uang.json'))
@@ -297,7 +299,7 @@ module.exports = dha = async (dha, mek) => {
         const isAntiLink = isGroup ? antilink.includes(from) : true
         const isWelkom = isGroup ? welkom.includes(from) : true
         const isPremium= prem.includes(sender)
-        
+        const isBanned = ban.includes(sender)
         
         // here button function
         selectedButton = (type == 'buttonsResponseMessage') ? mek.message.buttonsResponseMessage.selectedButtonId : ''
@@ -1376,19 +1378,9 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
         case 'menu':
         case 'help':
         
-        tsunami = await fetchJson(`https://docs-jojo.herokuapp.com/api/infogempa`, {method: 'get'})
-        tsunami = tsunami
-        Tangal = `Tanggal: *${tsunami.waktu}*`
-        Lintang = `Potensi: *${tsunami.potensi}*`
-        Bujur = `Koordinat: *${tsunami.koordinat}*`
-        Magnitudo = `Magnitudo: *${tsunami.magnitude}*`
-        Wilayah = `Wilayah: *${tsunami.lokasi}*`
-        Kedalaman = `Kedalaman: *${tsunami.kedalaman}*`
-        quot = await fetchJson(`https://zahirr-web.herokuapp.com/api/randomquote/muslim?apikey=zahirgans`, {method: 'get'})
-        quotes = quot.result.text_id
-        
-        
-        
+        get_result = await fetchJson(`https://vaksincovid19-api.vercel.app/api/vaksin`)
+                    Total = `Total Sasaran : ${get_result.totalsasaran}`
+
         kopid2 = await fetchJson(`https://api.dapuhy.ga/api/others/corona?negara=indonesia&apikey=r5CjdUOuSHvrbjg`, {method: 'get'})
         kopid3 = kopid2
         id2 = `Lokasi: *INDONESIA*`
@@ -1439,12 +1431,8 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛Wt: *${moment().utcOffset('+0900').format('HH:mm')}* WIT
 └❏ - Katashi Bot
 
-┌❏ INFO GEMPA
-│◦➛${Tangal}
-│◦➛${Lintang},
-│◦➛${Magnitudo}
-│◦➛${Kedalaman}
-│◦➛${Wilayah}
+┌❏ INFO VAKSIN
+│◦➛${Total}
 └❏ - Katashi Bot
 
 ┌❏ INFO CORONA 
@@ -1454,9 +1442,7 @@ dha.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
 │◦➛${meninggal2}
 └❏ - Katashi Bot
 
-${quotes}
-
-©??𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
+©𝑪𝒓𝒆𝒂𝒕𝒐𝒓 ©Katashi`
                buttons = [{buttonId: `${prefix}menu2`,buttonText:{displayText: '𝗔𝗟𝗟 𝗠𝗘𝗡𝗨'},type:1},{buttonId: `${prefix}grupbot`,buttonText:{displayText: '𝗥𝗨𝗟𝗘𝗦'},type:1},{buttonId:`${prefix}owner`,buttonText:{displayText:'OWNER'},type:1}]
 
                imageMsg = (await dha.prepareMessageMedia(fs.readFileSync(`./media/ganteng.jpg`), 'imageMessage', {thumbnail: fs.readFileSync(`./media/canss.jpg`)})).imageMessage
@@ -1473,40 +1459,7 @@ ${quotes}
               break
        
 //------------------< Game >------------------- 
-        case 'limitgame': 
-        case 'balance': 
-               const balance = atm.checkATMuser(sender, _uang)
-               textImg(`Limit Game : ${cekGLimit(sender, gcount, glimit)}/${gcount}\nBalance : Rp.${balance}`)
-               break
-         case 'gelud':
-               if (!isGroup) return reply(mess.only.group)
-               if (mek.message.extendedTextMessage.contextInfo.mentionedJid > 1) return reply('Hanya bisa dengan 1 orang')
-               if (!mek.message.extendedTextMessage.contextInfo.mentionedJid[0]) return
-               if (args.length === 0) return reply(`Tag Lawan Yang Ingin Diajak Bermain Game`)
-               if (fs.existsSync(`./media/${from}.json`)) return reply(`Sedang Ada Sesi, tidak dapat dijalankan secara bersamaan\nKetik *${prefix}delsesigelud*, untuk menghapus sesi`)
-					
-               gelutSkuy = setGelud(`${from}`)
-               gelutSkuy.status = false
-               gelutSkuy.Z = sender.replace("@s.whatsapp.net", "")
-               gelutSkuy.Y = args[0].replace("@", "");
-               fs.writeFileSync(`./media/${from}.json`, JSON.stringify(gelutSkuy, null, 2))
-               starGame = `👑 Memulai Game Baku Hantam 👊🏻
-
-• @${sender.replace("@s.whatsapp.net", "")} Menantang Bergelud
-[ ${args[0]} ] Ketik Y/N untuk menerima atau menolak permainan`
-
-               dha.sendMessage(from, starGame, text, {quoted: mek, contextInfo: { mentionedJid: [sender, args[0].replace("@", "") + "@s.whatsapp.net"],}})
-               gameAdd(sender, glimit)
-               break
-        case 'delsesigelud':
-               if (!isGroup) return reply(mess.only.group)
-               if (fs.existsSync('./media/' + from + '.json')) {
-               fs.unlinkSync('./media/' + from + '.json')
-               reply('Berhasil Menghapus Sesi Gelud')
-               } else {
-               reply('Tidak ada sesi yang berlangsung')
-}
-               break
+       
         case 'delsesittt':
         case 'resetgame':
                if (!isGroup) return reply(mess.only.group)
@@ -6042,20 +5995,6 @@ if (!isGroup) return reply(mess.only.group);
                     ini_txt = ini_txt.replace(/<u>/g, "").replace(/<\/u>/g, "")
                     reply(ini_txt)
                     break
-case 'infohoax':
-case 'infohoax':
-if (!isGroup) return reply(mess.only.group);
-                    get_result = await fetchJson(`https://docs-jojo.herokuapp.com/api/infohoax`)
-                    get_result = get_result.result
-                    ini_txt = 'Info Hoax :\n'
-                    for (var x of get_result) {
-                        ini_txt += `Title : ${x.title}\n`
-                        ini_txt += `Link : ${x.link}\n`
-                        ini_txt += `Image : ${x.image}\n`
-                        ini_txt += `Tag : ${x.tag}\n\n`
-                    }
-                    reply(ini_txt)
-                    break
 case 'nhentai':
                     if (args.length == 0) return reply(`Example: ${prefix + command} 344253`)
                     henid = args[0]
@@ -6284,8 +6223,7 @@ case "igstalk":
                wokwik = rjppp.data.url
                reply(mess.success)
                await sleep(1000)
-sendMediaURL(from, wokwik)
-
+sendMediaURL(from, wokwik);;
 
 
 
